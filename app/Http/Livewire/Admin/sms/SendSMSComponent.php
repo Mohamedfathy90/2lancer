@@ -58,7 +58,7 @@ class SendSMSComponent extends Component
         $receiver = User::where('id',$this->user)->first();
         $message = $this->message_body;  
         $settings = SettingsSms::where('id',1)->get()[0];
-        $headers = ['Authorization' => 'App 5ad0110200fddbe7607a7f070e18d8a3-67842799-f8d8-4900-97c3-24f1a5d3178c',
+        $headers = ['Authorization' => 'App '.$settings->api_key,
         'Content-Type' => 'application/json',
         'Accept' => 'application/json'];
 
