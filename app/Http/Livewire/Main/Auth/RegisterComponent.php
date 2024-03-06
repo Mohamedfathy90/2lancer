@@ -217,6 +217,7 @@ class RegisterComponent extends Component
             $user->password = Hash::make($this->password);
             $user->status   = $settings->verification_required ? 'pending' : 'active';
             $user->level_id = 1;
+            $user->ip_address = request()->ip();
             $user->save();
 
             // check for affiliate and add affiliate register

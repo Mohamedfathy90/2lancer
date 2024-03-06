@@ -2558,5 +2558,5 @@
         "t_enter_phone"                                            => "رقم الهاتف",
         "t_receiver_name"                                          => "اسم المرسل اليه",
         "t_message_content"                                        => "محتوي الرسالة" ,
-        
+        "t_enter_phone_number"                                     => "أدخل رقم الهاتف الخاص بك" ,
     ];

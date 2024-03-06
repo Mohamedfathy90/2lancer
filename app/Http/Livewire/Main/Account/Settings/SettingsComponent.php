@@ -21,6 +21,7 @@ class SettingsComponent extends Component
     public $city;
     public $timezone;
     public $password;
+    public $phone;
 
     /**
      * Init component
@@ -39,7 +40,8 @@ class SettingsComponent extends Component
             'fullname' => $user->fullname,
             'country'  => $user->country_id,
             'city'     => $user->city,
-            'timezone' => $user->timezone
+            'timezone' => $user->timezone,
+            'phone'    => $user->phone,
         ]);
     }
 
@@ -147,7 +149,8 @@ class SettingsComponent extends Component
                 'fullname'   => $this->fullname ? clean($this->fullname) : null,
                 'country_id' => $this->country ? $this->country : null,
                 'city'       => $this->city ? clean($this->city) : null,
-                'timezone'   => $this->timezone
+                'timezone'   => $this->timezone,
+                'phone'      => $this->phone,
             ]);
 
             // Refresh user

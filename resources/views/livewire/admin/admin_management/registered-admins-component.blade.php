@@ -43,7 +43,11 @@
                         <span class="text-sm font-bold text-zinc-900 tracking-wide">{{$admin->email}}</span>
                     </td>
                     <td class="text-center">
+                        @if(!($admin->getRoleNames())->isEmpty())
                         <span class="text-sm font-bold text-zinc-900 tracking-wide">{{$admin->getRoleNames()[0]}}</span>
+                        @else
+                        <span class="text-sm font-bold text-zinc-900 tracking-wide">ـــــــــ</span>
+                        @endif
                     </td>
                     
                     {{-- Options --}}

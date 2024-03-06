@@ -2569,6 +2569,7 @@
         "t_enter_phone"                                            => "Phone Number",
         "t_receiver_name"                                          => "Receiver Name" ,
         "t_message_content"                                        => "Message content" ,
+        "t_enter_phone_number"                                     => "Enter your phone number" ,
         
         
 

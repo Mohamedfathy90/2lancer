@@ -29,6 +29,7 @@ class EditComponent extends Component
     public $avatar;
     public $status;
     public $user;
+    public $phone;
 
     /**
      * Init component
@@ -52,6 +53,7 @@ class EditComponent extends Component
             'headline'     => $user->headline,
             'description'  => $user->description,
             'status'       => $user->status,
+            'phone'        => $user->phone,
         ]);
 
         // Set user
@@ -150,7 +152,8 @@ class EditComponent extends Component
                 'headline'          => $this->headline,
                 'description'       => $this->description,
                 'status'            => $this->status,
-                'avatar_id'         => $avatar_id
+                'avatar_id'         => $avatar_id,
+                'phone'             => $this->phone,
             ]);
 
             // Success

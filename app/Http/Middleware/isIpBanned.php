@@ -26,11 +26,15 @@ class isIpBanned
             // Get banned ip
             $banned = BannedIp::where('ip_address', $ip)->where('attempts', '>=', 3)->first();
 
+            // get ips banned from admins
+            $banned_users = BannedIp::where('ip_address', $ip)->where('attempts', 0)->first();
+
+          
             // Check if ip banned
-            if ($banned) {
+            if ($banned || $banned_users) {
                 
                 // This ip banned
-                return redirect('/');
+                return abort(404);
 
             }
 

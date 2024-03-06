@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin\Users;
 
 use App\Models\User;
 use Livewire\Component;
+use App\Models\BannedIp;
 use WireUi\Traits\Actions;
 use Livewire\WithPagination;
 use App\Notifications\User\Everyone\AccountActivated;
@@ -54,6 +55,11 @@ class UsersComponent extends Component
             'status' => 'banned'
         ]);
 
+        // add user ip to banned IPs 
+        $ip_address = User::where('id',$id)->first()->ip_address ;
+        BannedIp::updateOrCreate(['ip_address' =>  $ip_address]);
+
+        
         // Success
         $this->notification([
             'title'       => __('messages.t_success'),

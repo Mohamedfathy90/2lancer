@@ -30,7 +30,8 @@ class EditValidator
                 'headline'     => 'nullable|max:100',
                 'description'  => 'nullable|max:750',
                 'avatar'       => 'nullable|image|mimes:jpg,jpeg,png',
-                'status'       => 'required|in:active,verified,banned'
+                'status'       => 'required|in:active,verified,banned',
+                'phone'        => 'required|numeric',
             ];
 
             // Set errors messages
@@ -54,6 +55,8 @@ class EditValidator
                 'avatar.mimes'          => __('messages.t_validator_mimes'),
                 'status.required'       => __('messages.t_validator_required'),
                 'status.in'             => __('messages.t_validator_in'),
+                'phone.required'        => __('messages.t_validator_required'),
+                'phone.numeric'         => __('messages.t_validator_numeric'),
             ];
 
             // Set data to validate
@@ -68,7 +71,8 @@ class EditValidator
                 'headline'     => $request->headline,
                 'description'  => $request->description,
                 'avatar'       => $request->avatar,
-                'status'       => $request->status
+                'status'       => $request->status,
+                'phone'        => $request->phone,
             ];
 
             // Validate data

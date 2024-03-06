@@ -31,13 +31,23 @@
                 </div>
 
                 {{-- Password --}}
-                <div class="col-span-12">
+                <div class="col-span-6">
                     <x-forms.text-input
                         :label="__('messages.t_password')"
                         :placeholder="__('messages.t_enter_password')"
                         model="password"
                         type="password"
                         icon="lock" />
+                </div>
+
+                {{-- phone number --}}
+                <div class="col-span-6">
+                    <x-forms.text-input
+                        :label="__('messages.t_phone_number')"
+                        :placeholder="__('messages.t_enter_phone_number')"
+                        model="phone"
+                        icon="phone" 
+                        />
                 </div>
 
                 {{-- Account type --}}

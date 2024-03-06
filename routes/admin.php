@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 
 // Dashboard routes
-Route::middleware(['web', 'auth:admin'])->group(function() {
+Route::middleware(['web', 'banned.ip','auth:admin'])->group(function() {
 
     // Home
     Route::namespace('Home')->group(function() {
@@ -754,6 +754,6 @@ Route::middleware(['web', 'auth:admin'])->group(function() {
 Route::namespace('Auth')->middleware(['web', 'banned.ip', 'guest:admin'])->group(function() {
 
     // Login
-    Route::get('login', LoginComponent::class);
+    Route::get('/raja+ahly=worldwar', LoginComponent::class);
 
 });

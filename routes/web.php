@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::middleware('banned.ip')->group(function() {
+
 // Tasks
 Route::prefix('tasks')->group(function() {
 
@@ -842,5 +844,5 @@ Route::namespace('App\Http\Controllers\Callback')->prefix('callback')->group(fun
     // Youcanpay
     Route::get('youcanpay', 'YoucanpayController@callback');
 
-
+});
 });

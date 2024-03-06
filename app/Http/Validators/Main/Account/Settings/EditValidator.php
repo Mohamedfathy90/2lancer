@@ -16,7 +16,7 @@ class EditValidator
      * @return void
      */
     static function validate($request)
-    {
+    {    
         try {
 
             // Set rules
@@ -27,7 +27,8 @@ class EditValidator
                 'country'  => 'nullable|exists:countries,id',
                 'password' => 'nullable|max:60',
                 'city'     => 'nullable|max:60',
-                'timezone' => 'required|max:60'
+                'timezone' => 'required|max:60',
+                'phone'    => 'required|numeric',
             ];
 
             // Set errors messages
@@ -46,6 +47,8 @@ class EditValidator
                 'city.max'          => __('messages.t_validator_max', ['max' => 60]),
                 'timezone.max'      => __('messages.t_validator_max', ['max' => 60]),
                 'timezone.required' => __('messages.t_validator_required'),
+                'phone.required'        => __('messages.t_validator_required'),
+                'phone.numeric'         => __('messages.t_validator_numeric'),
 
             ];
 
@@ -57,7 +60,8 @@ class EditValidator
                 'country'  => $request->country,
                 'password' => $request->password,
                 'city'     => $request->city,
-                'timezone' => $request->timezone
+                'timezone' => $request->timezone,
+                'phone'    => $request->phone,
             ];
 
             // Validate data

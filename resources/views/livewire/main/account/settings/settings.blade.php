@@ -91,9 +91,20 @@
                                 </div>
                             </div>
 
+                            
+                            {{-- Phone Number --}}
+                            <div class="col-span-12 md:col-span-6">
+                                <x-forms.text-input 
+                                    label="{{ __('messages.t_phone_number') }}" 
+                                    placeholder="{{ __('messages.t_enter_phone_number') }}" 
+                                    model="phone"
+                                    />
+                            </div>
+                            
+
                             {{-- Current password --}}
                             @if (auth()->user()->password)
-                                <div class="col-span-12">
+                                <div class="col-span-12 md:col-span-6">
                                     <x-forms.text-input 
                                         label="{{ __('messages.t_password') }}" 
                                         placeholder="{{ __('messages.t_enter_your_current_password') }}" 
