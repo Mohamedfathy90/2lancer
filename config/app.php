@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'url'       => 'https://2lancer.ma',
+    'url'       => 'http://localhost/2lancer/',
 
     'asset_url' => 'https://www.2lancer.ma',
 
@@ -192,6 +192,7 @@ return [
         Unicodeveloper\Paystack\PaystackServiceProvider::class,
         LoveyCom\CashFree\CashFreeServiceProvider::class,
         Paytabscom\Laravel_paytabs\PaypageServiceProvider::class,
+    
         /*
          * Application Service Providers...
          */

@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'laravel/laravel',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => NULL,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '2316f8291f9147ed43d88ca125892a98960aea6a',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -697,9 +697,9 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => NULL,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '2316f8291f9147ed43d88ca125892a98960aea6a',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -929,6 +929,15 @@
             'install_path' => __DIR__ . '/../maximebf/debugbar',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'mehdirochdi/cmi-payment-php' => array(
+            'pretty_version' => '1.0.0',
+            'version' => '1.0.0.0',
+            'reference' => 'f6690081721a8a1320ae710880e48e61543f241c',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../mehdirochdi/cmi-payment-php',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'mercadopago/dx-php' => array(
             'pretty_version' => '2.5.4',

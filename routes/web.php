@@ -1,6 +1,9 @@
 <?php
 
+use CMI\CmiClient;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 Route::middleware('banned.ip')->group(function() {
 
@@ -741,6 +744,54 @@ Route::namespace('App\Http\Controllers\Uploads')->prefix('uploads')->group(funct
 // Callback routes for payment gateways
 Route::namespace('App\Http\Controllers\Callback')->prefix('callback')->group(function() {
 
+    // CMI 
+    Route::get('cmi/process/{payment_id}/{amount}', function($payment_id,$amount){
+        $settings     = payment_gateway('cmi');
+        $client = new CmiClient([
+            'storekey' => $settings->settings['store_key'],
+            'clientid' => $settings->settings['client_id'], 
+            'trantype' => "PreAuth" ,
+            'storetype' => "3d_pay_hosting" ,
+            'currency' => '504' ,
+            'lang' => app()->getLocale() ,
+            'rnd'=> microtime() ,
+            'hashAlgorithm'=>"ver3" ,
+            'encoding' => "UTF-08" , 
+            'oid' => $payment_id, // COMMAND ID IT MUST BE UNIQUE
+            'shopurl' => config('app.url'), // SHOP URL FOR REDIRECTION
+            'okUrl' => "http://localhost/2lancer/callback/cmi/success", // REDIRECTION AFTER SUCCEFFUL PAYMENT
+            'failUrl' => "http://localhost/2lancer/callback/cmi/failed", // REDIRECTION AFTER FAILED PAYMENT
+            'email' => auth()->user()->email, // YOUR EMAIL APPEAR IN CMI PLATEFORM
+            'BillToName' => auth()->user()->username, // YOUR NAME APPEAR IN CMI PLATEFORM
+            'tel' => auth()->user()->phone, // YOUR NAME APPEAR IN CMI PLATEFORM
+            'BillToCompany' => '', // YOUR COMPANY NAME APPEAR IN CMI PLATEFORM
+            'amount' => (string)$amount, // RETRIEVE AMOUNT WITH METHOD POST
+            'AutoRedirect'=>'true' ,
+            'CallbackURL' => '', // CALLBACK
+        ]);
+        
+        $client->redirect_post();
+    })->name('cmi.process');
+    
+    // Route::post('cmi', function(Request $request){
+    //     $order = Order::where('id', 15)->get();  
+    //     $order->is_finished = 1;
+    //     $order->save();
+    // });
+    
+    // Route::post('okFail', function(Request $request){
+    //     dd($request);
+    //     $request['storekey'] = 'iy@9ZQZtvBWEnuQ' ;
+    //     $client = new CmiClient($request);
+    //     $status = $client->hash_eq($request->hash);
+    //     dd($status);
+    // })->name('okFail');
+     
+     Route::post('cmi/success', 'cmiController@success');
+     
+     Route::post('cmi/failed', 'cmiController@failed');
+    
+    
     // Asaas
     Route::post('asaas', 'AsaasController@callback');
 

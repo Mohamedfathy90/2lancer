@@ -19,14 +19,15 @@ use WireUi\Traits\Actions;
 use Illuminate\Support\Str;
 use App\Models\OrderInvoice;
 use GuzzleHttp\Psr7\Request;
+use CMI\CmiClient;
 use App\Models\CheckoutWebhook;
 use App\Models\OrderItemUpgrade;
+use App\Models\AffiliateTransaction;
 use Illuminate\Support\Facades\Http;
 use App\Models\OfflinePaymentGateway;
+use App\Models\AffiliateRegisteration;
 use App\Models\AutomaticPaymentGateway;
 use App\Notifications\User\Buyer\OrderPlaced;
-use App\Models\AffiliateRegisteration;
-use App\Models\AffiliateTransaction;
 use App\Utils\Payments\Gateways\EcpayGateway;
 use App\Notifications\User\Seller\PendingOrder;
 use Paytabscom\Laravel_paytabs\Facades\paypage;
@@ -553,7 +554,7 @@ class CheckoutComponent extends Component
      */
     public function confirm()
     {
-        try {
+        
             
             // Check if user chose to pay using his wallet
             if ($this->selected_method === 'wallet') {
@@ -611,6 +612,20 @@ class CheckoutComponent extends Component
                 // Check selected payment gateway
                 switch ($this->selected_method) {
 
+                    // CMI
+                    case 'cmi':
+                        
+                         // Generate payment id
+                         $payment_id      = "GG" . uid(17);
+                        
+                         // Save webhook details to later response
+                          $this->webhook(['payment_id' => $payment_id, 'payment_method' => 'cmi']);
+                        
+                          redirect()->route('cmi.process',['payment_id'=>$payment_id , 'amount'=>$amount]);
+
+                          break;
+                    
+                    
                     // PayPal
                     case 'paypal':
                         
@@ -2216,16 +2231,7 @@ class CheckoutComponent extends Component
 
             }
 
-        } catch (\Throwable $th) {
-            
-            // Something went wrong
-            $this->notification([
-                'title'       => __('messages.t_error'),
-                'description' => __('messages.t_toast_something_went_wrong'),
-                'icon'        => 'error'
-            ]);
-
-        }
+    
     }
 
 

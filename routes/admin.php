@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-
 // Dashboard routes
 Route::middleware(['web', 'banned.ip','auth:admin'])->group(function() {
 
@@ -568,6 +567,9 @@ Route::middleware(['web', 'banned.ip','auth:admin'])->group(function() {
 
                 // Robokassa
                 Route::get('edit/robokassa', RobokassaComponent::class);
+
+                // CMI
+                Route::get('edit/cmi', cmiComponent::class);
 
                 // Offline
                 Route::get('edit/offline', OfflineComponent::class);
