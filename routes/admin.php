@@ -428,7 +428,7 @@ Route::middleware(['web', 'banned.ip','auth:admin'])->group(function() {
             Route::get('edit/{id}', EditComponent::class)->middleware('can:edit_language');
 
             // Translate
-            Route::get('translate/{id}', TranslateComponent::class)->middleware('can:add_language_translation');
+            Route::get('translate/{id}', TranslateComponent::class)->middleware('can:edit_language_translation');
 
         });
 
