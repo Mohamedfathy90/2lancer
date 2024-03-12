@@ -2239,6 +2239,7 @@
         "t_back_to_bids"                                           => "Back to bids",
         "t_pending_deposit_transactions"                           => "Pending deposit transactions",
         "t_pending_projects"                                       => "Pending projects",
+        "t_new_order"                                              => "New Orders have been placed",
         "t_pending_bids_subscriptions"                             => "Pending bids subscriptions",
         "t_pending_projects_subscriptions"                         => "Pending projects subscriptions",
         "t_pending_support_messages"                               => "Pending support messages",

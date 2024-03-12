@@ -147,6 +147,32 @@
       
                 {{-- Body --}}
                 <div class="py-10 space-y-6">
+
+                    {{-- New Orders --}}
+                    @if ($notifications['count_unseen_orders'])
+                        <a href="{{ admin_url('orders') }}" class="w-full p-3 bg-green-100 text-green-700 rounded flex items-center hover:bg-opacity-50">
+        
+                            {{-- Icon --}}
+                            <div class="focus:outline-none w-8 h-8 border rounded-full border-green-200 flex items-center flex-shrink-0 justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor"> <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/></svg>
+                            </div>
+        
+                            {{-- Notification --}}
+                            <div class="ltr:pl-3 rtl:pr-3 w-full flex items-center justify-between">
+        
+                                {{-- Message --}}
+                                <p class="focus:outline-none text-sm leading-none">
+                                    @lang('messages.t_new_order')
+                                </p>
+        
+                                {{-- Total --}}
+                                <p class="bg-green-200 border border-green-300 flex focus:outline-none font-bold h-6 items-center justify-center p-1 rounded-full text-xs w-6">
+                                    {{ $notifications['count_unseen_orders'] }}
+                                </p>
+        
+                            </div>
+                        </a>
+                    @endif
                     
                     {{-- Pending users --}}
                     @if ($notifications['count_pending_users'])

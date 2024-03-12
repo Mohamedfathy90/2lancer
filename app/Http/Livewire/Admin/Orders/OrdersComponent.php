@@ -25,6 +25,8 @@ class OrdersComponent extends Component
         $this->seo()->setTitle( setSeoTitle(__('messages.t_orders'), true) );
         $this->seo()->setDescription( settings('seo')->description );
 
+        Order::query()->update(['is_seen_by_admin' => 1]);
+        
         return view('livewire.admin.orders.orders', [
             'orders' => $this->orders
         ])->extends('livewire.admin.layout.app')->section('content');

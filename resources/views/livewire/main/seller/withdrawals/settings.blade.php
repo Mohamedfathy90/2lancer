@@ -109,7 +109,7 @@
                         </label>
                     @endif
                     
-                    {{-- caixabank	 --}}
+                    <!-- {{-- caixabank	 --}}
                     @if (boolval(config('payouts.caixabank.enabled')))
                         <label class="inline-flex items-center">
                             <input x-model="selected" value="caixabank" type="radio" class="border border-gray-400 dark:border-zinc-700 dark:bg-zinc-600 dark:focus:ring-primary-600 focus:outline-none h-4 w-4 text-primary-600 focus:border-primary-600 focus:ring focus:ring-primary-600 focus:ring-opacity-50">
@@ -117,13 +117,13 @@
                                 {{ config('payouts.caixabank.name') }}
                             </span>
                         </label>
-                    @endif
+                    @endif -->
 
                 </div>
             </div>
 
             {{-- Paypal --}}
-            @if (boolval(config('payouts.attijariwafa.enabled')))
+            @if (boolval(config('payouts.paypal.enabled')))
                 <div x-show="selected == 'paypal'" x-cloak>
                     <div class="grid grid-cols-12 md:gap-x-6 gap-y-6">
 
@@ -170,7 +170,7 @@
             @endif
             
             
-            {{-- caixabank payout --}}
+            <!-- {{-- caixabank payout --}}
             @if (boolval(config('payouts.caixabank.enabled')))
                 <div x-show="selected == 'caixabank'" x-cloak>
                     <div class="grid grid-cols-12 md:gap-x-6 gap-y-6">
@@ -192,7 +192,7 @@
         
                     </div>
                 </div>
-            @endif
+            @endif -->
             
         </main>
     </div>

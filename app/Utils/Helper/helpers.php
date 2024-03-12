@@ -1827,6 +1827,10 @@ function pending_admin_notifications():array
         // Count pending offers
         $count_pending_offers                 = CustomOffer::where('admin_status', 'pending')->count();
 
+        // Count unseen orders
+        $count_unseen_orders                   = Order::where('is_seen_by_admin', false)->count();
+        
+           
         // Count total pending notifications
         $total                                = convertToNumber($count_pending_users) + convertToNumber($count_pending_deposit_transactions) + convertToNumber($count_pending_gigs) + convertToNumber($count_pending_projects) + convertToNumber($count_pending_bids_subscriptions) + convertToNumber($count_reported_bids) + convertToNumber($count_pending_projects_subscriptions) + convertToNumber($count_pending_refunds) + convertToNumber($count_reported_gigs) + convertToNumber($count_reported_projects) + convertToNumber($count_reported_users) + convertToNumber($count_new_support_messages) + convertToNumber($count_pending_payouts) + convertToNumber($count_pending_portfolio_projects) + convertToNumber($count_pending_verifications) + convertToNumber($count_pending_checkout_payments) + convertToNumber($count_pending_bids) + convertToNumber($count_pending_offers);
 
@@ -1850,6 +1854,7 @@ function pending_admin_notifications():array
             'count_pending_checkout_payments'      => $count_pending_checkout_payments,
             'count_pending_bids'                   => $count_pending_bids,
             'count_pending_offers'                 => $count_pending_offers,
+            'count_unseen_orders'                  => $count_unseen_orders ,
             'total'                                => convertToNumber($total)
         ];
 
@@ -1875,6 +1880,7 @@ function pending_admin_notifications():array
             'count_pending_checkout_payments'      => 0,
             'count_pending_bids'                   => 0,
             'count_pending_offers'                 => 0,
+            'count_unseen_orders'                  => 0,
             'total'                                => 0
         ];
 

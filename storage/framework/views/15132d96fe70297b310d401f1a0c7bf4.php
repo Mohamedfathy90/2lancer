@@ -311,6 +311,18 @@
                         </div>
                     <?php endif; ?>
 
+                    
+                    <?php if(settings('footer')->social_tiktok): ?>
+                         <a href="<?php echo e(settings('footer')->social_tiktok, false); ?>" target="_blank" data-tooltip-target="tooltip-follow-us-tiktok" class="w-10 h-10 flex items-center justify-center bg-gray-100 dark:bg-zinc-600 rounded-md group">
+                        <svg class="h-6 w-6 fill-gray-500 dark:fill-gray-300 group-hover:fill-[#000000]" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 50 50">
+                            <path d="M41,4H9C6.243,4,4,6.243,4,9v32c0,2.757,2.243,5,5,5h32c2.757,0,5-2.243,5-5V9C46,6.243,43.757,4,41,4z M37.006,22.323 c-0.227,0.021-0.457,0.035-0.69,0.035c-2.623,0-4.928-1.349-6.269-3.388c0,5.349,0,11.435,0,11.537c0,4.709-3.818,8.527-8.527,8.527 s-8.527-3.818-8.527-8.527s3.818-8.527,8.527-8.527c0.178,0,0.352,0.016,0.527,0.027v4.202c-0.175-0.021-0.347-0.053-0.527-0.053 c-2.404,0-4.352,1.948-4.352,4.352s1.948,4.352,4.352,4.352s4.527-1.894,4.527-4.298c0-0.095,0.042-19.594,0.042-19.594h4.016 c0.378,3.591,3.277,6.425,6.901,6.685V22.323z"></path>
+                        </svg></a>
+                        <div id="tooltip-follow-us-tiktok" role="tooltip" class="inline-block absolute invisible z-10 py-2 px-3 text-xs font-medium text-white bg-gray-900 rounded-sm shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                            <?php echo e(__('messages.t_follow_us_on_tiktok'), false); ?>
+
+                        </div>
+                    <?php endif; ?>
+
                 </div>
             </div>
 

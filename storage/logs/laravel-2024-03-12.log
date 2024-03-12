@@ -1,0 +1,265 @@
+[2024-03-12 08:25:46] production.ERROR: Attempt to read property "username" on null {"view":{"view":"C:\\xampp\\htdocs\\2lancer\\resources\\views\\livewire\\admin\\orders\\orders.blade.php","data":{"errors":"<pre class=sf-dump id=sf-dump-2128092086 data-indent-pad=\"  \"><span class=sf-dump-note>Illuminate\\Support\\ViewErrorBag</span> {<a class=sf-dump-ref>#1161</a><samp data-depth=1 class=sf-dump-expanded>
+  #<span class=sf-dump-protected title=\"Protected property\">bags</span>: []
+</samp>}
+</pre><script>Sfdump(\"sf-dump-2128092086\", {\"maxDepth\":3,\"maxStringLength\":160})</script>
+","view":"<pre class=sf-dump id=sf-dump-2084128520 data-indent-pad=\"  \">\"<span class=sf-dump-str title=\"25 characters\">livewire.admin.layout.app</span>\"
+</pre><script>Sfdump(\"sf-dump-2084128520\", {\"maxDepth\":3,\"maxStringLength\":160})</script>
+","params":"<pre class=sf-dump id=sf-dump-1679043560 data-indent-pad=\"  \">[]
+</pre><script>Sfdump(\"sf-dump-1679043560\", {\"maxDepth\":3,\"maxStringLength\":160})</script>
+","slotOrSection":"<pre class=sf-dump id=sf-dump-2141946288 data-indent-pad=\"  \">\"<span class=sf-dump-str title=\"7 characters\">content</span>\"
+</pre><script>Sfdump(\"sf-dump-2141946288\", {\"maxDepth\":3,\"maxStringLength\":160})</script>
+","manager":"<pre class=sf-dump id=sf-dump-1699262912 data-indent-pad=\"  \"><span class=sf-dump-note>Livewire\\LifecycleManager</span> {<a class=sf-dump-ref>#2459</a><samp data-depth=1 class=sf-dump-expanded>
+  +<span class=sf-dump-public title=\"Public property\">request</span>: <span class=sf-dump-note title=\"Livewire\\Request
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Livewire</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span>Request</span> {<a class=sf-dump-ref href=#sf-dump-1699262912-ref22473 title=\"2 occurrences\">#2473</a><samp data-depth=2 id=sf-dump-1699262912-ref22473 class=sf-dump-compact>
+    +<span class=sf-dump-public title=\"Public property\">fingerprint</span>: <span class=sf-dump-note>array:5</span> [<samp data-depth=3 class=sf-dump-compact>
+      \"<span class=sf-dump-key>id</span>\" => \"<span class=sf-dump-str title=\"20 characters\">bkt2F1gNIRbAKexZaAg5</span>\"
+      \"<span class=sf-dump-key>name</span>\" => \"<span class=sf-dump-str title=\"29 characters\">admin.orders.orders-component</span>\"
+      \"<span class=sf-dump-key>locale</span>\" => \"<span class=sf-dump-str title=\"2 characters\">en</span>\"
+      \"<span class=sf-dump-key>path</span>\" => \"<span class=sf-dump-str title=\"16 characters\">dashboard/orders</span>\"
+      \"<span class=sf-dump-key>method</span>\" => \"<span class=sf-dump-str title=\"3 characters\">GET</span>\"
+    </samp>]
+    +<span class=sf-dump-public title=\"Public property\">updates</span>: []
+    +<span class=sf-dump-public title=\"Public property\">memo</span>: []
+  </samp>}
+  +<span class=sf-dump-public title=\"Public property\">instance</span>: <span class=sf-dump-note title=\"App\\Http\\Livewire\\Admin\\Orders\\OrdersComponent
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">App\\Http\\Livewire\\Admin\\Orders</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span>OrdersComponent</span> {<a class=sf-dump-ref href=#sf-dump-1699262912-ref22480 title=\"3 occurrences\">#2480</a><samp data-depth=2 id=sf-dump-1699262912-ref22480 class=sf-dump-compact>
+    +<span class=sf-dump-public title=\"Public property\">id</span>: \"<span class=sf-dump-str title=\"20 characters\">bkt2F1gNIRbAKexZaAg5</span>\"
+    #<span class=sf-dump-protected title=\"Protected property\">queryString</span>: []
+    #<span class=sf-dump-protected title=\"Protected property\">computedPropertyCache</span>: <span class=sf-dump-note>array:1</span> [<samp data-depth=3 class=sf-dump-compact>
+      \"<span class=sf-dump-key>orders</span>\" => <span class=sf-dump-note title=\"Illuminate\\Pagination\\LengthAwarePaginator
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Pagination</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span>LengthAwarePaginator</span> {<a class=sf-dump-ref href=#sf-dump-1699262912-ref22503 title=\"2 occurrences\">#2503</a> &#8230;11}
+    </samp>]
+    #<span class=sf-dump-protected title=\"Protected property\">shouldSkipRender</span>: <span class=sf-dump-const>null</span>
+    #<span class=sf-dump-protected title=\"Protected property\">preRenderedView</span>: <span class=sf-dump-note title=\"Illuminate\\View\\View
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\View</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span>View</span> {<a class=sf-dump-ref>#2487</a><samp data-depth=3 class=sf-dump-compact>
+      #<span class=sf-dump-protected title=\"Protected property\">factory</span>: <span class=sf-dump-note title=\"Illuminate\\View\\Factory
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\View</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span>Factory</span> {<a class=sf-dump-ref>#1162</a> &#8230;23}
+      #<span class=sf-dump-protected title=\"Protected property\">engine</span>: <span class=sf-dump-note title=\"Livewire\\LivewireViewCompilerEngine
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Livewire</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span>LivewireViewCompilerEngine</span> {<a class=sf-dump-ref>#2489</a> &#8230;5}
+      #<span class=sf-dump-protected title=\"Protected property\">view</span>: \"<span class=sf-dump-str title=\"28 characters\">livewire.admin.orders.orders</span>\"
+      #<span class=sf-dump-protected title=\"Protected property\">data</span>: <span class=sf-dump-note>array:6</span> [ &#8230;6]
+      #<span class=sf-dump-protected title=\"Protected property\">path</span>: \"<span class=sf-dump-str title=\"78 characters\">C:\\xampp\\htdocs\\2lancer\\resources\\views/livewire/admin/orders/orders.blade.php</span>\"
+    </samp>}
+    #<span class=sf-dump-protected title=\"Protected property\">forStack</span>: []
+    #<span class=sf-dump-protected title=\"Protected property\">errorBag</span>: <span class=sf-dump-note title=\"Illuminate\\Support\\MessageBag
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Illuminate\\Support</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span>MessageBag</span> {<a class=sf-dump-ref href=#sf-dump-1699262912-ref22471 title=\"2 occurrences\">#2471</a><samp data-depth=3 id=sf-dump-1699262912-ref22471 class=sf-dump-compact>
+      #<span class=sf-dump-protected title=\"Protected property\">messages</span>: []
+      #<span class=sf-dump-protected title=\"Protected property\">format</span>: \"<span class=sf-dump-str title=\"8 characters\">:message</span>\"
+    </samp>}
+    #<span class=sf-dump-protected title=\"Protected property\">withValidatorCallback</span>: <span class=sf-dump-const>null</span>
+    #<span class=sf-dump-protected title=\"Protected property\">eventQueue</span>: []
+    #<span class=sf-dump-protected title=\"Protected property\">dispatchQueue</span>: []
+    #<span class=sf-dump-protected title=\"Protected property\">listeners</span>: []
+    +<span class=sf-dump-public title=\"Public property\">redirectTo</span>: <span class=sf-dump-const>null</span>
+    #<span class=sf-dump-protected title=\"Protected property\">renderedChildren</span>: []
+    #<span class=sf-dump-protected title=\"Protected property\">previouslyRenderedChildren</span>: []
+    +<span class=sf-dump-public title=\"Public property\">page</span>: <span class=sf-dump-num>1</span>
+    +<span class=sf-dump-public title=\"Public property\">paginators</span>: <span class=sf-dump-note>array:1</span> [<samp data-depth=3 class=sf-dump-compact>
+      \"<span class=sf-dump-key>page</span>\" => <span class=sf-dump-num>1</span>
+    </samp>]
+    #<span class=sf-dump-protected title=\"Protected property\">numberOfPaginatorsRendered</span>: []
+  </samp>}
+  +<span class=sf-dump-public title=\"Public property\">response</span>: <span class=sf-dump-note title=\"Livewire\\Response
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Livewire</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span>Response</span> {<a class=sf-dump-ref>#2506</a><samp data-depth=2 class=sf-dump-compact>
+    +<span class=sf-dump-public title=\"Public property\">request</span>: <span class=sf-dump-note title=\"Livewire\\Request
+\"><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">Livewire</span><span class=\"sf-dump-ellipsis sf-dump-ellipsis-note\">\\</span>Request</span> {<a class=sf-dump-ref href=#sf-dump-1699262912-ref22473 title=\"2 occurrences\">#2473</a>}
+    +<span class=sf-dump-public title=\"Public property\">fingerprint</span>: <span class=sf-dump-note>array:5</span> [<samp data-depth=3 class=sf-dump-compact>
+      \"<span class=sf-dump-key>id</span>\" => \"<span class=sf-dump-str title=\"20 characters\">bkt2F1gNIRbAKexZaAg5</span>\"
+      \"<span class=sf-dump-key>name</span>\" => \"<span class=sf-dump-str title=\"29 characters\">admin.orders.orders-component</span>\"
+      \"<span class=sf-dump-key>locale</span>\" => \"<span class=sf-dump-str title=\"2 characters\">en</span>\"
+      \"<span class=sf-dump-key>path</span>\" => \"<span class=sf-dump-str title=\"16 characters\">dashboard/orders</span>\"
+      \"<span class=sf-dump-key>method</span>\" => \"<span class=sf-dump-str title=\"3 characters\">GET</span>\"
+    </samp>]
+    +<span class=sf-dump-public title=\"Public property\">effects</span>: []
+    +<span class=sf-dump-public title=\"Public property\">memo</span>: []
+  </samp>}
+</samp>}
+</pre><script>Sfdump(\"sf-dump-1699262912\", {\"maxDepth\":3,\"maxStringLength\":160})</script>
+"}},"userId":5,"exception":"[object] (Spatie\\LaravelIgnition\\Exceptions\\ViewException(code: 0): Attempt to read property \"username\" on null at C:\\xampp\\htdocs\\2lancer\\resources\\views\\livewire\\admin\\orders\\orders.blade.php:38)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(254): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'Attempt to read...', 'C:\\\\xampp\\\\htdocs...', 39)
+#1 C:\\xampp\\htdocs\\2lancer\\resources\\views\\livewire\\admin\\orders\\orders.blade.php(38): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}(2, 'Attempt to read...', 'C:\\\\xampp\\\\htdocs...', 39)
+#2 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\ComponentConcerns\\RendersLivewireComponents.php(83): include('C:\\\\xampp\\\\htdocs...')
+#3 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\ComponentConcerns\\RendersLivewireComponents.php(84): App\\Http\\Livewire\\Admin\\Orders\\OrdersComponent->Livewire\\ComponentConcerns\\{closure}()
+#4 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\ComponentConcerns\\RendersLivewireComponents.php(59): Livewire\\LivewireViewCompilerEngine->evaluatePath('C:\\\\xampp\\\\htdocs...', Array)
+#5 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(195): Livewire\\LivewireViewCompilerEngine->get('C:\\\\xampp\\\\htdocs...', Array)
+#6 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(178): Illuminate\\View\\View->getContents()
+#7 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(147): Illuminate\\View\\View->renderContents()
+#8 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\Component.php(235): Illuminate\\View\\View->render()
+#9 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\HydrationMiddleware\\RenderView.php(14): Livewire\\Component->output()
+#10 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\LifecycleManager.php(141): Livewire\\HydrationMiddleware\\RenderView::dehydrate(Object(App\\Http\\Livewire\\Admin\\Orders\\OrdersComponent), Object(Livewire\\Response))
+#11 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\Macros\\livewire-view-extends.blade.php(4): Livewire\\LifecycleManager->initialDehydrate()
+#12 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(124): require('C:\\\\xampp\\\\htdocs...')
+#13 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(125): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#14 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire('C:\\\\xampp\\\\htdocs...', Array)
+#15 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\ComponentConcerns\\RendersLivewireComponents.php(69): Illuminate\\View\\Engines\\PhpEngine->evaluatePath('C:\\\\xampp\\\\htdocs...', Array)
+#16 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\CompilerEngine.php(72): Livewire\\LivewireViewCompilerEngine->evaluatePath('C:\\\\xampp\\\\htdocs...', Array)
+#17 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\ComponentConcerns\\RendersLivewireComponents.php(35): Illuminate\\View\\Engines\\CompilerEngine->get('C:\\\\xampp\\\\htdocs...', Array)
+#18 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(195): Livewire\\LivewireViewCompilerEngine->get('C:\\\\xampp\\\\htdocs...', Array)
+#19 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(178): Illuminate\\View\\View->getContents()
+#20 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(147): Illuminate\\View\\View->renderContents()
+#21 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(69): Illuminate\\View\\View->render()
+#22 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(35): Illuminate\\Http\\Response->setContent(Object(Illuminate\\View\\View))
+#23 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(911): Illuminate\\Http\\Response->__construct(Object(Illuminate\\View\\View), 200, Array)
+#24 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(878): Illuminate\\Routing\\Router::toResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\View\\View))
+#25 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(798): Illuminate\\Routing\\Router->prepareResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\View\\View))
+#26 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))
+#27 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authorize.php(57): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#28 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Auth\\Middleware\\Authorize->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'browse_orders')
+#29 C:\\xampp\\htdocs\\2lancer\\app\\Http\\Middleware\\isIpBanned.php(42): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#30 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): App\\Http\\Middleware\\isIpBanned->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#31 C:\\xampp\\htdocs\\2lancer\\vendor\\ralphjsmit\\livewire-urls\\src\\Middleware\\LivewireUrlsMiddleware.php(32): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#32 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): RalphJSmit\\Livewire\\Urls\\Middleware\\LivewireUrlsMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#33 C:\\xampp\\htdocs\\2lancer\\app\\Http\\Middleware\\XFrameHeaders.php(31): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#34 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): App\\Http\\Middleware\\XFrameHeaders->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#35 C:\\xampp\\htdocs\\2lancer\\app\\Http\\Middleware\\UpgradeLevel.php(95): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#36 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): App\\Http\\Middleware\\UpgradeLevel->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#37 C:\\xampp\\htdocs\\2lancer\\app\\Http\\Middleware\\UserLastActivity.php(25): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#38 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): App\\Http\\Middleware\\UserLastActivity->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#39 C:\\xampp\\htdocs\\2lancer\\app\\Http\\Middleware\\SetLocale.php(65): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#40 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): App\\Http\\Middleware\\SetLocale->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#41 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#42 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#43 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\AuthenticateSession.php(60): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#44 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Session\\Middleware\\AuthenticateSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#45 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php(57): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#46 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Auth\\Middleware\\Authenticate->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'admin')
+#47 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken.php(78): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#48 C:\\xampp\\htdocs\\2lancer\\app\\Http\\Middleware\\VerifyCsrfToken.php(24): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#49 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): App\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#50 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Middleware\\ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#51 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#52 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(144): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#53 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(87): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\EncryptedStore), Object(Closure))
+#54 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#55 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#56 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#57 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#58 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#59 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#60 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(798): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#61 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(777): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#62 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(741): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#63 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(730): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#64 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#65 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#66 C:\\xampp\\htdocs\\2lancer\\vendor\\lukeraymonddowning\\honey\\src\\Http\\Middleware\\BlockSpammers.php(19): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#67 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Lukeraymonddowning\\Honey\\Http\\Middleware\\BlockSpammers->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#68 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\DisableBrowserCache.php(19): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#69 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Livewire\\DisableBrowserCache->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#70 C:\\xampp\\htdocs\\2lancer\\vendor\\barryvdh\\laravel-debugbar\\src\\Middleware\\InjectDebugbar.php(59): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#71 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Barryvdh\\Debugbar\\Middleware\\InjectDebugbar->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#72 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#73 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#74 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#75 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#76 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#77 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#78 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#79 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#80 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#81 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#82 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#83 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#84 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#85 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#86 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#87 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#88 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#89 C:\\xampp\\htdocs\\2lancer\\index.php(52): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#90 {main}
+
+[previous exception] [object] (ErrorException(code: 0): Attempt to read property \"username\" on null at C:\\xampp\\htdocs\\2lancer\\storage\\framework\\views\\7748253c73fe2fc3f7a28845197d04d4.php:39)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(254): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'Attempt to read...', 'C:\\\\xampp\\\\htdocs...', 39)
+#1 C:\\xampp\\htdocs\\2lancer\\storage\\framework\\views\\7748253c73fe2fc3f7a28845197d04d4.php(39): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}(2, 'Attempt to read...', 'C:\\\\xampp\\\\htdocs...', 39)
+#2 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\ComponentConcerns\\RendersLivewireComponents.php(83): include('C:\\\\xampp\\\\htdocs...')
+#3 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\ComponentConcerns\\RendersLivewireComponents.php(84): App\\Http\\Livewire\\Admin\\Orders\\OrdersComponent->Livewire\\ComponentConcerns\\{closure}()
+#4 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\ComponentConcerns\\RendersLivewireComponents.php(59): Livewire\\LivewireViewCompilerEngine->evaluatePath('C:\\\\xampp\\\\htdocs...', Array)
+#5 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(195): Livewire\\LivewireViewCompilerEngine->get('C:\\\\xampp\\\\htdocs...', Array)
+#6 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(178): Illuminate\\View\\View->getContents()
+#7 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(147): Illuminate\\View\\View->renderContents()
+#8 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\Component.php(235): Illuminate\\View\\View->render()
+#9 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\HydrationMiddleware\\RenderView.php(14): Livewire\\Component->output()
+#10 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\LifecycleManager.php(141): Livewire\\HydrationMiddleware\\RenderView::dehydrate(Object(App\\Http\\Livewire\\Admin\\Orders\\OrdersComponent), Object(Livewire\\Response))
+#11 C:\\xampp\\htdocs\\2lancer\\storage\\framework\\views\\3006610192573bed9709785b84a32bce.php(2): Livewire\\LifecycleManager->initialDehydrate()
+#12 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(124): require('C:\\\\xampp\\\\htdocs...')
+#13 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Filesystem\\Filesystem.php(125): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#14 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire('C:\\\\xampp\\\\htdocs...', Array)
+#15 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\ComponentConcerns\\RendersLivewireComponents.php(69): Illuminate\\View\\Engines\\PhpEngine->evaluatePath('C:\\\\xampp\\\\htdocs...', Array)
+#16 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\CompilerEngine.php(72): Livewire\\LivewireViewCompilerEngine->evaluatePath('C:\\\\xampp\\\\htdocs...', Array)
+#17 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\ComponentConcerns\\RendersLivewireComponents.php(35): Illuminate\\View\\Engines\\CompilerEngine->get('C:\\\\xampp\\\\htdocs...', Array)
+#18 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(195): Livewire\\LivewireViewCompilerEngine->get('C:\\\\xampp\\\\htdocs...', Array)
+#19 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(178): Illuminate\\View\\View->getContents()
+#20 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(147): Illuminate\\View\\View->renderContents()
+#21 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(69): Illuminate\\View\\View->render()
+#22 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Response.php(35): Illuminate\\Http\\Response->setContent(Object(Illuminate\\View\\View))
+#23 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(911): Illuminate\\Http\\Response->__construct(Object(Illuminate\\View\\View), 200, Array)
+#24 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(878): Illuminate\\Routing\\Router::toResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\View\\View))
+#25 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(798): Illuminate\\Routing\\Router->prepareResponse(Object(Illuminate\\Http\\Request), Object(Illuminate\\View\\View))
+#26 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))
+#27 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authorize.php(57): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#28 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Auth\\Middleware\\Authorize->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'browse_orders')
+#29 C:\\xampp\\htdocs\\2lancer\\app\\Http\\Middleware\\isIpBanned.php(42): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#30 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): App\\Http\\Middleware\\isIpBanned->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#31 C:\\xampp\\htdocs\\2lancer\\vendor\\ralphjsmit\\livewire-urls\\src\\Middleware\\LivewireUrlsMiddleware.php(32): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#32 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): RalphJSmit\\Livewire\\Urls\\Middleware\\LivewireUrlsMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#33 C:\\xampp\\htdocs\\2lancer\\app\\Http\\Middleware\\XFrameHeaders.php(31): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#34 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): App\\Http\\Middleware\\XFrameHeaders->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#35 C:\\xampp\\htdocs\\2lancer\\app\\Http\\Middleware\\UpgradeLevel.php(95): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#36 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): App\\Http\\Middleware\\UpgradeLevel->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#37 C:\\xampp\\htdocs\\2lancer\\app\\Http\\Middleware\\UserLastActivity.php(25): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#38 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): App\\Http\\Middleware\\UserLastActivity->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#39 C:\\xampp\\htdocs\\2lancer\\app\\Http\\Middleware\\SetLocale.php(65): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#40 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): App\\Http\\Middleware\\SetLocale->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#41 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#42 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#43 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\AuthenticateSession.php(60): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#44 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Session\\Middleware\\AuthenticateSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#45 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php(57): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#46 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Auth\\Middleware\\Authenticate->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'admin')
+#47 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken.php(78): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#48 C:\\xampp\\htdocs\\2lancer\\app\\Http\\Middleware\\VerifyCsrfToken.php(24): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#49 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): App\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#50 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Middleware\\ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#51 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#52 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(144): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#53 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(87): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\EncryptedStore), Object(Closure))
+#54 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#55 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#56 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#57 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#58 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#59 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#60 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(798): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#61 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(777): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#62 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(741): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#63 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(730): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#64 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#65 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#66 C:\\xampp\\htdocs\\2lancer\\vendor\\lukeraymonddowning\\honey\\src\\Http\\Middleware\\BlockSpammers.php(19): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#67 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Lukeraymonddowning\\Honey\\Http\\Middleware\\BlockSpammers->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#68 C:\\xampp\\htdocs\\2lancer\\vendor\\livewire\\livewire\\src\\DisableBrowserCache.php(19): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#69 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Livewire\\DisableBrowserCache->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#70 C:\\xampp\\htdocs\\2lancer\\vendor\\barryvdh\\laravel-debugbar\\src\\Middleware\\InjectDebugbar.php(59): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#71 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Barryvdh\\Debugbar\\Middleware\\InjectDebugbar->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#72 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#73 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#74 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#75 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#76 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#77 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#78 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#79 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#80 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#81 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#82 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#83 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#84 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#85 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#86 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#87 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#88 C:\\xampp\\htdocs\\2lancer\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#89 C:\\xampp\\htdocs\\2lancer\\index.php(52): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#90 {main}
+"} 

@@ -1193,6 +1193,7 @@
         "t_pending_portfolios"                                     => "الأدلة المعلّقة",
         "t_pending_users"                                          => "المستخدمون المعلّقون",
         "t_pending_refunds"                                        => "المبالغ المستردة المعلّقة",
+        "t_new_order"                                              => "تم وضع طلبات شراء جديدة",
         "t_go_homepage"                                            => "الذهاب إلى الصفحة الرئيسية",
         "t_fast_support"                                           => "الدعم السريع",
         "t_current_password_doesnt_match"                          => "كلمة المرور الحالية لا تتطابق مع سجلاتنا",

@@ -212,6 +212,16 @@
 
     </head>
 
+    
+    <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-W54GJ2PC');
+    </script>
+   
+ 
     <body class="antialiased bg-[#fafafa] dark:bg-[#161616] text-gray-600 min-h-full flex flex-col application application-ltr overflow-x-hidden overflow-y-scroll <?php echo e(app()->getLocale() === 'ar' ? 'application-ar' : '', false); ?>" style="overflow-y: scroll">
 
         
@@ -252,15 +262,15 @@
         <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('main.includes.header')->html();
-} elseif ($_instance->childHasBeenRendered('VooKnsd')) {
-    $componentId = $_instance->getRenderedChildComponentId('VooKnsd');
-    $componentTag = $_instance->getRenderedChildComponentTagName('VooKnsd');
+} elseif ($_instance->childHasBeenRendered('OamTQZP')) {
+    $componentId = $_instance->getRenderedChildComponentId('OamTQZP');
+    $componentTag = $_instance->getRenderedChildComponentTagName('OamTQZP');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('VooKnsd');
+    $_instance->preserveRenderedChild('OamTQZP');
 } else {
     $response = \Livewire\Livewire::mount('main.includes.header');
     $html = $response->html();
-    $_instance->logRenderedChild('VooKnsd', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('OamTQZP', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>
@@ -334,15 +344,15 @@ echo $html;
         <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('main.includes.footer')->html();
-} elseif ($_instance->childHasBeenRendered('quBI2Qg')) {
-    $componentId = $_instance->getRenderedChildComponentId('quBI2Qg');
-    $componentTag = $_instance->getRenderedChildComponentTagName('quBI2Qg');
+} elseif ($_instance->childHasBeenRendered('qiv8FJS')) {
+    $componentId = $_instance->getRenderedChildComponentId('qiv8FJS');
+    $componentTag = $_instance->getRenderedChildComponentTagName('qiv8FJS');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('quBI2Qg');
+    $_instance->preserveRenderedChild('qiv8FJS');
 } else {
     $response = \Livewire\Livewire::mount('main.includes.footer');
     $html = $response->html();
-    $_instance->logRenderedChild('quBI2Qg', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('qiv8FJS', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>

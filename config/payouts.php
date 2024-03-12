@@ -2,24 +2,16 @@
 
     return [
 
-        'attijariwafa' => [
-            'enabled' => true,
-            'name'    => "attijariwafa"
+        'paypal' => [
+            'enabled' => false,
+            'name'    => "paypal"
         ],
+        
 
         'offline' => [
             'enabled' => true,
             'name'    => "Bank Payout"
         ],
 
-        'offline' => [
-            'enabled' => true,
-            'name'    => "Bank Payout"
-        ],
-
-        'attijariwafa' => [
-            'enabled' => true,
-            'name'    => "attijariwafa"
-        ]
-
+    
     ];
