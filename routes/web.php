@@ -767,29 +767,17 @@ Route::namespace('App\Http\Controllers\Callback')->prefix('callback')->group(fun
             'BillToCompany' => '', // YOUR COMPANY NAME APPEAR IN CMI PLATEFORM
             'amount' => (string)$amount, // RETRIEVE AMOUNT WITH METHOD POST
             'AutoRedirect'=>'true' ,
-            'CallbackURL' => '', // CALLBACK
+            'CallbackURL' => 'http://localhost/2lancer/callback/cmi/callback', // CALLBACK
         ]);
         
         $client->redirect_post();
     })->name('cmi.process');
-    
-    // Route::post('cmi', function(Request $request){
-    //     $order = Order::where('id', 15)->get();  
-    //     $order->is_finished = 1;
-    //     $order->save();
-    // });
-    
-    // Route::post('okFail', function(Request $request){
-    //     dd($request);
-    //     $request['storekey'] = 'iy@9ZQZtvBWEnuQ' ;
-    //     $client = new CmiClient($request);
-    //     $status = $client->hash_eq($request->hash);
-    //     dd($status);
-    // })->name('okFail');
-     
+        
      Route::post('cmi/success', 'cmiController@success');
      
      Route::post('cmi/failed', 'cmiController@failed');
+     
+     Route::post('cmi/callback', 'cmiController@callback');
     
     
     // Asaas

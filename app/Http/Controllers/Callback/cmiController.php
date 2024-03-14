@@ -38,6 +38,13 @@ class cmiController extends Controller
     }
 
 
+    public function callback(Request $request){
+        if($request->get('ProcReturnCode') === '00'){
+            return response()->json(['ACTION' => 'POSTAUTH']);
+        } 
+    }
+    
+ 
     /**
      * Payment gateway callback
      *
