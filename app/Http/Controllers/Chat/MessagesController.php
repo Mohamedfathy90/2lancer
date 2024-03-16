@@ -284,7 +284,7 @@ class MessagesController extends Controller
                 // Check if user offline
                 if ($user->active_status != 1 || !$user->isOnline()) {
                     
-                    $user->notify(new NewMessage( $user->uid ));
+                    $user->notify( (new NewMessage( $user->uid ))->locale(config('app.locale')));
 
                 }
 

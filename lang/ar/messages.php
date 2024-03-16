@@ -1365,7 +1365,7 @@
         "t_subject_buyer_order_has_placed"                         => "تم وضع طلبك",
         "t_subject_buyer_refund_accepted"                          => "تم قبول طلب الاسترداد الخاص بك",
         "t_subject_buyer_refund_declined"                          => "تم رفض طلب الاسترداد الخاص بك من قبل البائع",
-        "t_hello_username"                                         => "مرحبًا: :اسم_المستخدم",
+        "t_hello_username"                                         => "مرحبا :username",
         "t_view_delivered_work"                                    => "عرض العمل المسلم",
         "t_notification_ur_order_item_has_delivered"               => "تم تسليم عنصر الطلب الخاص بك بنجاح من قبل البائع، انقر على الزر أدناه لعرض العمل المسلم",
         "t_notification_u_have_new_msg_refund_from_seller"         => "لقد تلقيت هذه الرسالة من البائع حول طلب الاسترداد الخاص بك، انقر على الزر أدناه لعرض تفاصيل الاسترداد",
