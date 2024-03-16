@@ -12,8 +12,24 @@ use Artesaos\SEOTools\Traits\SEOTools as SEOToolsTrait;
 
 class UsersComponent extends Component
 {
+    public $q;
+    protected $users = [];
+    
+    
     use WithPagination, SEOToolsTrait, Actions;
 
+      /**
+     * Init component
+     *
+     * @return void
+     */     
+    public function mount()
+    { 
+      // Clean query
+      $this->q = clean($this->q);
+      $this->users = User::latest()->paginate(42); 
+    }
+    
     /**
      * Render component
      *
@@ -106,6 +122,52 @@ class UsersComponent extends Component
             'description' => __('messages.t_user_has_been_activated_success'),
             'icon'        => 'success'
         ]);
+    }
+
+ /**
+     * Listen when q keyword changes
+     *
+     * @return void
+     */
+    public function updatedQ()
+    {
+        // Search
+        $this->search();
+    }
+
+ /**
+     * Search by query
+     *
+     * @return mixed
+     */
+    public function search()
+    {
+        
+        // Check if has a searching keyword
+        if ($this->q) {
+            
+            // Set keyword
+            $keyword       = $this->q;
+
+            // Get users same as this keyword
+            $users          = User::query()
+                                        ->where(function($query) use($keyword) {
+                                            return $query->where('username', 'LIKE', "%{$keyword}%") 
+                                                        ->orWhere('email', 'LIKE', "%{$keyword}%") ;
+                                        })  
+                                        ->latest()->paginate(42);
+
+            // Set users
+            $this->users    = $users;
+
+          
+        } else {
+            
+            // Reset data
+            $this->users = User::latest()->paginate(42);
+
+        }
+
     }
     
 }

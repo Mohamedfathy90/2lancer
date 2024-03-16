@@ -2563,4 +2563,5 @@
         "t_receiver_name"                                          => "اسم المرسل اليه",
         "t_message_content"                                        => "محتوي الرسالة" ,
         "t_enter_phone_number"                                     => "أدخل رقم الهاتف الخاص بك" ,
+        "t_search_for_user"                                        => "أبحث عن مستخدم" ,
     ];

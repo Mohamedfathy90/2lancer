@@ -29,6 +29,23 @@
 
     {{-- Section content --}}
     <div class="bg-white dark:bg-zinc-800 overflow-y-auto border !border-t-0 !border-b-0 dark:border-zinc-600">
+            
+            {{-- Search --}}
+            <div class="ltr:ml-2 rtl:mr-2 w-full hidden lg:block mb-4">   
+                <div class="relative max-w-md" x-data="{ open: false }">
+                    
+                    {{-- Input --}}
+                    <input wire:model.debounce.500ms="q" wire:keydown.enter="enter" x-ref="search" x-on:click="open = true" type="search" class="block p-2.5 w-full z-20 text-sm text-gray-900 dark:text-white bg-white dark:bg-[#181818] rounded border border-gray-300 dark:border-[#181818] focus:ring-0 focus:border-gray-500 h-10" placeholder="{{ __('messages.t_search_for_user') }}" required>
+                    
+                    {{-- Search button --}}
+                    <button type="button" wire:click="enter" class="flex items-center justify-center absolute top-0 ltr:right-0 rtl:left-0 p-2.5 text-white bg-zinc-700 hover:bg-zinc-800 h-10 ltr:rounded-r rtl:rounded-l border border-zinc-700 hover:border-zinc-800">
+                        <svg class="w-5 h-5" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path></svg>
+                        <span class="sr-only">Search</span>
+                    </button>
+
+                </div>
+            </div>
+    
         <table class="w-full whitespace-nowrap old-tables">
             <thead class="bg-gray-200">
                 <tr tabindex="0" class="focus:outline-none h-16 w-full text-sm leading-none text-gray-800 dark:text-white ">
