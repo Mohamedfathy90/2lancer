@@ -21,7 +21,7 @@ class RegisterValidator
             // Set rules
             $rules    = [
                 'username' => ['required', 'max:60', 'min:3', 'unique:users', new UsernameRule()],
-                'email'    => 'required|max:60|email|unique:users',
+                'email'    => ['required','max:60', 'email:unique:users,rfc,dns,filter,spoof'],
                 'password' => 'required|max:60',
                 'fullname' => 'required|max:60|min:3',
                 'phone'    => 'required|numeric'
