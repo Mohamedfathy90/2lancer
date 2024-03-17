@@ -2575,4 +2575,5 @@
         "t_message_content"                                        => "Message content" ,
         "t_enter_phone_number"                                     => "Enter your phone number" ,
         "t_search_for_user"                                        => "Search For User" ,
+        "t_u_deposited_your_wallet"                                => "Successful deposit with :amount MAD has added to your wallet" ,
     ];

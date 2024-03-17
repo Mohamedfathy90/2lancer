@@ -6,6 +6,7 @@ use DateTimeZone;
 use Xendit\Xendit;
 use Razorpay\Api\Api;
 use GuzzleHttp\Client;
+use CMI\CmiClient;
 use Livewire\Component;
 use YouCan\Pay\YouCanPay;
 use WireUi\Traits\Actions;
@@ -332,6 +333,20 @@ class DepositComponent extends Component
                 // Check selected payment gateway
                 switch ($this->selected_method) {
 
+                    // CMI
+                    case 'cmi':
+                        
+                        // Generate payment id
+                        $payment_id      = "DD" . uid(17);
+                       
+                        // Save webhook details to later response
+                         $this->webhook(['payment_id' => $payment_id, 'payment_method' => 'cmi']);
+                       
+                         redirect()->route('cmi.process',['payment_id'=>$payment_id , 'amount'=>$amount]);
+
+                         break;
+                    
+          
                     // PayPal
                     case 'paypal':
                         

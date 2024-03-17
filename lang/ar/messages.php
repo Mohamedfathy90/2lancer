@@ -2564,4 +2564,5 @@
         "t_message_content"                                        => "محتوي الرسالة" ,
         "t_enter_phone_number"                                     => "أدخل رقم الهاتف الخاص بك" ,
         "t_search_for_user"                                        => "أبحث عن مستخدم" ,
+        "t_u_deposited_your_wallet"                                => "تم ايداع مبلغ :amount درهم فى محفتك بنجاح" ,
     ];

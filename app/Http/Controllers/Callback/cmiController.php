@@ -26,15 +26,42 @@ class cmiController extends Controller
     public $settings;
 
 
-    /**
-     * Payment failed
-     *
-     * @param Request $request
-     * @return void
-     */
+ 
     public function failed(Request $request)
     {
-        return redirect('checkout')->with('message', __('messages.t_we_could_not_handle_ur_deposit_payment'));
+        
+         // Get order id
+         $order_id       = $request->get('ReturnOid'); 
+        
+         // Check if deposit callback
+         if (Str::startsWith($order_id, "DD")) {
+                        
+            // Get saved webhook data in our database
+            DepositWebhook::where('payment_id', $order_id)
+                            ->where('payment_method', $this->gateway)
+                            ->where('status', 'pending')
+                            ->delete();
+
+            // Redirecting
+            return $this->redirect('deposit', 'failed');
+
+        }
+        
+        if (Str::startsWith($order_id, "GG")) {
+            
+            // Get saved webhook data in our database
+            CheckoutWebhook::where('payment_id', $external_reference)
+            ->where('payment_method', $this->gateway)
+            ->where('status', 'pending')
+            ->delete();
+            
+
+            // Redirecting
+            return $this->redirect('gigs' , 'failed');
+        
+        }
+        
+        
     }
 
 
@@ -74,26 +101,49 @@ class cmiController extends Controller
             // Check webhook event
             if ($request->get('ProcReturnCode') === '00') {
             
-                $data = CheckoutWebhook::where('payment_id', $order_id)
-                                                ->where('payment_method', $this->gateway)
-                                                ->where('status', 'pending')
-                                                ->firstOrFail();
-
-                // Get cart
-                $cart = $data->data['cart'];
-
-                // Get user
-                $user = User::where('id', $data->data['buyer_id'])->firstOrFail();
+                if (Str::startsWith($order_id, "DD")) {
+                
+                // Get saved webhook data in our database
+                $data = DepositWebhook::where('payment_id', $order_id)
+                ->where('payment_method', $this->gateway)
+                ->where('status', 'pending')
+                ->firstOrFail();
 
                 // Handle deposit callback
-                $this->checkout($cart, $user, $order_id);
+                $this->deposit($data->user_id, $data->amount, $order_id);
 
                 // Delete saved webhook data in our database
                 $data->delete();
 
                 // Redirecting
-                return redirect('account/orders')->with('message', __('messages.t_submit_ur_info_now_seller_start_order'));
-   
+                return $this->redirect('deposit');
+                
+                }
+
+                // Check if checkout callback
+                if (Str::startsWith($order_id, "GG")) {
+                    $data = CheckoutWebhook::where('payment_id', $order_id)
+                    ->where('payment_method', $this->gateway)
+                    ->where('status', 'pending')
+                    ->firstOrFail();
+
+                    // Get cart
+                    $cart = $data->data['cart'];
+
+                    // Get user
+                    $user = User::where('id', $data->data['buyer_id'])->firstOrFail();
+
+                    // Handle deposit callback
+                    $this->checkout($cart, $user, $order_id);
+
+                    // Delete saved webhook data in our database
+                    $data->delete();
+
+                    // Redirecting
+                    return $this->redirect('gigs');
+
+                }    
+                
             }
 
             // In case failed redirect to home page
@@ -146,8 +196,17 @@ class cmiController extends Controller
             $user->balance_available = convertToNumber($user->balance_available) + convertToNumber($deposit->amount_net);
             $user->save();
 
-            // Send  a notification
-            $this->notification('deposit', $user);
+              // Send notification
+              notification([
+                'text'    => 'messages.t_u_deposited_your_wallet',
+                'action'  => url('account/deposit/history'),
+                'user_id' => $user->id ,
+                'params'  => ['amount' => $deposit->amount_net]
+            ]);
+
+
+            
+            
 
         } catch (\Throwable $th) {
 
@@ -601,6 +660,120 @@ class cmiController extends Controller
 
             // Something went wrong
             return $amount;
+
+        }
+    }
+
+     /**
+     * Send a notification to user
+     *
+     * @param string $type
+     * @param object $user
+     * @return void
+     */
+    private function notification($type, $user)
+    {
+        try {
+            
+            // Check notification type
+            switch ($type) {
+
+                // Deposit funds
+                case 'deposit':
+                    
+
+
+                break;
+
+                // Gig checkout
+                case 'gig':
+                    
+                    
+
+                break;
+
+                // Project payment
+                case 'project':
+                    
+                    
+
+                break;
+
+                // Bid payment
+                case 'bid':
+                    
+                    
+
+                break;
+
+            }
+
+        } catch (\Throwable $th) {
+            
+            // Something went wrong
+            return;
+
+        }
+    }
+
+     /**
+     * Redirecting
+     *
+     * @param string $type
+     * @param string $status
+     * @return void
+     */
+    private function redirect($type, $status = 'success')
+    {
+        // Check where to redirect
+        switch ($type) {
+
+            // Deposit history
+            case 'deposit':
+                
+                // Check if payment succeeded
+                if ($status === 'success') {
+                    
+                    // Redirect to deposit history page
+                    return redirect('account/deposit/history')->with('success', __('messages.t_ur_transaction_has_completed'));
+
+                } else if ($status === 'pending') {
+                    
+                    // Redirect to deposit history page
+                    return redirect('account/deposit/history')->with('success', __('messages.t_mollie_payment_pending'));
+
+                } else if ($status === 'failed') {
+                    
+                    // Redirect to deposit history page
+                    return redirect('account/deposit/history')->with('error', __('messages.t_we_could_not_handle_ur_deposit_payment'));
+
+                }
+                
+
+            break;
+
+            // Gigs order
+            case 'gigs':
+                
+                // Check if payment succeeded
+                if ($status === 'success') {
+                    
+                    // Redirect to orders history page
+                    return redirect('account/orders')->with('success', __('messages.t_submit_ur_info_now_seller_start_order'));
+
+                } else if ($status === 'pending') {
+                    
+                    // Redirect to orders history page
+                    return redirect('account/orders')->with('success', __('messages.t_mollie_payment_pending'));
+
+                } else if ($status === 'failed') {
+                    
+                    // Redirect to checkout page
+                    return redirect('checkout')->with('error', __('messages.t_we_could_not_handle_ur_deposit_payment'));
+        
+                }
+
+            break;
 
         }
     }
