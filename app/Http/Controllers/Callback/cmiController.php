@@ -17,6 +17,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
 use App\Models\AutomaticPaymentGateway;
 use App\Notifications\User\Buyer\OrderPlaced;
+use App\Notifications\User\Buyer\DepositOrder;
 use App\Notifications\User\Seller\PendingOrder;
 
 class cmiController extends Controller
@@ -198,15 +199,16 @@ class cmiController extends Controller
 
               // Send notification
               notification([
-                'text'    => 'messages.t_u_deposited_your_wallet',
+                'text'    => 't_u_deposited_your_wallet',
                 'action'  => url('account/deposit/history'),
                 'user_id' => $user->id ,
                 'params'  => ['amount' => $deposit->amount_net]
             ]);
 
-
-            
-            
+             // Order placed successfully
+            // Let's notify the user about new deposit
+            $user->notify( (new DepositOrder())->locale(config('app.locale')) );
+ 
 
         } catch (\Throwable $th) {
 
