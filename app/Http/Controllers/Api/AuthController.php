@@ -56,18 +56,8 @@ class AuthController extends Controller
         // Get auth settings
         $settings       = settings('auth');
         
-        // Validate request data
-       // $validator = Validator::make($data, $rules, $messages);
-        
        $request->validate($rules, $messages) ;
-       
-    //    if($validator->fails()){    
-    //         $response=json_encode(['errors'=>$validator->errors()]);
-    //         return response($response , 403);
-    //     }
-        
-    //     else{    
-            
+         
             // Create new user
             $user           = new User();
             $user->uid      = uid();
@@ -88,30 +78,7 @@ class AuthController extends Controller
         
     }
 
-    /**
- * @OA\Post(
- *     path="/login",
- *     summary="Login Request",
- *     tags={"Authentication"},
- * @OA\Parameter(
-        * name="email",
-        * in="query",
-        * description="User’s Email",
-        * required=true,
-        * @OA\Schema(type="string")
-        * ),
-* @OA\Parameter(
-        * name="password",
-        * in="query",
-        * description="User’s Password",
-        * required=true,
-        * @OA\Schema(type="string")
-        * ),
- *     @OA\Response(response=200, description="Successful login" ),
- *     @OA\Response(response=403, description="Invalid credentials"),
- *     @OA\Response(response=422, description="Validation Error")
- * )
- */
+
     public function login (Request $request) {
          
         // Set rules
@@ -135,17 +102,8 @@ class AuthController extends Controller
             'password' => $request->password,
         ];
 
-        // Validate request data
-       // $validator = Validator::make($data, $rules, $messages);
-
        $request->validate($rules, $messages) ; 
        
-    //    if($validator->fails()){    
-    //         $response=json_encode(['errors'=>$validator->errors()]);
-    //         return response($response , 403);
-    //     }
-
-      //  else{
             // Set login credentials
             $credentials = ['email' => $request->email, 'password' => $request->password];
 
@@ -160,8 +118,6 @@ class AuthController extends Controller
                 $response = ['message' => __('messages.t_invalid_login_credentials_pls_try_again')];
                 return response ($response , 403);
             }
-      //  }
-
 
     }
 }
