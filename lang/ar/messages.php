@@ -2567,4 +2567,9 @@
         "t_u_deposited_your_wallet"                                => "تم ايداع مبلغ :amount درهم فى محفتك بنجاح" ,
         "t_notification_new_deposit"                               => "شكرا لك , لقد تمت عملية ايداع ناجحة للمحفظة الخاصة بك",
         "t_subject_new_deposit_order"                              => "عملية إيداع جديدة",
+        "t_your_verification_code"                                 => "رمز التحقق الخاص بك :" ,
+        "t_verification_code_not_correct"                          => "رمز التحقق غير صحيح !" ,
+        "t_verification_code_expired"                              => 'انتهت صلاحية رمز التحقق . يرجى منكم طلب واحد جديد',
+        "t_new_verification_code_sent"                             => "تم إرسال رمز التحقق الجديد إلى عنوان بريدك الإلكتروني",
+        "t_email_not_exists"                                       => "لا يوجد حساب مسجل بهذا البريد الإلكترونى" ,
     ];

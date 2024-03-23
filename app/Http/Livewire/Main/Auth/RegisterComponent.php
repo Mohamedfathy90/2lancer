@@ -244,7 +244,7 @@ class RegisterComponent extends Component
                     $verification             = new EmailVerification();
                     $verification->token      = $token;
                     $verification->email      = $this->email;
-                    $verification->expires_at = now()->addMinutes( $settings->verification_expiry_period );
+                    $verification->expires_at = now()->addMinutes($settings->verification_expiry_period);
                     $verification->save();
 
                     // Send notification to user

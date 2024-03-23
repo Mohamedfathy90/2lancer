@@ -2578,4 +2578,9 @@
         "t_u_deposited_your_wallet"                                => "Successful deposit with :amount MAD has added to your wallet" ,
         "t_notification_new_deposit"                               => "Thank you! your deposit has been added successfully to your wallet",
         "t_subject_new_deposit_order"                              => "New Deposit added",
+        "t_your_verification_code"                                 => "your Verification Code :" ,
+        "t_verification_code_not_correct"                          => "Verification Code isn't correct!" ,
+        "t_verification_code_expired"                              => "This verification code has expired. Please request new one" ,
+        "t_new_verification_code_sent"                             => "A new verification code has been sent to your email address",
+        "t_email_not_exists"                                       => "No Acccount exists with this email address" ,
     ];

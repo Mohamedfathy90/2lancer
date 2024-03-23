@@ -18,6 +18,8 @@ use App\Http\Controllers\Api\AuthController;
 Route::namespace('App\Http\Controllers\Api')->group(function() {
     Route::post('register',[AuthController::class,'register']);
     Route::post('login',[AuthController::class,'login']);
+    Route::post('verify',[AuthController::class,'verify']);
+    Route::post('resend',[AuthController::class,'resend']);
 
 
 
