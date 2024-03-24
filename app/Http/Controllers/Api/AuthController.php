@@ -3,63 +3,33 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
+use App\Models\Admin;
+use App\Models\Country;
 use App\Rules\UsernameRule;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Utils\Uploader\ImageUploader;
 use App\Notifications\APi\VerifyEmail;
 use App\Models\MobileEmailVerification;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Validators\Main\Auth\RegisterValidator;
+use App\Notifications\Admin\PendingUser;
+use App\Http\Validators\API\LoginValidator;
+use App\Http\Validators\API\SetupValidator;
 use App\Notifications\User\Everyone\Welcome;
+use App\Http\Validators\API\RegisterValidator;
+use App\Http\Validators\Main\Account\Profile\AvatarValidator;
 
 class AuthController extends Controller
 {
     
     public function register(Request $request){
         
-         // Set rules
-            $rules    = [
-            'username' => ['required', 'max:60', 'min:3', 'unique:users', new UsernameRule()],
-            'email'    => ['required','max:60', 'unique:users','email:rfc,dns,filter,spoof'],
-            'password' => 'required|max:60',
-            'fullname' => 'required|max:60|min:3',
-            'phone'    => 'required|numeric'
-        ];
-
-        // Set errors messages
-            $messages = [
-            'username.required' => __('messages.t_validator_required'),
-            'username.max'      => __('messages.t_validator_max', ['max' => 60]),
-            'username.min'      => __('messages.t_validator_min', ['min' => 3]),
-            'username.unique'   => __('messages.t_validator_unique'),
-            'email.required'    => __('messages.t_validator_required'),
-            'email.max'         => __('messages.t_validator_max', ['max' => 60]),
-            'email.email'       => __('messages.t_validator_email'),
-            'email.unique'      => __('messages.t_validator_unique'),
-            'password.required' => __('messages.t_validator_required'),
-            'password.max'      => __('messages.t_validator_max', ['max' => 60]),
-            'fullname.required' => __('messages.t_validator_required'),
-            'fullname.max'      => __('messages.t_validator_max', ['max' => 60]),
-            'fullname.min'      => __('messages.t_validator_min', ['min' => 3]),
-            'fullname.regex'    => __('messages.t_validator_regex'),
-            'phone.required'    => __('messages.t_validator_required'),
-        ];
-
-        // Set data to validate
-            $data     = [
-            'email'    => $request->email,
-            'username' => $request->username,
-            'password' => $request->password,
-            'fullname' => $request->fullname,
-            'phone'    => $request->phone,
-        ];
+            RegisterValidator::validate($request);
         
-        // Get auth settings
-        $settings       = settings('auth');
-        
-        $request->validate($rules, $messages) ;
+            // Get auth settings
+            $settings       = settings('auth');
          
             // Create new user
             $user           = new User();
@@ -175,28 +145,8 @@ class AuthController extends Controller
     
     public function login (Request $request) {
          
-        // Set rules
-         $rules    = [
-            'email'    => 'required|max:60|email',
-            'password' => 'required|max:60'
-        ];
-
-        // Set errors messages
-        $messages = [
-            'email.required'    => __('messages.t_validator_required'),
-            'email.email'       => __('messages.t_validator_email'),
-            'email.max'         => __('messages.t_validator_max', ['max' => 60]),
-            'password.required' => __('messages.t_validator_required'),
-            'password.max'      => __('messages.t_validator_max', ['max' => 60]),
-        ];
-
-        // Set data to validate
-        $data     = [
-            'email'    => $request->email,
-            'password' => $request->password,
-        ];
-
-       $request->validate($rules, $messages) ; 
+        
+       LoginValidator::validate($request) ; 
        
             // Set login credentials
             $credentials = ['email' => $request->email, 'password' => $request->password];
@@ -213,5 +163,60 @@ class AuthController extends Controller
                 return response ($response , 403);
             }
 
+    }
+
+    public function setup(Request $request){
+        
+        $user = User::find($request->user_id) ; 
+        
+        if(!$user){
+            $response =['message'=> __('messages.t_user_not_exists')] ;
+            return response($response , 404); 
+        }
+        
+        if($request->has('avatar')){
+            
+            // Validate form
+            AvatarValidator::validate($request);
+             
+            // Upload avatar
+             $avatar_id = ImageUploader::make($request->avatar)
+             ->deleteById($user->avatar_id)
+             ->resize(100)
+             ->folder('avatars')
+             ->handle();
+
+            // Update user avatar
+            $user->update([
+                'avatar_id' => $avatar_id
+            ]);
+        }
+
+         // Validate request data
+         SetupValidator::validate($request);
+
+         // Update user data
+         $user->update([
+            'username'   => clean($request->username),
+            'email'      => clean($request->email),
+            'fullname'   => $request->fullname ? clean($request->fullname) : null,
+            'country_id' => $request->country ? $request->country : null,
+            'city'       => $request->city ? clean($request->city) : null,
+            'phone'      => $request->phone,
+        ]);
+
+        // Refresh user
+        $user->refresh();
+
+        $response = ['message' => __('messages.t_account_set_up_successfully')];
+        return response ($response , 200);
+
+    }
+
+    
+    public function countries(){
+        $countries = Country::all();
+        $response = ['countries'=>$countries , 'message'=>'success'];
+        return response ($response , 200);
     }
 }

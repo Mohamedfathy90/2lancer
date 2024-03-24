@@ -38,8 +38,6 @@ class AvatarValidator
             // Validate data
             Validator::make($data, $rules, $messages)->validate();
 
-            // Reset validation
-            $request->resetValidation();
 
         } catch (\Throwable $th) {
             throw $th;

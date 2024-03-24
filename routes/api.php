@@ -20,6 +20,8 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
     Route::post('login',[AuthController::class,'login']);
     Route::post('verify',[AuthController::class,'verify']);
     Route::post('resend',[AuthController::class,'resend']);
+    Route::post('setup',[AuthController::class,'setup']);
+    Route::post('countries',[AuthController::class,'countries']);
 
 
 
