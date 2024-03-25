@@ -41,6 +41,7 @@ class AuthController extends Controller
             $user->password = Hash::make($request->password);
             $user->status   = $settings->verification_required ? 'pending' : 'active';
             $user->level_id = 1;
+            $user->account_type = $request->account_type ? $request->account_type : 'buyer';
             $user->ip_address = request()->ip();
             $user->save();
       
