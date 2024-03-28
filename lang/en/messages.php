@@ -2583,4 +2583,5 @@
         "t_verification_code_expired"                              => "This verification code has expired. Please request new one" ,
         "t_new_verification_code_sent"                             => "A new verification code has been sent to your email address",
         "t_email_not_exists"                                       => "No Acccount exists with this email address" ,
+        "t_pls_check_ur_email_and_try_again"                       => "Oops! Something is wrong, please check email address you entered and try again",
     ];

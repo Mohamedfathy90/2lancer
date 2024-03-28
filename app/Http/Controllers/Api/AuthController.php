@@ -26,7 +26,18 @@ class AuthController extends Controller
     
     public function register(Request $request){
         
-            RegisterValidator::validate($request);
+            $validator = RegisterValidator::validate($request);
+            
+            if($validator->fails()){
+            $errors = $validator->errors()->toArray();
+            $errors_keys = array_keys($errors);
+            foreach($errors as $error){
+                $errors_messages[]=$error[0] ;
+            }
+            $error_response = array_combine($errors_keys , $errors_messages);
+            $response = ['message'=>'validation_error' , 'errors'=>$error_response];
+            return response($response , 401);
+            }
         
             // Get auth settings
             $settings       = settings('auth');
@@ -55,8 +66,17 @@ class AuthController extends Controller
                 $verification->expires_at = now()->addMinutes(60);
                 $verification->save();
                 
-                // Send verification Code to user via email
-                $user->notify( (new VerifyEmail($verification))->locale(config('app.locale')) );
+                try{
+                 // Send verification Code to user via email
+                 $user->notify( (new VerifyEmail($verification))->locale(config('app.locale')) );
+                 
+                } catch (\Throwable $th) {
+                    // Something went wrong
+                    $response = ['message'=> __('messages.t_pls_check_ur_email_and_try_again')]; 
+                    return response($response , 400);
+                }
+                
+               
             
             } else if ($settings->verification_type === 'admin') {
             
