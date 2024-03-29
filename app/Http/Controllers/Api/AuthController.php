@@ -165,10 +165,20 @@ class AuthController extends Controller
 
     
     public function login (Request $request) {
-         
-        
-       LoginValidator::validate($request) ; 
-       
+   
+       $validator = LoginValidator::validate($request);
+            
+       if($validator->fails()){
+       $errors = $validator->errors()->toArray();
+       $errors_keys = array_keys($errors);
+       foreach($errors as $error){
+           $errors_messages[]=$error[0] ;
+       }
+       $error_response = array_combine($errors_keys , $errors_messages);
+       $response = ['message'=>'validation_error' , 'errors'=>$error_response];
+       return response($response , 401);
+       }
+   
             // Set login credentials
             $credentials = ['email' => $request->email, 'password' => $request->password];
 
@@ -197,9 +207,15 @@ class AuthController extends Controller
         
         if($request->has('avatar')){
             
-            // Validate form
-            AvatarValidator::validate($request);
-             
+            // Validate Avatar 
+            $validator = AvatarValidator::validate($request);
+            
+            if($validator->fails()){
+            $error = $validator->errors()->first();
+            $response = ['message'=>'validation_error' , 'error'=>$error];
+            return response($response , 401);
+            }
+            
             // Upload avatar
              $avatar_id = ImageUploader::make($request->avatar)
              ->deleteById($user->avatar_id)
@@ -214,8 +230,18 @@ class AuthController extends Controller
         }
 
          // Validate request data
-         SetupValidator::validate($request);
-
+         $validator = SetupValidator::validate($request);
+         if($validator->fails()){
+         $errors = $validator->errors()->toArray();
+         $errors_keys = array_keys($errors);
+         foreach($errors as $error){
+             $errors_messages[]=$error[0] ;
+         }
+         $error_response = array_combine($errors_keys , $errors_messages);
+         $response = ['message'=>'validation_error' , 'errors'=>$error_response];
+         return response($response , 401);
+         }
+     
          // Update user data
          $user->update([
             'username'   => clean($request->username),
