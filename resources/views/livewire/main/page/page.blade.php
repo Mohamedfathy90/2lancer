@@ -6,6 +6,10 @@
                     <h1>
                         @if($page->slug=="terms" && config('app.locale')=="ar")
                         <span class="block text-xl text-center leading-8 font-extrabold tracking-wide text-gray-900 dark:text-gray-100 sm:text-3xl mb-2">شروط البيع</span>
+                        @elseif($page->slug=="affiliate" && config('app.locale')=="en")
+                        <span class="block text-xl text-center leading-8 font-extrabold tracking-wide text-gray-900 dark:text-gray-100 sm:text-3xl mb-2">Affiliate</span>
+                        @elseif($page->slug=="affiliate" && config('app.locale')=="fr")
+                        <span class="block text-xl text-center leading-8 font-extrabold tracking-wide text-gray-900 dark:text-gray-100 sm:text-3xl mb-2">Affiliation</span>
                         @else
                         <span class="block text-xl text-center leading-8 font-extrabold tracking-wide text-gray-900 dark:text-gray-100 sm:text-3xl mb-2">{{ $page->title }}</span>
                         @endif
@@ -40,7 +44,48 @@ SUPPORT@2ANCER.COM      <br>               <br>
 <b>6 . إثبات عملية الدفع </b>             <br>
 تشكل المعلومات المخزنة على مستوى منصة مركز النقديات لصالح الموقع الإلكتروني 2LANCER.MA  إثباتا لعملية الدفع عبر الإنترنت التي قام بها الزبون.
                     
+                    @elseif($page->slug=="affiliate" && config('app.locale')=="en")
+                    <b> 2lancer Referral Program : How It Works?</b><br><br>
+
+At 2lancer, we value your support and want to share our success with you! That's why we're introducing a special referral program that allows you to earn monetary rewards by inviting your friends and acquaintances to join our platform and utilize our services. Here's how it works: <br><br>
+
+1. Obtaining Your Referral Link : Every member of the 2lancer platform has a unique referral link that can be shared with friends, family, and acquaintances. <br>
+
+2. Sharing Your Referral Link : Share your unique link on social media, via email, or even through text messages to invite others to register on 2lancer and start purchasing or offering services.<br>
+
+3. Earning Rewards : When someone signs up using your referral link and begins purchasing, you will receive 30% of the value of their purchases for a y month from their registration date!<br><br>
+
+Benefits:<br>
+
+- Significant Monetary Rewards : The more people you invite who shop on 2lancer, the more monetary rewards you can earn.<br>
+- Ease of Sharing : Your referral link is easy to use and can be shared at any time and from anywhere, allowing you to access your rewards faster.<br>
+- Tracking Referrals : You can track your referrals and rewards through your dashboard on 2lancer, enabling you to see how much you've earned in rewards thanks to your invitations.<br>
+
+At 2lancer, we are committed to providing a satisfying and beneficial experience for all our users. This referral program is our way of saying thank you.
+                    
+@elseif($page->slug=="affiliate" && config('app.locale')=="fr") 
+<b>Programme d'Affiliation 2lancer : Comment ça marche ?</b> <br>
+
+Chez 2lancer, nous apprécions votre soutien et souhaitons partager notre succès avec vous ! C'est pourquoi nous lançons un programme d'affiliation spécial qui vous permet de gagner des récompenses monétaires en invitant vos amis et connaissances à rejoindre notre plateforme et à utiliser nos services. Voici comment ça fonctionne :<br><br>
+
+1. Obtenir Votre Lien d'Affiliation : Chaque membre de la plateforme 2lancer dispose d'un lien d'affiliation unique qui peut être partagé avec des amis, de la famille et des connaissances.<br>
+
+2. Partager Votre Lien d'Affiliation : Partagez votre lien unique sur les réseaux sociaux, par e-mail, ou même par SMS pour inviter d'autres personnes à s'inscrire sur 2lancer et à commencer à acheter ou à proposer des services.<br>
+
+3. Gagner des Récompenses : Lorsque quelqu'un s'inscrit en utilisant votre lien d'affiliation et commence à acheter, vous recevrez 30% de la valeur de leurs achats pendant un mois à partir de leur date d'inscription !<br><br>
+
+Avantages :<br>
+
+- Récompenses Monétaires Significatives : Plus vous invitez de personnes qui achètent sur 2lancer, plus vous pouvez gagner de récompenses monétaires.<br>
+- Facilité de Partage : Votre lien d'affiliation est facile à utiliser et peut être partagé à tout moment et depuis n'importe où, vous permettant ainsi d'accéder plus rapidement à vos récompenses.<br>
+- Suivi des Affiliations : Vous pouvez suivre vos affiliations et vos récompenses via votre tableau de bord sur 2lancer, ce qui vous permet de voir combien vous avez gagné en récompenses grâce à vos invitations.<br>
+
+Chez 2lancer, nous nous engageons à offrir une expérience satisfaisante et bénéfique pour tous nos utilisateurs. Ce programme d'affiliation est notre façon de vous dire merci.
+                    
+                    
+                    
                     @else
+                    
                     {!! htmlspecialchars_decode($page->content) !!}
                     
                     @endif

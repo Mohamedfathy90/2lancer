@@ -166,7 +166,10 @@ class AuthController extends Controller
     
     public function login (Request $request) {
    
-       $validator = LoginValidator::validate($request);
+        // Get auth settings
+        $settings       = settings('auth');
+       
+        $validator = LoginValidator::validate($request);
             
        if($validator->fails()){
        $errors = $validator->errors()->toArray();
@@ -185,6 +188,11 @@ class AuthController extends Controller
             // Attempt login
             if (Auth::attempt($credentials, $request->remember_me)) {
                 $user = User::where('email' , $request->email)->first(); 
+                if($user->status != 'active'){
+                    $response = ['message'=>'User isnot active' , 'verification_type'=>$settings->verification_type];
+                    return response($response , 403);
+                }
+                
                 $token = $user->createToken('myapptoken')->plainTextToken;
                 $response = ['token'=>$token];
                 return response($response , 200);
