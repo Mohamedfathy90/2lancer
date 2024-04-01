@@ -102,7 +102,7 @@ class AuthController extends Controller
         }
         
         //check for code 
-        if($verification->code != $request->code){
+        if((int)$verification->code != (int)$request->code){
             $response =['message'=> __('messages.t_verification_code_not_correct')] ;
             return response($response , 403);
         }
