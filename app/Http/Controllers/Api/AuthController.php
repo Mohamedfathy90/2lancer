@@ -191,10 +191,13 @@ class AuthController extends Controller
                 if($user->status != 'active'){
                     $response = ['message'=>'User isnot active' , 'verification_type'=>$settings->verification_type];
                     return response($response , 403);
-                }
-                
+                }         
                 $token = $user->createToken('myapptoken')->plainTextToken;
-                $response = ['token'=>$token];
+                $response = ['first_time_login'=> $user->first_time_login , 'account_type'=>$user->account_type , 'token'=>$token];
+                if($user->first_time_login == true){
+                    $user->first_time_login = false ;
+                    $user->save();
+                }
                 return response($response , 200);
             }
             else{
