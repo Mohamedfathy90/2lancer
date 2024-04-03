@@ -41,8 +41,8 @@ class LoginValidator
         ];
 
         // Validate data
-        Validator::make($data, $rules, $messages)->validate();
-
+        $validator = Validator::make($data, $rules, $messages);
+        return ($validator);
 
         } catch (\Throwable $th) {
             throw $th;
