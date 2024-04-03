@@ -193,8 +193,9 @@ class AuthController extends Controller
                     return response($response , 403);
                 }         
                 $token = $user->createToken('myapptoken')->plainTextToken;
-                $response = ['first_time_login'=> $user->first_time_login , 'account_type'=>$user->account_type , 'token'=>$token];
-                if($user->first_time_login == true){
+                $response = ['user'=> $user, 'token'=>$token];
+                
+                if($user->first_time_login == true || $user->first_time_login == null ){
                     $user->first_time_login = false ;
                     $user->save();
                 }
