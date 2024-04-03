@@ -22,6 +22,8 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
     Route::post('resend',[AuthController::class,'resend']);
     Route::post('setup',[AuthController::class,'setup']);
     Route::post('countries',[AuthController::class,'countries']);
+    Route::post('languages',[AuthController::class,'languages']);
+    Route::post('timezones',[AuthController::class,'timezones']);
 
 
 

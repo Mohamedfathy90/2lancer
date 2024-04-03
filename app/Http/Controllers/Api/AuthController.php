@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\Country;
+use App\Models\Language;
 use App\Rules\UsernameRule;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -278,4 +279,18 @@ class AuthController extends Controller
         $response = ['countries'=>$countries , 'message'=>'success'];
         return response ($response , 200);
     }
+
+    public function languages(){
+        $languages = Language::all();
+        $response = ['languages'=>$languages , 'message'=>'success'];
+        return response ($response , 200);
+    }
+
+    public function timezones(){
+        $timezones = config('timezones');
+        $response = ['timezones'=>$timezones , 'message'=>'success'];
+        return response ($response , 200);
+    }
+
+    
 }
