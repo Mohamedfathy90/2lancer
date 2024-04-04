@@ -16,7 +16,9 @@ class GigsComponent extends Component
     use WithPagination, SEOToolsTrait, Actions;
 
     public $rejection_reason;
-
+    public $status_filter = 'any';
+    public $q = '';
+    
     /**
      * Render component
      *
@@ -27,7 +29,7 @@ class GigsComponent extends Component
         // Seo
         $this->seo()->setTitle( setSeoTitle(__('messages.t_gigs'), true) );
         $this->seo()->setDescription( settings('seo')->description );
-
+   
         return view('livewire.admin.gigs.gigs', [
             'gigs' => $this->gigs
         ])->extends('livewire.admin.layout.app')->section('content');
@@ -40,14 +42,58 @@ class GigsComponent extends Component
      * @return object
      */
     public function getGigsProperty()
-    {
-        return Gig::whereHas('category')
-                    ->whereHas('subcategory')
-                    ->whereHas('owner')
-                    ->with(['category', 'subcategory'])
-                    ->latest()
-                    ->paginate(42);
+    {  
+        if($this->status_filter == 'any'){
+            if($this->q == ''){
+                return Gig::whereHas('category')
+                ->whereHas('subcategory')
+                ->whereHas('owner')
+                ->with(['category', 'subcategory'])
+                ->latest()
+                ->paginate(42); 
+            }
+            else{
+                return Gig::where('title' , 'like' , "%{$this->q}%")
+                ->orwhereHas('owner', function($qu){$qu->where('username','like', "%{$this->q}%");})
+                ->orwhereHas('owner', function($qu){$qu->where('email','like', "%{$this->q}%");})
+                ->whereHas('category')
+                ->whereHas('subcategory')
+                ->whereHas('owner')
+                ->with(['category', 'subcategory'])
+                ->latest()
+                ->paginate(42); 
+            }
+            
+       
+        }
+        else{
+            if($this->q == ''){
+            return Gig::where('status' , $this->status_filter)
+            ->whereHas('category')
+            ->whereHas('subcategory')
+            ->whereHas('owner')
+            ->with(['category', 'subcategory'])
+            ->latest()
+            ->paginate(42);
+            } 
+            else{
+                return Gig::where('status' , $this->status_filter)
+                ->where(function($que) {
+                    $que->where('title' , 'like' , "%{$this->q}%")
+                    ->orwhereHas('owner', function($qu){$qu->where('username','like', "%{$this->q}%");})
+                    ->orwhereHas('owner', function($qu){$qu->where('email','like', "%{$this->q}%");});
+                })
+                ->whereHas('category')
+                ->whereHas('subcategory')
+                ->whereHas('owner')
+                ->with(['category', 'subcategory'])
+                ->latest()
+                ->paginate(42); 
+            }
+        }
+
     }
+ 
 
 
     /**

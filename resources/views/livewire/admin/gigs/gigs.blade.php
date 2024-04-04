@@ -1,7 +1,4 @@
 <div class="w-full" x-data="window.YQWkBYIRBPsBRXD">
-
-    {{-- Loading --}}
-    <x-forms.loading />
     
     {{-- Heading --}}
     <div class="mb-16">
@@ -91,7 +88,28 @@
 
         </div>
     @endif
+    
+    {{-- filter --}}
+    <div class="relative default-select2 mb-4">
+        <label class="inline-block text-s font-medium block mb-2 text-gray-700">{{ __('messages.t_filter_by_status') }}</label>
+        <select  wire:model.live="status_filter"  class="select2" data-dir="{{ config()->get('direction') }}">
+            <option value="any">{{__('messages.t_all')}}</option>
+            <option value="active">{{__('messages.t_active')}}</option>
+            <option value="pending">{{__('messages.t_pending')}}</option>
+            <option value="rejected">{{__('messages.t_rejected')}}</option>
+        </select>                     
+    </div>
 
+    {{-- Search --}}
+    <div class="ltr:ml-2 rtl:mr-2 w-full hidden lg:block mb-4">   
+        <div class="relative max-w-md" x-data="{ open: false }">
+            
+        {{-- Input --}}
+        <input wire:model.debounce.500ms="q" wire:keydown.enter="enter" x-ref="search" x-on:click="open = true" type="search" class="block p-2.5 w-full z-20 text-sm text-gray-900 dark:text-white bg-white dark:bg-[#181818] rounded border border-gray-300 dark:border-[#181818] focus:ring-0 focus:border-gray-500 h-10" placeholder="{{ __('messages.t_search_for_gig') }}" >
+        </div>
+    </div>
+    
+    
     {{-- Content --}}
     <div class="w-full">
         <div class="mt-8 overflow-x-auto overflow-y-hidden sm:mt-0 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 dark:scrollbar-thumb-zinc-800 dark:scrollbar-track-zinc-600">
@@ -457,7 +475,7 @@
     {{-- Pages --}}
     @if ($gigs->hasPages())
         <div class="flex justify-center pt-12">
-            {!! $gigs->links('pagination::tailwind') !!}
+            {{ $gigs->links() }}
         </div>
     @endif
 

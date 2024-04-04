@@ -281,7 +281,7 @@ class AuthController extends Controller
     }
 
     public function languages(){
-        $languages = Language::all();
+        $languages = config('languages');
         $response = ['languages'=>$languages , 'message'=>'success'];
         return response ($response , 200);
     }

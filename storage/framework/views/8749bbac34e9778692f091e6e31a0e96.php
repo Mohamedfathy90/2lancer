@@ -1,21 +1,4 @@
 <div class="w-full" x-data="window.YQWkBYIRBPsBRXD">
-
-    
-    <?php if (isset($component)) { $__componentOriginal71c6471fa76ce19017edc287b6f4508c = $component; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.forms.loading','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
-<?php $component->withName('forms.loading'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
-<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
-<?php endif; ?>
-<?php $component->withAttributes([]); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal71c6471fa76ce19017edc287b6f4508c)): ?>
-<?php $component = $__componentOriginal71c6471fa76ce19017edc287b6f4508c; ?>
-<?php unset($__componentOriginal71c6471fa76ce19017edc287b6f4508c); ?>
-<?php endif; ?>
     
     
     <div class="mb-16">
@@ -105,7 +88,28 @@
 
         </div>
     <?php endif; ?>
+    
+    
+    <div class="relative default-select2 mb-4">
+        <label class="inline-block text-s font-medium block mb-2 text-gray-700"><?php echo e(__('messages.t_filter_by_status'), false); ?></label>
+        <select  wire:model.live="status_filter"  class="select2" data-dir="<?php echo e(config()->get('direction'), false); ?>">
+            <option value="any"><?php echo e(__('messages.t_all'), false); ?></option>
+            <option value="active"><?php echo e(__('messages.t_active'), false); ?></option>
+            <option value="pending"><?php echo e(__('messages.t_pending'), false); ?></option>
+            <option value="rejected"><?php echo e(__('messages.t_rejected'), false); ?></option>
+        </select>                     
+    </div>
 
+    
+    <div class="ltr:ml-2 rtl:mr-2 w-full hidden lg:block mb-4">   
+        <div class="relative max-w-md" x-data="{ open: false }">
+            
+        
+        <input wire:model.debounce.500ms="q" wire:keydown.enter="enter" x-ref="search" x-on:click="open = true" type="search" class="block p-2.5 w-full z-20 text-sm text-gray-900 dark:text-white bg-white dark:bg-[#181818] rounded border border-gray-300 dark:border-[#181818] focus:ring-0 focus:border-gray-500 h-10" placeholder="<?php echo e(__('messages.t_search_for_gig'), false); ?>" >
+        </div>
+    </div>
+    
+    
     
     <div class="w-full">
         <div class="mt-8 overflow-x-auto overflow-y-hidden sm:mt-0 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 dark:scrollbar-thumb-zinc-800 dark:scrollbar-track-zinc-600">
@@ -578,7 +582,7 @@ unset($__errorArgs, $__bag); ?>
     
     <?php if($gigs->hasPages()): ?>
         <div class="flex justify-center pt-12">
-            <?php echo $gigs->links('pagination::tailwind'); ?>
+            <?php echo e($gigs->links(), false); ?>
 
         </div>
     <?php endif; ?>

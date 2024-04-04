@@ -1,7 +1,7 @@
 <div class="w-full">
     
     {{-- Heading --}}
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 mb-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 mb-10">
         <div class="mx-auto max-w-7xl">
             <div class="lg:flex lg:items-center lg:justify-between">
     
@@ -18,8 +18,14 @@
                         {{-- Verified account --}}
                         @if (auth()->user()->status === 'verified')
                             <div class="mt-2 flex items-center text-sm text-gray-500 dark:text-zinc-200">
-                                <svg class="ltr:mr-1.5 rtl:ml-1.5 -mt-0.5 h-4.5 w-4.5 flex-shrink-0 text-gray-400 dark:text-zinc-300" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0H24V24H0z"></path><path d="M12 1l8.217 1.826c.457.102.783.507.783.976v9.987c0 2.006-1.003 3.88-2.672 4.992L12 23l-6.328-4.219C4.002 17.668 3 15.795 3 13.79V3.802c0-.469.326-.874.783-.976L12 1zm4.452 7.222l-4.95 4.949-2.828-2.828-1.414 1.414L11.503 16l6.364-6.364-1.415-1.414z"></path></g></svg>
-                                @lang('messages.t_verified_account')
+							<svg class="ltr:mr-1.5 rtl:ml-1.5 -mt-0.5 h-4.5 w-4.5 flex-shrink-0 text-gray-400 dark:text-zinc-300" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0H24V24H0z"></path><path d="M12 1l8.217 1.826c.457.102.783.507.783.976v9.987c0 2.006-1.003 3.88-2.672 4.992L12 23l-6.328-4.219C4.002 17.668 3 15.795 3 13.79V3.802c0-.469.326-.874.783-.976L12 1zm4.452 7.222l-4.95 4.949-2.828-2.828-1.414 1.414L11.503 16l6.364-6.364-1.415-1.414z"></path></g></svg>
+
+							@lang('messages.t_verified_account')
+                            </div>
+                        @else
+                            <div class="mt-2 flex items-center text-sm text-gray-500 dark:text-zinc-200">
+							<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd"/></svg>                                    
+							@lang('messages.t_not_verified_account')
                             </div>
                         @endif
     
@@ -51,7 +57,7 @@
 		
 					{{-- Publish new gig --}}
 					<span class="mt-2 sm:mt-0 sm:ltr:ml-3 sm:rtl:mr-3">
-						<a href="{{ url('create') }}" class="inline-flex items-center rounded-sm border border-transparent bg-primary-600 px-4 py-2 text-[13px] font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-800 dark:focus:ring-zinc-800 whitespace-nowrap">
+						<a href="@if (auth()->user()->status == 'verified') {{ url('create') }} @else javascript:void(0) @endif" class="inline-flex items-center rounded-sm border border-transparent bg-primary-600 px-4 py-2 text-[13px] font-semibold text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-800 dark:focus:ring-zinc-800 whitespace-nowrap">
 							@lang('messages.t_create_a_new_gig')
 						</a>
 					</span>
@@ -62,7 +68,22 @@
         </div>
     </div>
     
-    {{-- Content --}}
+    
+	{{-- Session warning message --}}
+            @if (auth()->user()->status !== 'verified')
+                <div class="p-4 relative flex bg-amber-50 dark:bg-amber-500 text-amber-500 dark:text-amber-50 text-s font-semibold rounded-lg mb-6">
+                    <div class="flex items-center">
+                        <span class="text-2xl text-amber-400 dark:text-amber-50">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
+                        </span>
+                        <div class="ltr:ml-2 rtl:mr-2">@lang('messages.t_verify_your_id') <a style="color:black;text-decoration:underline" href='{{ route("account.verification") }}'>@lang('messages.t_verify_id')</a></div>
+                    </div>
+                </div>
+            @endif
+	
+	
+	
+	{{-- Content --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
     
 		{{-- Stats & Messages --}}

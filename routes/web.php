@@ -250,7 +250,7 @@ Route::namespace('App\Http\Livewire\Main')->group(function() {
         Route::namespace('Verification')->group(function() {
 
             // Index
-            Route::get('verification', VerificationComponent::class);
+            Route::get('verification', VerificationComponent::class)->name('account.verification');
 
         });
 
@@ -387,7 +387,7 @@ Route::namespace('App\Http\Livewire\Main')->group(function() {
     });
 
     // Create
-    Route::namespace('Create')->middleware('auth')->group(function() {
+    Route::namespace('Create')->middleware(['auth','verified.id'])->group(function() {
 
         // Service
         Route::get('create', CreateComponent::class);
