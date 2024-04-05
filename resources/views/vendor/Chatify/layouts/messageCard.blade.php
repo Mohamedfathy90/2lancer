@@ -5,6 +5,7 @@
         <div class="flex flex-col justify-start ltr:ml-1.5 rtl:mr-1.5">
 
             {{-- Message content --}}
+          
             @if ($message)
                 <div class="msg-card-content" title="{{ $fullTime }}">
                     {!! ($message == null && $attachment != null && @$attachment[2] != 'file') ? $attachment[1] : nl2br($message) !!}

@@ -2591,4 +2591,7 @@
         "t_verify_your_id"                                         => "Please verify your ID to publish new gigs" ,
         "t_not_verified_account"                                   => "Not Verified Account" ,
         "t_verify_id"                                              => "Verify ID " ,
+        "t_active_gigs"                                            => "Active Gigs" ,
+        "t_all_gigs"                                               =>"All Gigs" , 
+        "t_rejected_gigs"                                          =>"Rejected Gigs" , 
     ];

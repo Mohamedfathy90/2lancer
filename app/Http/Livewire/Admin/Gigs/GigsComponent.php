@@ -43,55 +43,26 @@ class GigsComponent extends Component
      */
     public function getGigsProperty()
     {  
-        if($this->status_filter == 'any'){
-            if($this->q == ''){
-                return Gig::whereHas('category')
-                ->whereHas('subcategory')
-                ->whereHas('owner')
-                ->with(['category', 'subcategory'])
-                ->latest()
-                ->paginate(42); 
-            }
-            else{
-                return Gig::where('title' , 'like' , "%{$this->q}%")
-                ->orwhereHas('owner', function($qu){$qu->where('username','like', "%{$this->q}%");})
-                ->orwhereHas('owner', function($qu){$qu->where('email','like', "%{$this->q}%");})
-                ->whereHas('category')
-                ->whereHas('subcategory')
-                ->whereHas('owner')
-                ->with(['category', 'subcategory'])
-                ->latest()
-                ->paginate(42); 
-            }
             
-       
+        if ($this->q == '')  {
+            return Gig::whereHas('category')
+            ->whereHas('subcategory')
+            ->whereHas('owner')
+            ->with(['category', 'subcategory'])
+            ->latest()
+            ->paginate(42); ;
         }
         else{
-            if($this->q == ''){
-            return Gig::where('status' , $this->status_filter)
+            return Gig::where('title' , 'like' , "%{$this->q}%")
+            ->orwhereHas('owner', function($qu){$qu->where('username','like', "%{$this->q}%");})
+            ->orwhereHas('owner', function($qu){$qu->where('email','like', "%{$this->q}%");})
             ->whereHas('category')
             ->whereHas('subcategory')
             ->whereHas('owner')
             ->with(['category', 'subcategory'])
             ->latest()
-            ->paginate(42);
-            } 
-            else{
-                return Gig::where('status' , $this->status_filter)
-                ->where(function($que) {
-                    $que->where('title' , 'like' , "%{$this->q}%")
-                    ->orwhereHas('owner', function($qu){$qu->where('username','like', "%{$this->q}%");})
-                    ->orwhereHas('owner', function($qu){$qu->where('email','like', "%{$this->q}%");});
-                })
-                ->whereHas('category')
-                ->whereHas('subcategory')
-                ->whereHas('owner')
-                ->with(['category', 'subcategory'])
-                ->latest()
-                ->paginate(42); 
-            }
+            ->paginate(42); 
         }
-
     }
  
 

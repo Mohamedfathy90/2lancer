@@ -1,7 +1,7 @@
 <div class="w-full" x-data="window.YQWkBYIRBPsBRXD">
     
     {{-- Heading --}}
-    <div class="mb-16">
+    <div class="mb-8">
         <div class="mx-auto max-w-7xl">
             <div class="lg:flex lg:items-center lg:justify-between">
     
@@ -9,7 +9,7 @@
     
                     {{-- Section heading --}}
                     <h2 class="text-lg font-bold leading-7 text-zinc-700 dark:text-gray-50 sm:truncate sm:text-xl sm:tracking-tight">
-                        @lang('messages.t_gigs')
+                        @lang('messages.t_rejected_gigs')
                     </h2>
     
                     {{-- Breadcrumbs --}}
@@ -40,7 +40,7 @@
                                 <div class="flex items-center">
                                     <svg aria-hidden="true" class="w-4 h-4 text-gray-400 rtl:rotate-180" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
                                     <span class="mx-1 text-sm font-medium text-gray-400 md:mx-2 dark:text-zinc-400">
-                                        @lang('messages.t_gigs')
+                                        @lang('messages.t_rejected_gigs')
                                     </span>
                                 </div>
                             </li>
@@ -53,11 +53,11 @@
                 {{-- Actions --}}
                 <div class="mt-5 flex lg:mt-0 lg:ltr::ml-4 lg:rtl:mr-4">
         
-                    {{-- Trash --}}
-                    @can('view_deleted_gigs')
+                    {{-- All gigs --}}
+                    @can('browse_gigs')
                     <span class="">
-                        <a href="{{ admin_url('gigs/trash') }}" class="relative inline-flex items-center px-4 py-3 border border-gray-300 dark:border-zinc-600 dark:hover:bg-zinc-700 dark:text-gray-200 bg-white dark:bg-zinc-800 text-[13px] font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-600 focus:border-primary-600 shadow-sm rounded">
-                            @lang('messages.t_deleted_gigs')
+                        <a href="{{ admin_url('gigs') }}" class="relative inline-flex items-center px-4 py-3 border border-gray-300 dark:border-zinc-600 dark:hover:bg-zinc-700 dark:text-gray-200 bg-white dark:bg-zinc-800 text-[13px] font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-600 focus:border-primary-600 shadow-sm rounded">
+                            @lang('messages.t_all_gigs')
                         </a>
                     </span>
                     @endcan      
@@ -88,28 +88,7 @@
 
         </div>
     @endif
-    
-    {{-- filter --}}
-    <div class="relative default-select2 mb-4">
-        <label class="inline-block text-s font-medium block mb-2 text-gray-700">{{ __('messages.t_filter_by_status') }}</label>
-        <select onChange="window.location.href=this.value" data-dir="{{ config()->get('direction') }}">
-            <option value="{{ admin_url('gigs') }}">{{__('messages.t_all')}}</option>
-            <option value="{{ admin_url('gigs/active') }}">{{__('messages.t_active')}}</option>
-            <option value="{{ admin_url('gigs/pending') }}">{{__('messages.t_pending')}}</option>
-            <option value="{{ admin_url('gigs/rejected') }}">{{__('messages.t_rejected')}}</option>
-        </select>                     
-    </div>
-
-    {{-- Search --}}
-    <div class="ltr:ml-2 rtl:mr-2 w-full hidden lg:block mb-4">   
-        <div class="relative max-w-md" x-data="{ open: false }">
-            
-        {{-- Input --}}
-        <input wire:model.debounce.500ms="q" wire:keydown.enter="enter" x-ref="search" x-on:click="open = true" type="search" class="block p-2.5 w-full z-20 text-sm text-gray-900 dark:text-white bg-white dark:bg-[#181818] rounded border border-gray-300 dark:border-[#181818] focus:ring-0 focus:border-gray-500 h-10" placeholder="{{ __('messages.t_search_for_gig') }}" >
-        </div>
-    </div>
-    
-    
+      
     {{-- Content --}}
     <div class="w-full">
         <div class="mt-8 overflow-x-auto overflow-y-hidden sm:mt-0 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 dark:scrollbar-thumb-zinc-800 dark:scrollbar-track-zinc-600">
@@ -216,86 +195,11 @@
 
                             {{-- Status --}}
                             <td class="px-5 py-3 first:ltr:rounded-l-md last:ltr:rounded-r-md first:rtl:rounded-r-md last:rtl:rounded-l-md text-center">
-                                @switch($gig->status)
-
-                                    {{-- Pending --}}
-                                    @case('pending')
-                                        <div class="flex items-center flex-col">
-                                            <div class="bg-yellow-100 text-yellow-600 px-4 leading-9 h-9 rounded-3xl font-medium text-xs flex items-center space-x-3 rtl:space-x-reverse">
-                                                <span class="whitespace-nowrap">@lang('messages.t_pending')</span>
-                                                @can('approve_gig')
-                                                <div class="flex items-center space-x-1 rtl:space-x-reverse">
-
-                                                    {{-- Approve --}}
-                                                    <div>
-
-                                                        {{-- Button --}}
-                                                        <button type="button" data-tooltip-target="tooltip-actions-approve-{{ $gig->uid }}" id="modal-approve-gig-button-{{ $gig->uid }}" class="flex items-center justify-center h-6 w-6 rounded-full border border-transparent bg-white text-yellow-600 hover:bg-transparent hover:border-yellow-600">
-                                                            <svg class="w-4 h-4" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"></path></g></svg>
-                                                        </button>
-
-                                                        {{-- Tooltip --}}
-                                                        <x-forms.tooltip id="tooltip-actions-approve-{{ $gig->uid }}" :text="__('messages.t_approve')" />
-
-                                                    </div>
-
-                                                    {{-- Reject --}}
-                                                    <div>
-
-                                                        {{-- Button --}}
-                                                        <button type="button" data-tooltip-target="tooltip-actions-reject-{{ $gig->uid }}" id="modal-reject-gig-button-{{ $gig->uid }}" class="flex items-center justify-center h-6 w-6 rounded-full border border-transparent bg-white text-yellow-600 hover:bg-transparent hover:border-yellow-600">
-                                                            <svg class="w-4 h-4" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"></path></g></svg>
-                                                        </button>
-
-                                                        {{-- Tooltip --}}
-                                                        <x-forms.tooltip id="tooltip-actions-reject-{{ $gig->uid }}" :text="__('messages.t_reject')" />
-
-                                                    </div>
-
-                                                </div>
-                                                @endcan
-                                            </div>
-                                        </div>
-                                    @break
-                                    
-                                    {{-- Active --}}
-                                    @case('active')
-                                        <span class="bg-green-100 text-green-600 px-4 inline-block leading-9 h-9 rounded-3xl font-medium text-xs whitespace-nowrap">
-                                            @lang('messages.t_active')
-                                        </span>
-                                    @break
-
-                                    {{-- Deleted --}}
-                                    @case('rejected')
-                                        <span class="bg-red-100 text-red-600 px-4 inline-block leading-9 h-9 rounded-3xl font-medium text-xs whitespace-nowrap">
-                                            @lang('messages.t_rejected')
-                                        </span>
-                                    @break
-
-                                    {{-- Featured --}}
-                                    @case('featured')
-                                        <span class="bg-indigo-100 text-indigo-600 px-4 inline-block leading-9 h-9 rounded-3xl font-medium text-xs whitespace-nowrap">
-                                            @lang('messages.t_featured')
-                                        </span>
-                                    @break
-
-                                    {{-- Trending --}}
-                                    @case('trending')
-                                        <span class="bg-orange-100 text-orange-600 px-4 inline-block leading-9 h-9 rounded-3xl font-medium text-xs whitespace-nowrap">
-                                            @lang('messages.t_tending')
-                                        </span>
-                                    @break
-
-                                    {{-- Boosted --}}
-                                    @case('boosted')
-                                        <span class="bg-zinc-100 text-zinc-600 px-4 inline-block leading-9 h-9 rounded-3xl font-medium text-xs whitespace-nowrap">
-                                            @lang('messages.t_boosted')
-                                        </span>
-                                    @break
-
-                                    @default
-                                        
-                                @endswitch
+                              
+                                    <span class="bg-red-100 text-red-600 px-4 inline-block leading-9 h-9 rounded-3xl font-medium text-xs whitespace-nowrap">
+                                        @lang('messages.t_rejected')
+                                    </span>
+                                   
                             </td>
 
                             {{-- Date --}}

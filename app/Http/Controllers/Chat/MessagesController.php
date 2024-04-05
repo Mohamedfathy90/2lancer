@@ -228,6 +228,12 @@ class MessagesController extends Controller
             // Get message
             $get_message = clean($request->get('message'));
 
+            if($get_message == 'whatsapp'){
+               // Error
+               $error->status  = true;
+               $error->message = __('messages.t_forbidden');  
+            }
+            
             // Check if message is empty or not set
             if (!$get_message) {
 
