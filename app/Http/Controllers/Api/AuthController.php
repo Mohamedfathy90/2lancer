@@ -18,9 +18,10 @@ use App\Models\MobileEmailVerification;
 use App\Notifications\Admin\PendingUser;
 use App\Http\Validators\API\LoginValidator;
 use App\Http\Validators\API\SetupValidator;
+use App\Http\Validators\API\AvatarValidator;
 use App\Notifications\User\Everyone\Welcome;
 use App\Http\Validators\API\RegisterValidator;
-use App\Http\Validators\Main\Account\Profile\AvatarValidator;
+
 
 class AuthController extends Controller
 {
