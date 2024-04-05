@@ -145,26 +145,25 @@ Route::middleware(['web', 'banned.ip','auth:admin'])->group(function() {
 
         });
 
-         // Pending
-         Route::prefix('pending')->group(function() {
+        // Pending
+        Route::prefix('pending')->group(function() {
             // Get pending gigs
             Route::get('/', PendingComponent::class)->middleware('can:browse_gigs');
         });
             
-         // active
-         Route::prefix('active')->group(function() {
+        // active
+        Route::prefix('active')->group(function() {
             // Get active gigs
             Route::get('/', ActiveComponent::class)->middleware('can:browse_gigs');
         });   
-        
+
         // active
         Route::prefix('rejected')->group(function() {
         // Get rejected gigs
         Route::get('/', RejectedComponent::class)->middleware('can:browse_gigs');
         });   
-        
 
-      
+
 
     });
 
@@ -590,7 +589,7 @@ Route::middleware(['web', 'banned.ip','auth:admin'])->group(function() {
                 Route::get('edit/robokassa', RobokassaComponent::class);
 
                 // CMI
-                Route::get('edit/cmi', cmiComponent::class);
+                // Route::get('edit/cmi', cmiComponent::class);
 
                 // Offline
                 Route::get('edit/offline', OfflineComponent::class);
