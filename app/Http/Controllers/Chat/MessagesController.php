@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Utils\Chat\ChatApi;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\ChBannedWords;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -228,7 +229,10 @@ class MessagesController extends Controller
             // Get message
             $get_message = clean($request->get('message'));
 
-            if($get_message == 'whatsapp'){
+            $banned_messages = ChBannedWords::pluck('word')->all();
+            
+            $contains = Str::contains($get_message , $banned_messages);
+            if($contains){
                // Error
                $error->status  = true;
                $error->message = __('messages.t_forbidden');  

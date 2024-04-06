@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\Admin\Conversations\BannedWords\BannedWordsComponent;
 
 // Dashboard routes
 Route::middleware(['web', 'banned.ip','auth:admin'])->group(function() {
@@ -405,11 +406,33 @@ Route::middleware(['web', 'banned.ip','auth:admin'])->group(function() {
         // browse_Conversations
         Route::get('/', ConversationsComponent::class)->middleware('can:browse_conversations');
 
+        // banned_words
+        Route::namespace('BannedWords')->prefix('banned_words')->group(function() { 
+
+           // browse_banned_words
+           Route::get('/', BannedWordsComponent::class)->middleware('can:browse_banned_words');
+            
+           // Options
+           Route::namespace('Options')->group(function() {
+
+            // Create
+            Route::get('create', CreateComponent::class)->middleware('can:add_banned_word');
+
+            // Edit
+            Route::get('edit/{id}', EditComponent::class)->middleware('can:edit_banned_word');
+
+          });
+        
+        
+        });
+         
         // view_Conversations
         Route::get('/view/{user1_id}/{user2_id}', ViewConversationComponent::class)->middleware('can:browse_conversations');
 
     });
 
+    
+    
     // Advertisements
     Route::namespace('Advertisements')->prefix('advertisements')->group(function() {
 

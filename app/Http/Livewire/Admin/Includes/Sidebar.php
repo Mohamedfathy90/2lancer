@@ -170,7 +170,8 @@ class Sidebar extends Component
                 'href' => null,
                 'text' => __('messages.t_conversations'),
                 'childs' => [
-                    [ 'text' => auth('admin')->user()->can('browse_conversations')? __('messages.t_browse_all'):null, 'href' => "$dashboard/conversations" ]
+                    [ 'text' => auth('admin')->user()->can('browse_conversations')? __('messages.t_browse_all'):null, 'href' => "$dashboard/conversations" ],
+                    [ 'text' => auth('admin')->user()->can('browse_banned_words')? __('messages.t_banned_words'):null, 'href' => "$dashboard/conversations/banned_words" ]
                 ],
             ],
 

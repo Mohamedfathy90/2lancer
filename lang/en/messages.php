@@ -2594,4 +2594,10 @@
         "t_active_gigs"                                            => "Active Gigs" ,
         "t_all_gigs"                                               =>"All Gigs" , 
         "t_rejected_gigs"                                          =>"Rejected Gigs" , 
+        "t_banned_words"                                           =>"Banned Words" , 
+        "t_word"                                                   =>"Word" , 
+        "t_add_banned_word"                                        =>"Add Banned Word" , 
+        "t_edit_banned_word"                                       =>"Edit Banned Word" , 
+        "t_enter_banned_word"                                      =>"Enter Banned Word" , 
+        "t_banned_word"                                            =>"Banned Word" , 
     ];

@@ -2583,4 +2583,10 @@
         "t_active_gigs"                                            => "الخدمات النشطة" ,
         "t_all_gigs"                                               =>"جميع الخدمات" , 
         "t_rejected_gigs"                                          =>"الخدمات المرفوضة" , 
+        "t_banned_words"                                           =>"الكلمات المحظورة" , 
+        "t_word"                                                   =>"الكلمة" , 
+        "t_add_banned_word"                                        =>"أضف كلمة محظورة" , 
+        "t_edit_banned_word"                                       =>"تعديل كلمة محظورة" , 
+        "t_enter_banned_word"                                      =>"أدخل الكلمة المحظورة" , 
+        "t_banned_word"                                            =>"الكلمة المحظورة" , 
     ];
