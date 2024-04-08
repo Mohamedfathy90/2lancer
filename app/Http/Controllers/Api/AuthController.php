@@ -6,7 +6,10 @@ use App\Models\User;
 use App\Models\Admin;
 use App\Models\Country;
 use App\Models\Language;
+use App\Models\UserSkill;
 use App\Rules\UsernameRule;
+use Illuminate\Support\Str;
+use App\Models\UserLanguage;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
@@ -264,12 +267,37 @@ class AuthController extends Controller
             'country_id' => $request->country ? $request->country : null,
             'city'       => $request->city ? clean($request->city) : null,
             'phone'      => $request->phone,
+            'timezone'   => $request->timezone ,
+            'description'=> $request->description ,
         ]);
 
+        if($request->has('languages')){
+            $all_languages = config('languages');    
+            foreach($request->languages as $language){
+                    UserLanguage::create([
+                        'user_id' => $user->id ,
+                        'name' => $all_languages[$language['language_code']],
+                        'level'=> $language['level']
+                    ]);
+                }
+        }
+
+        if($request->has('skills')){
+            foreach($request->skills as $skill){
+                     UserSkill::create([
+                        'user_id'    => $user->id , 
+                        'name'       => $skill['skill'],
+                        'slug'       => Str::slug($skill['skill']),
+                        'experience' =>$skill['level']
+            ]);
+            }
+        }
+        
         // Refresh user
         $user->refresh();
 
-        $response = ['message' => __('messages.t_account_set_up_successfully')];
+        $response = ['message' => __('messages.t_account_set_up_successfully') , 
+                    'user'=> $user];
         return response ($response , 200);
 
     }

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,15 +17,35 @@ use App\Http\Controllers\Api\AuthController;
 */
 
 Route::namespace('App\Http\Controllers\Api')->group(function() {
-    Route::post('register',[AuthController::class,'register']);
-    Route::post('login',[AuthController::class,'login']);
-    Route::post('verify',[AuthController::class,'verify']);
-    Route::post('resend',[AuthController::class,'resend']);
-    Route::post('setup',[AuthController::class,'setup']);
-    Route::post('countries',[AuthController::class,'countries']);
-    Route::post('languages',[AuthController::class,'languages']);
-    Route::post('timezones',[AuthController::class,'timezones']);
+    
+    // Auth Routes
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('register','register');
+        Route::post('login','login');
+        Route::post('verify','verify');
+        Route::post('resend','resend');
+        Route::post('setup','setup');
+        Route::post('countries','countries');
+        Route::post('languages','languages');
+        Route::post('timezones','timezones');
+    });
 
+    // Home Routes 
+    Route::controller(HomeController::class)->group(function(){
+
+        //retrieve all categories 
+        Route::post('categories' , 'categories');
+
+        //get image url 
+        Route::post('image' , 'image');
+
+        //get selected gigs
+        Route::post('selected_gigs' , 'selected_gigs');
+
+        //get top sellers
+        Route::post('top_sellers' , 'top_sellers');
+        
+    });
 
 
 });
