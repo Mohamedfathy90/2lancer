@@ -37,7 +37,7 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
         Route::post('categories' , 'categories');
 
         //get image url 
-        Route::post('image' , 'image');
+        Route::get('image' , 'image');
 
         //get selected gigs
         Route::post('selected_gigs' , 'selected_gigs');
