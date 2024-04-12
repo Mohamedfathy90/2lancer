@@ -15,9 +15,12 @@ class HomeController extends Controller
     public function categories(Request $request){
         $categories = Category::where('is_visible' , 1)->get();
         foreach($categories as $category){
-            $file_manager = FileManager::where('id' , $category->image_id)->first();
-            $image_path = ('/public/storage/'.$file_manager->file_folder.'/'.$file_manager->uid.'.'.$file_manager->file_extension);
+            $image_file = FileManager::where('id' , $category->image_id)->first();
+            $icon_file = FileManager::where('id' , $category->icon_id)->first();
+            $image_path = ('/public/storage/'.$image_file->file_folder.'/'.$image_file->uid.'.'.$image_file->file_extension);
+            $icon_path = ('/public/storage/'.$icon_file->file_folder.'/'.$icon_file->uid.'.'.$icon_file->file_extension);
             $category['image_path'] =$image_path ;
+            $category['icon_path'] =$icon_path ;
         }
         $response = ['categories'=>$categories , 'message'=>'success'];
         return response ($response , 200);
