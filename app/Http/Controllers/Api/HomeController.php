@@ -14,6 +14,11 @@ class HomeController extends Controller
     // retrieve all categories 
     public function categories(Request $request){
         $categories = Category::where('is_visible' , 1)->get();
+        foreach($categories as $category){
+            $file_manager = FileManager::where('id' , $category->image_id)->first();
+            $image_path = ('/public/storage/'.$file_manager->file_folder.'/'.$file_manager->uid.'.'.$file_manager->file_extension);
+            $category['image_path'] =$image_path ;
+        }
         $response = ['categories'=>$categories , 'message'=>'success'];
         return response ($response , 200);
     }
@@ -21,7 +26,7 @@ class HomeController extends Controller
      // retrieve image url
     public function image (Request $request){
         $file_manager = FileManager::where('id' , $request->image_id)->first();
-        $image_path = public_path('storage/'.$file_manager->file_folder.'/'.$file_manager->uid.'.'.$file_manager->file_extension);
+        $image_path = ('/'.'storage/'.$file_manager->file_folder.'/'.$file_manager->uid.'.'.$file_manager->file_extension);
         $response  = ['image_url'=>$image_path , 'message'=>'success'];
         return response ($response , 200 );
     }
