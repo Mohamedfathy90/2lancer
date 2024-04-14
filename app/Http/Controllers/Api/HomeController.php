@@ -108,6 +108,7 @@ class HomeController extends Controller
             $image_path = ('/public/storage/'.$avatar_file->file_folder.'/'.$avatar_file->uid.'.'.$avatar_file->file_extension);
             $top_seller['avatar_link'] = $image_path ;
             $top_seller['rating']=$top_seller->rating();
+            $top_seller['reviews']=$top_seller->reviews()->count();
          }
 
         $response = ['top_sellers'=>$top_sellers , 'message'=>'success'];
