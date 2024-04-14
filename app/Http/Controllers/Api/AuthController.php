@@ -7,6 +7,7 @@ use App\Models\Admin;
 use App\Models\Country;
 use App\Models\Language;
 use App\Models\UserSkill;
+use App\Models\FileManager;
 use App\Rules\UsernameRule;
 use Illuminate\Support\Str;
 use App\Models\UserLanguage;
@@ -198,7 +199,10 @@ class AuthController extends Controller
                     return response($response , 403);
                 }         
                 $token = $user->createToken('myapptoken')->plainTextToken;
-                $response = ['user'=> $user, 'token'=>$token];
+                $avatar_file = FileManager::where('id' , $user->avatar_id)->first();
+                $avatar_path = ('/public/storage/'.$avatar_file->file_folder.'/'.$avatar_file->uid.'.'.$avatar_file->file_extension);
+                
+                $response = ['user'=> $user, 'token'=>$token , 'avatar_link'=>$avatar_path];
                 
                 if($user->first_time_login == true || $user->first_time_login == null ){
                     $user->first_time_login = false ;

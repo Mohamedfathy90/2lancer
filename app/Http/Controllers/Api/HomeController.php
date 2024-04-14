@@ -112,7 +112,7 @@ class HomeController extends Controller
             $top_seller['level'] = Level::where('id' , $top_seller->level_id)->first()->title;
             $avatar_file = FileManager::where('id' , $top_seller->avatar_id)->first();
             $image_path = ('/public/storage/'.$avatar_file->file_folder.'/'.$avatar_file->uid.'.'.$avatar_file->file_extension);
-            $top_seller['avatar'] = $image_path ;
+            $top_seller['avatar_link'] = $image_path ;
          }
 
         $response = ['top_sellers'=>$top_sellers , 'message'=>'success'];
