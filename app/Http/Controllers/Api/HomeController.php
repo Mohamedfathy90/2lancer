@@ -92,12 +92,6 @@ class HomeController extends Controller
         return response ($response , 200);
     }
     
-    
-    
-    
-    
-    
-    
     //retrieve top sellers 
     public function top_sellers(Request $request){
          // Get top sellers randomly
@@ -113,6 +107,7 @@ class HomeController extends Controller
             $avatar_file = FileManager::where('id' , $top_seller->avatar_id)->first();
             $image_path = ('/public/storage/'.$avatar_file->file_folder.'/'.$avatar_file->uid.'.'.$avatar_file->file_extension);
             $top_seller['avatar_link'] = $image_path ;
+            $top_seller['rating']=$top_seller->rating();
          }
 
         $response = ['top_sellers'=>$top_sellers , 'message'=>'success'];
