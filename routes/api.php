@@ -36,14 +36,14 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
         //retrieve all categories 
         Route::post('categories' , 'categories');
 
-        //get image url 
-        Route::get('image' , 'image');
-
         //get selected gigs
         Route::post('selected_gigs' , 'selected_gigs');
 
         //get top sellers
         Route::post('top_sellers' , 'top_sellers');
+
+        //get favourite gigs
+        Route::post('favourite_gigs' , 'favourite_gigs');
         
     });
 
