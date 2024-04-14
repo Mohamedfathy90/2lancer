@@ -37,6 +37,18 @@ class HomeController extends Controller
      // retrieve selecetd gigs (four random ones)
     public function selected_gigs (Request $request){
         $gigs = Gig::active()->inRandomOrder()->take(4)->get();
+        foreach($gigs as $gig){
+            $thumb_file = FileManager::where('id' , $gig->image_thumb_id)->first();
+            $image_medium_file = FileManager::where('id' , $gig->image_medium_id)->first();
+            $image_large_file = FileManager::where('id' , $gig->image_large_id)->first();
+            $thumb_path = ('/public/storage/'.$thumb_file->file_folder.'/'.$thumb_file->uid.'.'.$thumb_file->file_extension);
+            $image_medium_path = ('/public/storage/'.$image_medium_file->file_folder.'/'.$image_medium_file->uid.'.'.$image_medium_file->file_extension);
+            $image_large_path = ('/public/storage/'.$image_large_file->file_folder.'/'.$image_large_file->uid.'.'.$image_large_file->file_extension);
+            $gig['thumb_path'] =$thumb_path ;
+            $gig['image_medium_path'] =$image_medium_path ;
+            $gig['image_large_path'] =$image_large_path ;
+            $gig['user'] = User::find($gig->user_id);
+        }
         $response = ['gigs'=>$gigs , 'message'=>'success'];
         return response ($response , 200);
         
