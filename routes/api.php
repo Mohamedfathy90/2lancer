@@ -28,6 +28,7 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
         Route::post('countries','countries');
         Route::post('languages','languages');
         Route::post('timezones','timezones');
+        Route::post('logout','logout')->middleware('auth:sanctum');
     });
 
     // Home Routes 
