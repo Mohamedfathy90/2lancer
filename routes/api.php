@@ -47,10 +47,10 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
         Route::post('favourite_gigs' , 'favourite_gigs');
 
         //become a seller 
-        Route::post('become_seller' , 'become_seller');
+        Route::post('become_seller' , 'become_seller')->middleware('auth:sanctum');
                 
         //retrieve user notifications 
-        Route::post('user_notifications' , 'user_notifications');
+        Route::post('user_notifications' , 'user_notifications')->middleware('auth:sanctum');
 
         //retrieve all categories and subcategories
         Route::post('all_categories' , 'all_categories');
