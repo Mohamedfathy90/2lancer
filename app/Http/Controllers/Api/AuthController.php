@@ -200,8 +200,12 @@ class AuthController extends Controller
                 }         
                 $token = $user->createToken('myapptoken')->plainTextToken;
                 $avatar_file = FileManager::where('id' , $user->avatar_id)->first();
-                $avatar_path = ('/public/storage/'.$avatar_file->file_folder.'/'.$avatar_file->uid.'.'.$avatar_file->file_extension);
-                
+                if($avatar_file){
+                    $avatar_path = ('/public/storage/'.$avatar_file->file_folder.'/'.$avatar_file->uid.'.'.$avatar_file->file_extension);
+                   }
+                   else{
+                       $avatar_path = null ;
+                   }                
                 $response = ['user'=> $user, 'token'=>$token , 'avatar_link'=>$avatar_path];
                 
                 if($user->first_time_login == true || $user->first_time_login == null ){

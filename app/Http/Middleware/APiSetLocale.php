@@ -20,6 +20,9 @@ class APiSetLocale
             // Set app locale
             App::setLocale($request->lang);
         }
+        else{
+            App::setLocale('en');
+        }
         return $next($request);
     }
 }

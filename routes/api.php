@@ -45,7 +45,18 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
 
         //get favourite gigs
         Route::post('favourite_gigs' , 'favourite_gigs');
-        
+
+        //become a seller 
+        Route::post('become_seller' , 'become_seller');
+                
+        //retrieve user notifications 
+        Route::post('user_notifications' , 'user_notifications');
+
+        //retrieve all categories and subcategories
+        Route::post('all_categories' , 'all_categories');
+
+        //search for gigs
+        Route::post('search_gigs' , 'search_gigs');
     });
 
 
