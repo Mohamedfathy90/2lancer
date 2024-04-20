@@ -340,5 +340,106 @@ class AuthController extends Controller
         return response ($response , 200);
     }
 
+    public function update_profile(Request $request){
+           
+        $user = User::find($request->user_id) ; 
+        
+        if(!$user){
+            $response =['message'=> __('messages.t_user_not_exists')] ;
+            return response($response , 404); 
+        }
+        
+        if($request->has('avatar')){
+            
+            // Validate Avatar 
+            $validator = AvatarValidator::validate($request);
+            
+            if($validator->fails()){
+            $error = $validator->errors()->first();
+            $response = ['message'=>'validation_error' , 'error'=>$error];
+            return response($response , 401);
+            }
+            
+            // Upload avatar
+             $avatar_id = ImageUploader::make($request->avatar)
+             ->deleteById($user->avatar_id)
+             ->resize(100)
+             ->folder('avatars')
+             ->handle();
+
+            // Update user avatar
+            $user->update([
+                'avatar_id' => $avatar_id
+            ]);
+        }
+
+         // Validate request data
+         $validator = SetupValidator::validate($request);
+         if($validator->fails()){
+         $errors = $validator->errors()->toArray();
+         $errors_keys = array_keys($errors);
+         foreach($errors as $error){
+             $errors_messages[]=$error[0] ;
+         }
+         $error_response = array_combine($errors_keys , $errors_messages);
+         $response = ['message'=>'validation_error' , 'errors'=>$error_response];
+         return response($response , 401);
+         }
+     
+         // Update user data
+         $user->update([
+            'username'   => clean($request->username),
+            'email'      => clean($request->email),
+            'fullname'   => $request->fullname ? clean($request->fullname) : null,
+            'country_id' => $request->country ? $request->country : null,
+            'city'       => $request->city ? clean($request->city) : null,
+            'phone'      => $request->phone,
+            'timezone'   => $request->timezone ,
+            'description'=> $request->description ,
+        ]);
+
+        if($request->has('languages')){
+            $all_languages = config('languages');    
+            foreach($request->languages as $language){
+                    UserLanguage::create([
+                        'user_id' => $user->id ,
+                        'name' => $all_languages[$language['language_code']],
+                        'level'=> $language['level']
+                    ]);
+                }
+        }
+
+        if($request->has('skills')){
+            foreach($request->skills as $skill){
+                     UserSkill::create([
+                        'user_id'    => $user->id , 
+                        'name'       => $skill['skill'],
+                        'slug'       => Str::slug($skill['skill']),
+                        'experience' =>$skill['level']
+            ]);
+            }
+        }
+        
+        // Refresh user
+        $user->refresh();
+
+        $avatar_file = FileManager::where('id' , $user->avatar_id)->first();
+                if($avatar_file){
+                    $avatar_path = ('/public/storage/'.$avatar_file->file_folder.'/'.$avatar_file->uid.'.'.$avatar_file->file_extension);
+                   }
+                   else{
+                       $avatar_path = null ;
+                   } 
+                
+                if($user->country_id)
+                $country = Country::where('id',$user->country_id)->first()->name;               
+                else
+                $country ='N/A';
+
+        $response = ['message' => __('profile has been updated successfully') , 
+                    'user'=> $user , 'avatar_link'=>$avatar_path , 'user_country'=>$country];
+        return response ($response , 200);
+    }
+
     
 }
