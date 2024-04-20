@@ -211,7 +211,13 @@ class AuthController extends Controller
                 $country = Country::where('id',$user->country_id)->first()->name;               
                 else
                 $country ='N/A';
-                $response = ['user'=> $user, 'token'=>$token , 'avatar_link'=>$avatar_path , 'user_country'=>$country];
+                $user_data = ($user->toArray());
+                
+                $user_data['user_avatar'] = $avatar_path ;
+                $user_data['user_country'] = $country ;
+                $user_data['user_token'] = $token;
+                
+                $response = ['user'=> $user_data, 'message'=>'success'];
                 
                 if($user->first_time_login == true || $user->first_time_login == null ){
                     $user->first_time_login = false ;

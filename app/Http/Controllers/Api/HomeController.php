@@ -128,7 +128,18 @@ class HomeController extends Controller
         else{
             $avatar_path = null ;
         }
-        $response = ['user'=>$user ,  'avatar_link'=>$avatar_path , 'message'=>'success'];
+        
+        if($user->country_id)
+            $country = Country::where('id',$user->country_id)->first()->name;               
+            else
+            $country ='N/A';
+        
+        $user_data = ($user->toArray());
+        $user_data['user_avatar'] = $avatar_path ;
+        $user_data['user_country'] = $country ;
+                
+        
+        $response = ['user'=>$user_data , 'message'=>'success'];
         return response ($response , 200);
     }
 
