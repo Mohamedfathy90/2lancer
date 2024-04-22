@@ -26,22 +26,7 @@
         <priority>0.8</priority>
             </url>
     <url>
-        <loc>http://localhost/2lancer/service/tsmym-mlsk-lmntg-lybl-ao-astykr-BF6410CF769BEA7D9C29</loc>
-            <changefreq>daily</changefreq>
-        <priority>0.8</priority>
-            </url>
-    <url>
-        <loc>http://localhost/2lancer/service/kht-tsoyky-mhtrf-lmshroaakm-3E5480639B179E234888</loc>
-            <changefreq>daily</changefreq>
-        <priority>0.8</priority>
-            </url>
-    <url>
         <loc>http://localhost/2lancer/service/dras-gdoy-kamlh-tmhydy-tsoyky-fny-omalyh-5E9C93A17076874223AF</loc>
-            <changefreq>daily</changefreq>
-        <priority>0.8</priority>
-            </url>
-    <url>
-        <loc>http://localhost/2lancer/service/nshr-akhbar-ao-mkal-fy-mglat-omoakaa-akhbary-4DDE654EA81F78C1BFD4</loc>
             <changefreq>daily</changefreq>
         <priority>0.8</priority>
             </url>
@@ -62,11 +47,6 @@
             </url>
     <url>
         <loc>http://localhost/2lancer/service/tsmym-bostrat-ahtrafy-0655B0623F3007989F69</loc>
-            <changefreq>daily</changefreq>
-        <priority>0.8</priority>
-            </url>
-    <url>
-        <loc>http://localhost/2lancer/service/aaml-o-thsyn-syo-seo-dakhly-llmntgat-aal-mtgr-sl-salla-92B364E82708253A50AA</loc>
             <changefreq>daily</changefreq>
         <priority>0.8</priority>
             </url>
@@ -332,6 +312,11 @@
             </url>
     <url>
         <loc>http://localhost/2lancer/service/trgm-mkalat-mtnoaa-mn-alanglyzy-al-alaarby-C1EE918A99FA475746B7</loc>
+            <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+            </url>
+    <url>
+        <loc>http://localhost/2lancer/service/backend-laravel-C53FEFC24EA74036901C</loc>
             <changefreq>daily</changefreq>
         <priority>0.8</priority>
             </url>

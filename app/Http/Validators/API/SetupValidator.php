@@ -31,22 +31,22 @@ class SetupValidator
 
         // Set errors messages
         $messages = [
-            'username.required' => __('messages.t_validator_required'),
+            'username.required' => __('username is required'),
             'username.max'      => __('messages.t_validator_max', ['max' => 60]),
             'username.min'      => __('messages.t_validator_min', ['min' => 3]),
-            'username.unique'   => __('messages.t_validator_unique'),
-            'email.required'    => __('messages.t_validator_required'),
+            'username.unique'   => __('username is already taken'),
+            'email.required'    => __('Email address is required'),
             'email.max'         => __('messages.t_validator_max', ['max' => 60]),
             'email.min'         => __('messages.t_validator_min', ['min' => 6]),
-            'email.unique'      => __('messages.t_validator_unique'),
-            'fullname.required'      => __('messages.t_validator_required'),
+            'email.unique'      => __('Email address is already taken'),
+            'fullname.required' => __('Fullname is required'),
             'fullname.max'      => __('messages.t_validator_max', ['max' => 60]),
             'country.exists'    => __('messages.t_validator_exists'),
             'city.max'          => __('messages.t_validator_max', ['max' => 60]),
             'timezone.max'      => __('messages.t_validator_max', ['max' => 60]),
             'timezone.required' => __('messages.t_validator_required'),
-            'phone.required'        => __('messages.t_validator_required'),
-            'phone.numeric'         => __('messages.t_validator_numeric'),
+            'phone.required'        => __('Phone Number is required'),
+            'phone.numeric'         => __('Phone Number should be numeric value'),
 
         ];
 
