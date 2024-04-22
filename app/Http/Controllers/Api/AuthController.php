@@ -213,11 +213,15 @@ class AuthController extends Controller
                 $country ='N/A';
                 $user_data = ($user->toArray());
                 
+                $user_skills = UserSkill::where('user_id',$user->id)->get();
+                $user_languages = UserLanguage::where('user_id',$user->id)->get();
+                
                 $user_data['user_avatar'] = $avatar_path ;
                 $user_data['user_country'] = $country ;
-                $user_data['user_token'] = $token;
+                $user_data['user_skills'] = $user_skills;
+                $user_data['user_languages'] = $user_languages;
                 
-                $response = ['user'=> $user_data, 'message'=>'success'];
+                $response = ['user'=> $user_data, 'token'=> $token  ,  'message'=>'success'];
                 
                 if($user->first_time_login == true || $user->first_time_login == null ){
                     $user->first_time_login = false ;
