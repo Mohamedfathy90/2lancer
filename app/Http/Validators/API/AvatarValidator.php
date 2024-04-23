@@ -19,11 +19,12 @@ class AvatarValidator
 
             // Set rules
             $rules    = [
-                'avatar'  => 'image|mimes:jpeg,jpg,png|max:5120'
+                'avatar'  => 'required|image|mimes:jpeg,jpg,png|max:5120'
             ];
 
             // Set errors messages
             $messages = [
+                'avatar.image'    => __('Image is required'),
                 'avatar.image'    => __('messages.t_validator_image'),
                 'avatar.mimes'    => __('messages.t_validator_mimes'),
                 'avatar.max'      => __('messages.t_validator_max_size', ['max' => human_filesize(5120)]),
