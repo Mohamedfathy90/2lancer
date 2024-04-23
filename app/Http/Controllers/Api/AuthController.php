@@ -319,9 +319,32 @@ class AuthController extends Controller
         // Refresh user
         $user->refresh();
 
-        $response = ['message' => __('messages.t_account_set_up_successfully') , 
-                    'user'=> $user];
-        return response ($response , 200);
+        $avatar_file = FileManager::where('id' , $user->avatar_id)->first();
+                if($avatar_file){
+                    $avatar_path = ('/public/storage/'.$avatar_file->file_folder.'/'.$avatar_file->uid.'.'.$avatar_file->file_extension);
+                   }
+                   else{
+                       $avatar_path = null ;
+                   } 
+                
+                if($user->country_id)
+                $country = Country::where('id',$user->country_id)->first()->name;               
+                else
+                $country ='N/A';
+                $user_data = ($user->toArray());
+                
+                $user_skills = UserSkill::where('user_id',$user->id)->get();
+                $user_languages = UserLanguage::where('user_id',$user->id)->get();
+                
+                $user_data['user_avatar'] = $avatar_path ;
+                $user_data['user_country'] = $country ;
+                $user_data['user_skills'] = $user_skills;
+                $user_data['user_languages'] = $user_languages;
+                
+                $response = ['user'=> $user_data,  'message'=> __('messages.t_account_set_up_successfully')];
+                
+                
+                 return response ($response , 200);
 
     }
 
