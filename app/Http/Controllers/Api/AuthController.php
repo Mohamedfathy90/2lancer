@@ -468,9 +468,18 @@ class AuthController extends Controller
                 $country = Country::where('id',$user->country_id)->first()->name;               
                 else
                 $country ='N/A';
+                $user_data = ($user->toArray());
+                
+                $user_skills = UserSkill::where('user_id',$user->id)->get();
+                $user_languages = UserLanguage::where('user_id',$user->id)->get();
+                
+                $user_data['user_avatar'] = $avatar_path ;
+                $user_data['user_country'] = $country ;
+                $user_data['user_skills'] = $user_skills;
+                $user_data['user_languages'] = $user_languages;
 
         $response = ['message' => __('profile has been updated successfully') , 
-                    'user'=> $user , 'avatar_link'=>$avatar_path , 'user_country'=>$country];
+                    'user'=> $user_data ];
         return response ($response , 200);
     }
 
