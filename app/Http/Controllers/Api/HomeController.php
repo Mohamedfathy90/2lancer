@@ -162,6 +162,14 @@ class HomeController extends Controller
     public function all_categories(){
         $categories = Category::all();
         foreach($categories as $category){
+            if($category->icon_id){
+                $icon_file = FileManager::where('id' , $category->icon_id)->first();
+                $category['icon_path'] = ('/public/storage/'.$icon_file->file_folder.'/'.$icon_file->uid.'.'.$icon_file->file_extension);
+            }
+            if($category->image_id){
+                $image_file = FileManager::where('id' , $category->image_id)->first();
+                $category['image_path'] = ('/public/storage/'.$image_file->file_folder.'/'.$image_file->uid.'.'.$image_file->file_extension);
+            }
             $category['subcategories'] = Subcategory::where('parent_id',$category->id)->get();
         }
         $response = ['categories'=>$categories , 'message'=>'success'];
