@@ -311,11 +311,11 @@ class AuthController extends Controller
 
         if($request->has('skills')){
             foreach($request->skills as $skill){
-                     UserSkill::create([
-                        'user_id'    => $user->id , 
-                        'name'       => $skill['skill'],
-                        'slug'       => Str::slug($skill['skill']),
-                        'experience' =>$skill['level']
+                UserSkill::create([
+                    'user_id'    => $user->id , 
+                    'name'       => $skill['name'],
+                    'slug'       => Str::slug($skill['name']),
+                    'experience' =>$skill['experience']
             ]);
             }
         }
@@ -456,9 +456,9 @@ class AuthController extends Controller
             foreach($request->skills as $skill){
                      UserSkill::create([
                         'user_id'    => $user->id , 
-                        'name'       => $skill['skill'],
-                        'slug'       => Str::slug($skill['skill']),
-                        'experience' =>$skill['level']
+                        'name'       => $skill['name'],
+                        'slug'       => Str::slug($skill['name']),
+                        'experience' =>$skill['experience']
             ]);
             }
         }
