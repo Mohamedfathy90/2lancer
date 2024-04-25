@@ -221,6 +221,10 @@ class AuthController extends Controller
                 $user_data['user_skills'] = $user_skills;
                 $user_data['user_languages'] = $user_languages;
                 
+                foreach($user_languages as $user_language){
+                    $user_language['lang_code'] = array_search ($user_language->name , config('languages'));  
+                }
+                
                 $response = ['user'=> $user_data, 'token'=> $token  ,  'message'=>'success'];
                 
                 if($user->first_time_login == true || $user->first_time_login == null ){
@@ -335,6 +339,10 @@ class AuthController extends Controller
                 
                 $user_skills = UserSkill::where('user_id',$user->id)->get();
                 $user_languages = UserLanguage::where('user_id',$user->id)->get();
+
+                foreach($user_languages as $user_language){
+                    $user_language['lang_code'] = array_search ($user_language->name , config('languages'));  
+                }
                 
                 $user_data['user_avatar'] = $avatar_path ;
                 $user_data['user_country'] = $country ;
