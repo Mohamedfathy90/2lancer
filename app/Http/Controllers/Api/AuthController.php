@@ -432,6 +432,7 @@ class AuthController extends Controller
         ]);
 
         if($request->has('languages')){
+           UserLanguage::where('user_id' , $user->id)->delete();
             $all_languages = config('languages');    
             foreach($request->languages as $language){
                     UserLanguage::create([
@@ -443,6 +444,7 @@ class AuthController extends Controller
         }
 
         if($request->has('skills')){
+            UserSkill::where('user_id' , $user->id)->delete();
             foreach($request->skills as $skill){
                      UserSkill::create([
                         'user_id'    => $user->id , 
