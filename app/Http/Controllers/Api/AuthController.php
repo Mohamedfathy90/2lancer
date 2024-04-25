@@ -474,6 +474,10 @@ class AuthController extends Controller
                 
                 $user_skills = UserSkill::where('user_id',$user->id)->get();
                 $user_languages = UserLanguage::where('user_id',$user->id)->get();
+
+                foreach($user_languages as $user_language){
+                    $user_language['lang_code'] = array_search ($user_language->name , config('languages'));  
+                }
                 
                 $user_data['user_avatar'] = $avatar_path ;
                 $user_data['user_country'] = $country ;
