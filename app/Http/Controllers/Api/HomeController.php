@@ -9,6 +9,8 @@ use App\Models\Review;
 use App\Models\Country;
 use App\Models\Category;
 use App\Models\Favorite;
+use App\Models\OrderItem;
+use App\Models\CustomOffer;
 use App\Models\FileManager;
 use App\Models\Subcategory;
 use App\Models\Notification;
@@ -214,4 +216,74 @@ class HomeController extends Controller
         $response = ['gigs'=>$gigs , 'message'=>'success'];
         return response ($response , 200);
     }
+
+    public function dashboard_details(){
+        try {
+            
+            // Get user id
+            $user_id = auth()->id();
+
+            // Calculate total earnings
+            $earnings_from_gigs = OrderItem::where('owner_id', $user_id)
+                                                                ->where('is_finished', true)
+                                                                ->where('status', 'delivered')
+                                                                ->sum('profit_value');
+
+            // Set total earnings
+            $earnings = convertToNumber($earnings_from_gigs) ;
+            
+            // pending balance 
+            $pending_balance = convertToNumber(auth()->user()->balance_pending);
+            
+            // Calculate total gigs
+            $total_gigs = Gig::where('user_id', $user_id)->count();
+
+            // Calculate completed orders
+            $completed_orders  = OrderItem::where('owner_id', $user_id)
+                                    ->where('status', 'delivered')
+                                    ->where('is_finished', true)
+                                    ->count();
+
+            // Calculate pending orders
+            $pending_orders     = OrderItem::where('owner_id', $user_id)
+                                    ->where('status', 'pending')
+                                    ->count();
+
+            // Calculate order under progress
+            $orders_under_progress  = OrderItem::where('owner_id', $user_id)
+                                        ->where('status', 'proceeded')
+                                        ->count();
+
+            // Canceled orders
+            $canceled_orders  = OrderItem::where('owner_id', $user_id)
+                                        ->where('status', 'canceled')
+                                        ->count();
+
+            
+            // Get latest orders
+            $latest_orders = OrderItem::where('owner_id', $user_id)
+                                            ->whereHas('gig', function($query) {
+                                                return $query->whereHas('category');
+                                            })
+                                            ->whereHas('order.invoice')
+                                            ->latest()
+                                            ->take(8)
+                                            ->get();
+
+            $response = ['earnings'=>$earnings , 'pending_balance'=>$pending_balance , 'total_gigs'=>$total_gigs , 
+                            'completed_orders'=>$completed_orders , 'pending_orders'=>$pending_orders , 
+                            'pending_orders'=>$pending_orders , 'orders_under_progress'=>$orders_under_progress , 
+                            'canceled_orders'=>$canceled_orders , 'latest_orders'=>$latest_orders , 'message'=>'success'
+                        ];
+
+            return response ($response , 200);
+
+        
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+    
+    
 }

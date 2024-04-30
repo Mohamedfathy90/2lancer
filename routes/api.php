@@ -53,6 +53,9 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
         //retrieve user notifications 
         Route::post('user_notifications' , 'user_notifications')->middleware('auth:sanctum');
 
+        //get dashboard details
+        Route::post('dashboard_details' , 'dashboard_details')->middleware('auth:sanctum');
+
         //retrieve all categories and subcategories
         Route::post('all_categories' , 'all_categories');
 
