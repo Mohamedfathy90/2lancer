@@ -270,6 +270,10 @@ class HomeController extends Controller
                                             ->take(8)
                                             ->get();
 
+            foreach($latest_orders as $order){
+                $order['gig_image'] = $order->gig->image_large_id ;
+            }
+
             $response = ['earnings'=>$earnings , 'pending_balance'=>$pending_balance , 'total_gigs'=>$total_gigs , 
                             'completed_orders'=>$completed_orders , 'pending_orders'=>$pending_orders , 
                             'pending_orders'=>$pending_orders , 'orders_under_progress'=>$orders_under_progress , 
