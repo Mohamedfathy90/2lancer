@@ -271,7 +271,9 @@ class HomeController extends Controller
                                             ->get();
 
             foreach($latest_orders as $order){
-                $order['gig_image'] = $order->gig->image_large_id ;
+                $image_large_file = FileManager::where('id',$order->gig->image_large_id)->first();
+                $image_large_path = ('/public/storage/'.$image_large_file->file_folder.'/'.$image_large_file->uid.'.'.$image_large_file->file_extension);
+                $order['gig_image'] = $image_large_path;
             }
 
             $response = ['earnings'=>$earnings , 'pending_balance'=>$pending_balance , 'total_gigs'=>$total_gigs , 
