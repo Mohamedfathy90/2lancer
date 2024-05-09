@@ -61,6 +61,9 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
 
         //search for gigs
         Route::post('search_gigs' , 'search_gigs');
+
+        //gig_details 
+        Route::post('gig_details' , 'gig_details');
     });
 
 

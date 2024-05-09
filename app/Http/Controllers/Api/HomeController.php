@@ -9,7 +9,9 @@ use App\Models\Review;
 use App\Models\Country;
 use App\Models\Category;
 use App\Models\Favorite;
+use App\Models\GigImage;
 use App\Models\OrderItem;
+use App\Models\GigUpgrade;
 use App\Models\CustomOffer;
 use App\Models\FileManager;
 use App\Models\Subcategory;
@@ -290,6 +292,32 @@ class HomeController extends Controller
             throw $th;
         }
     }
+
+    public function gig_details(Request $request){
+        $gig = Gig::find($request->gig_id);
+        $image_large_file = FileManager::where('id',$gig->image_large_id)->first();
+        $image_large_path = ('/public/storage/'.$image_large_file->file_folder.'/'.$image_large_file->uid.'.'.$image_large_file->file_extension);
+        $gig['image'] = $image_large_path;
+        $gig_images = $gig->images;
+
+        foreach($gig_images as $gig_image){
+            $image_large_file = FileManager::where('id',$gig_image->img_large_id)->first();
+            $image_large_path = ('/public/storage/'.$image_large_file->file_folder.'/'.$image_large_file->uid.'.'.$image_large_file->file_extension);
+            $gig_image['image_path'] = $image_large_path; 
+        }
+        
+        if($gig->has_upgrades){
+            $gig_upgrades = $gig->upgrades;
+        }
+        $gig_category = $gig->category;
+        $gig_subcategory = $gig->subcategory;
+        $gig_tags = $gig->tags ;
+        $gig_rating = $gig->rating ;
+        $gig_reviews =  $gig->reviews;
+        
+        $response = ['gig'=>$gig ];
+
+        return response ($response , 200);
     
-    
+    }
 }
