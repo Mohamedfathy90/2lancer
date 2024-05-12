@@ -314,14 +314,13 @@ class HomeController extends Controller
         $gig_tags = $gig->tags ;
         $gig_rating = $gig->rating ;
         $gig_reviews =  $gig->reviews;
-        $user = $gig->owner ;
-
-        if($gig['owner']->avatar_id){
-            $user_avatar_file = FileManager::where('id',$gig['owner']->avatar_id)->first();
-            $gig['owner']['user_avatar'] = ('/public/storage/'.$user_avatar_file->file_folder.'/'.$user_avatar_file->uid.'.'.$user_avatar_file->file_extension);
+        $gig['user'] = User::find($gig->user_id);
+        if($gig['user']->avatar_id){
+            $user_avatar_file = FileManager::where('id',$gig['user']->avatar_id)->first();
+            $gig['user']['user_avatar'] = ('/public/storage/'.$user_avatar_file->file_folder.'/'.$user_avatar_file->uid.'.'.$user_avatar_file->file_extension);
         }
         else{
-            $gig['owner']['user_avatar'] = null;
+            $gig['user']['user_avatar'] = null;
         }
         
         $response = ['gig'=>$gig ];
