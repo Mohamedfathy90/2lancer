@@ -313,7 +313,6 @@ class HomeController extends Controller
         $gig_subcategory = $gig->subcategory;
         $gig_tags = $gig->tags ;
         $gig_rating = $gig->rating ;
-        $gig_reviews =  $gig->reviews;
         $gig['user'] = User::find($gig->user_id);
         if($gig['user']->avatar_id){
             $user_avatar_file = FileManager::where('id',$gig['user']->avatar_id)->first();
@@ -322,6 +321,16 @@ class HomeController extends Controller
         else{
             $gig['user']['user_avatar'] = null;
         }
+
+        $reviews =  Review::where('gig_id' , $gig->id)->get();
+            foreach($reviews as $review){
+                $review['user'] = User::find($review->user_id);
+                if($review['user']->avatar_id){
+                    $user_avatar_file = FileManager::where('id',$review['user']->avatar_id)->first();
+                    $review['user']['user_avatar'] = ('/public/storage/'.$user_avatar_file->file_folder.'/'.$user_avatar_file->uid.'.'.$user_avatar_file->file_extension);
+                }
+            }
+        $gig['gig_reviews'] = $reviews ;    
         
         $response = ['gig'=>$gig ];
 
