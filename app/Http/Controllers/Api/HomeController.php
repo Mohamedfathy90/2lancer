@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Gig;
 use App\Models\User;
 use App\Models\Level;
+use App\Models\Order;
 use App\Models\Review;
 use App\Models\Country;
 use App\Models\Category;
@@ -337,4 +338,75 @@ class HomeController extends Controller
         return response ($response , 200);
     
     }
+
+    public function seller_orders(Request $request){
+        // Get orders by this seller
+        $orders = OrderItem::where('owner_id', auth()->id())
+        ->whereHas('gig')
+        ->whereHas('order.invoice')
+        ->latest()->get();
+
+        foreach($orders as $order){
+            $main_order = Order::find($order->order_id);
+            $gig = Gig::find($order->gig_id);
+            $order['title'] = $gig->title ;
+            $order['category'] = Category::find($gig->category_id)->name ;
+            $order['subcategory'] = Subcategory::find($gig->subcategory_id)->name ;
+            
+            if ($order->refund && $order->refund->status === 'pending')
+                $order['status'] = 'Dispute Opened' ;
+            elseif ($order->order?->invoice && $order->order->invoice->status === 'pending')
+                $order['status'] = 'Pending Payment' ;
+            elseif ($order->status === 'delivered' && $order->is_finished)
+                $order['status'] = 'Completed' ;
+            
+            else{
+                switch($order->status){
+                        //Pending 
+                        case('pending'):
+                        $order['status'] = 'Pending' ;
+                        break;
+                        
+                        //Delivered 
+                        case('delivered'):
+                        $order['status'] = 'Delivered' ;
+                        break;
+                        
+                        //Refunded 
+                        case('refunded'):
+                        $order['status'] = 'Refunded' ;
+                        break;
+                        
+                        //Proceeded 
+                        case('proceeded'):
+                        $order['status'] = 'Proceeded' ;
+                        break;
+                        
+                        //Cancelled 
+                        case('cancelled'):
+                        $order['status'] = 'Cancelled' ;
+                        break;
+                        }               
+                }
+                $order['profit'] = $order->profit_value;
+                $order['buyer']  = User::find($main_order->buyer_id)->username ;
+
+                if ($order->expected_delivery_date){
+                    $order['delivery_date'] = format_date($order->expected_delivery_date, config('carbon-formats.F_j,_Y_h_:_i_A')) ;
+                }
+                elseif (in_array($order->status, ['pending', 'proceeded']) && !$order->is_requirements_sent){
+                    $order['delivery_date'] = 'waiting for requirements' ;
+                }   
+                
+                else {
+                    $order['delivery_date'] = '-' ;
+                }
+        }
+
+        $response = ['orders'=>$orders ];
+
+        return response ($orders , 200);
+    
+    }
+
 }

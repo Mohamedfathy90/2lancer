@@ -64,6 +64,9 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
 
         //gig_details 
         Route::post('gig_details' , 'gig_details');
+
+        //get seller orders
+        Route::post('seller_orders' , 'seller_orders')->middleware('auth:sanctum');
     });
 
 
