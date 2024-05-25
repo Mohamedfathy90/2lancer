@@ -409,4 +409,61 @@ class HomeController extends Controller
     
     }
 
+    public function buyer_orders(Request $request){
+        
+        $orders = Order::where('buyer_id', auth()->id())->latest()->get();
+        
+        foreach($orders as $order){
+            $order_items = OrderItem::where('order_id' , $order->id)->get();
+            
+            foreach($order_items as $item){
+                
+                $order['gig'] = Gig::where('id',$item->gig_id)->first(); 
+                $image_large_file = FileManager::where('id',$order['gig']->image_large_id)->first();
+                $image_large_path = ('/public/storage/'.$image_large_file->file_folder.'/'.$image_large_file->uid.'.'.$image_large_file->file_extension);
+                $order['gig']['image'] = $image_large_path;
+                
+                if ($item->refund && $item->refund->status === 'pending')
+                $order['status'] = 'Dispute Opened' ;
+                elseif ($item->order?->invoice && $item->order->invoice->status === 'pending')
+                $order['status'] = 'Pending Payment' ;
+                elseif ($item->status === 'delivered' && $item->is_finished)
+                $order['status'] = 'Completed' ;
+                else{
+                    switch($item->status){
+                            //Pending 
+                            case('pending'):
+                            $order['status'] = 'Pending' ;
+                            break;
+                            
+                            //Delivered 
+                            case('delivered'):
+                            $order['status'] = 'Delivered' ;
+                            break;
+                            
+                            //Refunded 
+                            case('refunded'):
+                            $order['status'] = 'Refunded' ;
+                            break;
+                            
+                            //Proceeded 
+                            case('proceeded'):
+                            $order['status'] = 'Proceeded' ;
+                            break;
+                            
+                            //Cancelled 
+                            case('cancelled'):
+                            $order['status'] = 'Cancelled' ;
+                            break;
+                            }               
+                    }
+            }    
+            
+        }
+
+        $response = ['orders'=>$orders ];
+
+        return response ($orders , 200);
+    }
+
 }
