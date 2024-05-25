@@ -6,6 +6,7 @@ use App\Models\Gig;
 use App\Models\User;
 use App\Models\Level;
 use App\Models\Order;
+use App\Models\Refund;
 use App\Models\Review;
 use App\Models\Country;
 use App\Models\Category;
@@ -17,6 +18,7 @@ use App\Models\CustomOffer;
 use App\Models\FileManager;
 use App\Models\Subcategory;
 use App\Models\Notification;
+use App\Models\OrderInvoice;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -341,71 +343,74 @@ class HomeController extends Controller
 
     public function seller_orders(Request $request){
         // Get orders by this seller
-        $orders = OrderItem::where('owner_id', auth()->id())
+        $orders_items = OrderItem::where('owner_id', auth()->id())
         ->whereHas('gig')
         ->whereHas('order.invoice')
         ->latest()->get();
 
-        foreach($orders as $order){
-            $main_order = Order::find($order->order_id);
-            $gig = Gig::find($order->gig_id);
-            $order['title'] = $gig->title ;
-            $order['category'] = Category::find($gig->category_id)->name ;
-            $order['subcategory'] = Subcategory::find($gig->subcategory_id)->name ;
+        foreach($orders_items as $item){
+            $main_order = Order::find($item->order_id);
+            $gig = Gig::find($item->gig_id);
+            $item['title'] = $gig->title ;
+            $item['category'] = Category::find($gig->category_id)->name ;
+            $item['subcategory'] = Subcategory::find($gig->subcategory_id)->name ;
             
-            if ($order->refund && $order->refund->status === 'pending')
-                $order['status'] = 'Dispute Opened' ;
-            elseif ($order->order?->invoice && $order->order->invoice->status === 'pending')
-                $order['status'] = 'Pending Payment' ;
-            elseif ($order->status === 'delivered' && $order->is_finished)
-                $order['status'] = 'Completed' ;
+            $refund = Refund::where('item_id' , $item->id)->first();
+            $invoice = OrderInvoice::where('order_id' , $main_order->id)->first();
+            
+            if ($refund && $refund->status === 'pending')
+                $item['status'] = 'Dispute Opened' ;
+            elseif ($invoice && $invoice->status === 'pending')
+                $item['status'] = 'Pending Payment' ;
+            elseif ($item->status === 'delivered' && $item->is_finished)
+                $item['status'] = 'Completed' ;
             
             else{
-                switch($order->status){
+                switch($item->status){
                         //Pending 
                         case('pending'):
-                        $order['status'] = 'Pending' ;
+                        $item['status'] = 'Pending' ;
                         break;
                         
                         //Delivered 
                         case('delivered'):
-                        $order['status'] = 'Delivered' ;
+                        $item['status'] = 'Delivered' ;
                         break;
                         
                         //Refunded 
                         case('refunded'):
-                        $order['status'] = 'Refunded' ;
+                        $item['status'] = 'Refunded' ;
                         break;
                         
                         //Proceeded 
                         case('proceeded'):
-                        $order['status'] = 'Proceeded' ;
+                        $item['status'] = 'Proceeded' ;
                         break;
                         
                         //Cancelled 
                         case('cancelled'):
-                        $order['status'] = 'Cancelled' ;
+                        $item['status'] = 'Cancelled' ;
                         break;
                         }               
                 }
-                $order['profit'] = $order->profit_value;
-                $order['buyer']  = User::find($main_order->buyer_id)->username ;
+                
+                $item['buyer']  = User::find($main_order->buyer_id)->username ;
 
-                if ($order->expected_delivery_date){
-                    $order['delivery_date'] = format_date($order->expected_delivery_date, config('carbon-formats.F_j,_Y_h_:_i_A')) ;
+                if ($item->expected_delivery_date){
+                    $item['delivery_date'] = format_date($item->expected_delivery_date, config('carbon-formats.F_j,_Y_h_:_i_A')) ;
                 }
-                elseif (in_array($order->status, ['pending', 'proceeded']) && !$order->is_requirements_sent){
-                    $order['delivery_date'] = 'waiting for requirements' ;
+                elseif (in_array($item->status, ['pending', 'proceeded']) && !$item->is_requirements_sent){
+                    $item['delivery_date'] = 'waiting for requirements' ;
                 }   
                 
                 else {
-                    $order['delivery_date'] = '-' ;
+                    $item['delivery_date'] = '-' ;
                 }
         }
 
-        $response = ['orders'=>$orders ];
+        $response = ['orders'=>$orders_items];
 
-        return response ($orders , 200);
+        return response ($response , 200);
     
     }
 
