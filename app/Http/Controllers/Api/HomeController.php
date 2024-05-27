@@ -354,7 +354,10 @@ class HomeController extends Controller
             $item['title'] = $gig->title ;
             $item['category'] = Category::find($gig->category_id)->name ;
             $item['subcategory'] = Subcategory::find($gig->subcategory_id)->name ;
-            
+            $item['gig'] = $gig;
+            $image_large_file = FileManager::where('id',$gig->image_large_id)->first();
+            $image_large_path = ('/public/storage/'.$image_large_file->file_folder.'/'.$image_large_file->uid.'.'.$image_large_file->file_extension);
+            $item['gig']['image'] = $image_large_path;
             $refund = Refund::where('item_id' , $item->id)->first();
             $invoice = OrderInvoice::where('order_id' , $main_order->id)->first();
             
