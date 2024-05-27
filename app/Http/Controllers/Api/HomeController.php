@@ -117,8 +117,13 @@ class HomeController extends Controller
          foreach($top_sellers as $top_seller){
             $top_seller['level'] = Level::where('id' , $top_seller->level_id)->first()->title;
             $avatar_file = FileManager::where('id' , $top_seller->avatar_id)->first();
+            if($avatar_file){
             $image_path = ('/public/storage/'.$avatar_file->file_folder.'/'.$avatar_file->uid.'.'.$avatar_file->file_extension);
             $top_seller['avatar_link'] = $image_path ;
+            }
+            else{
+            $top_seller['avatar_link'] = null ;  
+            }
             $top_seller['rating']=$top_seller->rating();
             $top_seller['reviews']=$top_seller->reviews()->count();
          }
