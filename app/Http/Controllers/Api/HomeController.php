@@ -20,6 +20,8 @@ use App\Models\Subcategory;
 use App\Models\Notification;
 use App\Models\OrderInvoice;
 use Illuminate\Http\Request;
+use App\Models\GigRequirement;
+use App\Models\OrderItemUpgrade;
 use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
@@ -358,6 +360,8 @@ class HomeController extends Controller
             $image_large_file = FileManager::where('id',$gig->image_large_id)->first();
             $image_large_path = ('/public/storage/'.$image_large_file->file_folder.'/'.$image_large_file->uid.'.'.$image_large_file->file_extension);
             $item['gig']['image'] = $image_large_path;
+            $item['upgrades'] = OrderItemUpgrade::where('item_id',$item->id)->get();
+            $item['requirements'] = GigRequirement::where('gig_id',$gig->id)->get();
             $refund = Refund::where('item_id' , $item->id)->first();
             $invoice = OrderInvoice::where('order_id' , $main_order->id)->first();
             
