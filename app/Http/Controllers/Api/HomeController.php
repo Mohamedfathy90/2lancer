@@ -483,4 +483,96 @@ class HomeController extends Controller
         return response ($orders , 200);
     }
 
+    public function seller_gigs(Request $request){
+         
+        // Get gigs by this seller
+         $gigs = Gig::where('user_id', auth()->id())->latest()->get();
+
+         foreach($gigs as $gig) {
+            $image_large_file = FileManager::where('id',$gig->image_large_id)->first();
+            $image_large_path = ('/public/storage/'.$image_large_file->file_folder.'/'.$image_large_file->uid.'.'.$image_large_file->file_extension);
+            $gig['image'] = $image_large_path;
+         }
+
+         $response = ['gigs'=>$gigs ];
+
+         return response ($gigs , 200);
+    }
+
+
+    public function add_gig(Request $request){
+        
+        // Generate unique id for this gig
+        $uid                  = uid();
+
+        // Get title
+        $title                = htmlspecialchars_decode(clean($request->title));
+
+        // Generate unique slug for this gig
+        $slug                 = substr( Str::slug($title), 0, 138 ) . '-' . $uid;
+
+        // Get description
+        $description          = clean($request->description);
+
+        // Get price
+        $price                = clean($request->price);
+
+        // Get delivery time
+        $delivery_time        = $request->delivery_time;
+
+        // Get parent category
+        $category_id          = $request->category;
+
+        // Get subcategory
+        $subcategory_id       = $request->subcategory;
+
+        // Get gig status
+        $status               = settings('publish')->auto_approve_gigs ? 'active' : 'pending';
+
+        // Check if gig has upgrades
+        $has_upgrades         = is_array($this->upgrades) && count($this->upgrades) ? true : false;
+
+        // Check if gig has faqs
+        $has_faqs             = is_array($this->faqs) && count($this->faqs) ? true : false;
+
+        // Get video link
+        $video_link           = $this->video_link ? clean($this->video_link) : null;
+
+        // Get video id
+        $video_id             = $this->video_id ? clean($this->video_id) : null;
+
+        // Get gig preview image
+        $preview              = $this->thumbnail;
+
+        // Upload thumbnail image
+        $image_thumb_id       = ImageUploader::make($preview)->resize(400)->folder('gigs/previews/small')->handle();
+
+        // Upload medium image
+        $image_medium_id      = ImageUploader::make($preview)->resize(800)->folder('gigs/previews/medium')->handle();
+
+        // Upload large image
+        $image_large_id       = ImageUploader::make($preview)->resize(1200)->folder('gigs/previews/large')->handle();
+
+        // Save gig
+        $gig                  = new Gig();
+        $gig->uid             = $uid;
+        $gig->user_id         = auth()->id();
+        $gig->title           = $title;
+        $gig->slug            = $slug;
+        $gig->description     = $description;
+        $gig->price           = $price;
+        $gig->delivery_time   = $delivery_time;
+        $gig->category_id     = $category_id;
+        $gig->subcategory_id  = $subcategory_id;
+        $gig->image_thumb_id  = $image_thumb_id;
+        $gig->image_medium_id = $image_medium_id;
+        $gig->image_large_id  = $image_large_id;
+        $gig->status          = $status;
+        $gig->has_upgrades    = $has_upgrades;
+        $gig->has_faqs        = $has_faqs;
+        $gig->video_link      = $video_link;
+        $gig->video_id        = $video_id;
+        $gig->save();
+            }
+
 }

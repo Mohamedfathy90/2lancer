@@ -70,6 +70,9 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
 
         //get buyer orders
         Route::post('buyer_orders' , 'buyer_orders')->middleware('auth:sanctum');
+
+        //get seller gigs
+        Route::post('seller_gigs' , 'seller_gigs')->middleware('auth:sanctum');
     });
 
 
