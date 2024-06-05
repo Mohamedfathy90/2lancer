@@ -194,7 +194,7 @@ class AuthController extends Controller
             // Attempt login
             if (Auth::attempt($credentials, $request->remember_me)) {
                 $user = User::where('email' , $request->email)->first(); 
-                if($user->status != 'active'){
+                if(!in_array($user->status , ['active','verified'])){
                     $response = ['message'=>'User isnot active' , 'verification_type'=>$settings->verification_type];
                     return response($response , 403);
                 }         

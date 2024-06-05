@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Gig;
 use App\Models\User;
+use App\Models\Admin;
 use App\Models\Level;
 use App\Models\Order;
 use App\Models\Refund;
@@ -23,6 +24,9 @@ use Illuminate\Http\Request;
 use App\Models\GigRequirement;
 use App\Models\OrderItemUpgrade;
 use App\Http\Controllers\Controller;
+use App\Models\GigRequirementOption;
+use App\Utils\Uploader\ImageUploader;
+use App\Notifications\Admin\PendingGig;
 
 class HomeController extends Controller
 {
@@ -500,7 +504,7 @@ class HomeController extends Controller
     }
 
 
-    public function add_gig(Request $request){
+    public function create_gig(Request $request){
         
         // Generate unique id for this gig
         $uid                  = uid();
@@ -530,19 +534,13 @@ class HomeController extends Controller
         $status               = settings('publish')->auto_approve_gigs ? 'active' : 'pending';
 
         // Check if gig has upgrades
-        $has_upgrades         = is_array($this->upgrades) && count($this->upgrades) ? true : false;
-
-        // Check if gig has faqs
-        $has_faqs             = is_array($this->faqs) && count($this->faqs) ? true : false;
+        $has_upgrades         = $request->upgrades  ? true : false;
 
         // Get video link
-        $video_link           = $this->video_link ? clean($this->video_link) : null;
-
-        // Get video id
-        $video_id             = $this->video_id ? clean($this->video_id) : null;
+        $video_link           = $request->video_link ? clean($request->video_link) : null;
 
         // Get gig preview image
-        $preview              = $this->thumbnail;
+        $preview              = $request->thumbnail;
 
         // Upload thumbnail image
         $image_thumb_id       = ImageUploader::make($preview)->resize(400)->folder('gigs/previews/small')->handle();
@@ -569,10 +567,79 @@ class HomeController extends Controller
         $gig->image_large_id  = $image_large_id;
         $gig->status          = $status;
         $gig->has_upgrades    = $has_upgrades;
-        $gig->has_faqs        = $has_faqs;
         $gig->video_link      = $video_link;
-        $gig->video_id        = $video_id;
         $gig->save();
+        
+        // Save tags
+        foreach ($request->tags as $tag) {
+        $gig->tag($tag);
+        }
+
+        // Check if gig has upgrades
+        if ($gig->has_upgrades) {
+                
+        // Loop through upgrades
+        foreach ($request->upgrades as $upgrade) {
+            
+            // Save uprade
+            GigUpgrade::create([
+                'uid'        => uid(),
+                'gig_id'     => $gig->id,
+                'title'      => $upgrade['title'],
+                'price'      => $upgrade['price'],
+                'extra_days' => isset($upgrade['extra_days']) ? $upgrade['extra_days'] : 0,
+            ]);
+        }
+    }
+
+    // Check if gig has requirements
+    if ($request->requirements) {
+                
+        // Loop through requirements
+        foreach ($request->requirements as $req) {
+            
+            // Save requirement
+            $requirement = GigRequirement::create([
+                'gig_id'      => $gig->id,
+                'question'    => clean($req['question']),
+                'type'        => $req['type'],
+                'is_required' => isset($req['is_required']) ? $req['is_required'] : false,
+            ]);
+
+            // Check if requirement multiple choices
+            if ($req['type'] === 'choice') {
+                
+                // Loop through options
+                foreach ($req['options'] as $option) {
+                    
+                    // Save option
+                    GigRequirementOption::create([
+                        'requirement_id' => $requirement->id,
+                        'option'         => $option
+                    ]);
+
+                }
+
             }
+
+        }
+
+    }
+
+            // Send notification to admin
+            if ($gig->status === 'pending') {
+                
+                $gig->is_approved = false;
+
+                Admin::first()->notify( (new PendingGig($gig))->locale(config('app.locale')) );
+
+            } else {
+
+                $gig->is_approved = true;
+
+            }
+
+    
+    }
 
 }

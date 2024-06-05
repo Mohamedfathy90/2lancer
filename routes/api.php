@@ -73,6 +73,9 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
 
         //get seller gigs
         Route::post('seller_gigs' , 'seller_gigs')->middleware('auth:sanctum');
+        
+        //Create Gig
+        Route::post('create_gig' , 'create_gig')->middleware('auth:sanctum');
     });
 
 
