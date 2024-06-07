@@ -45,7 +45,13 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
         Route::post('top_sellers' , 'top_sellers');
 
         //get favourite gigs
-        Route::post('favourite_gigs' , 'favourite_gigs');
+        Route::post('favourite_gigs' , 'favourite_gigs')->middleware('auth:sanctum');
+        
+        //add favourite gigs
+        Route::post('add_favourite' , 'addToFavorite')->middleware('auth:sanctum');
+        
+        //remove favourite gigs
+        Route::post('remove_favourite' , 'removeFromFavorite')->middleware('auth:sanctum');
 
         //become a seller 
         Route::post('become_seller' , 'become_seller')->middleware('auth:sanctum');

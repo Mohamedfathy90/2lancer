@@ -78,7 +78,7 @@ class HomeController extends Controller
     //retrieve favourite gigs 
     public function favourite_gigs(Request $request){
         $favourite_gigs =[];
-        $user_favourites = Favorite::where('user_id' , $request->user_id)->get();
+        $user_favourites = Favorite::where('user_id' , auth()->id())->get();
         foreach($user_favourites as $favourite){
             $favourite_gigs[] = $favourite->gig ;
         }
@@ -108,6 +108,47 @@ class HomeController extends Controller
         return response ($response , 200);
     }
     
+ 
+    public function addToFavorite(Request $request)
+    {
+            // Check if gig already in favorite
+            $in_favorite = Favorite::where('user_id', auth()->id())->where('gig_id', $request->gig_id)->first();
+
+            // Check if already exists
+            if ($in_favorite) {
+                $response = ['message'=>'Gig is already in Favorite List'];
+                return response ($response , 200);
+            }
+
+            // Add to list
+            Favorite::create([
+                'gig_id'  => $gig->id,
+                'user_id' => auth()->id()
+            ]);
+
+            $response = ['message'=>'Gig has been added to Favorite List'];
+
+            return response ($response , 200);
+
+    }
+    
+    
+    public function removeFromFavorite(Request $request)
+    {
+            // Check if gig already in favorite
+            $favorite = Favorite::where('user_id', auth()->id())->where('gig_id', $request->gig_id)->first();
+
+            // Check if already exists
+            if ($favorite) {
+                
+                // Delete
+                $favorite->delete();
+                $response = ['message'=>'Gig has been removed from Favorite List'];
+                return response ($response , 200);
+            }
+    }
+    
+
     //retrieve top sellers 
     public function top_sellers(Request $request){
          // Get top sellers randomly
