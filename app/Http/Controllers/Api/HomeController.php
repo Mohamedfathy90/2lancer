@@ -122,7 +122,7 @@ class HomeController extends Controller
 
             // Add to list
             Favorite::create([
-                'gig_id'  => $gig->id,
+                'gig_id'  => $request->gig_id,
                 'user_id' => auth()->id()
             ]);
 
