@@ -75,6 +75,8 @@ class HomeController extends Controller
             $in_favorite = Favorite::where('user_id', auth()->id())->where('gig_id', $gig->id)->first();
             if($in_favorite){
                 $gig['in_favorite'] = true ;
+            }else{
+                $gig['in_favorite'] = false ;
             }
             }
                     
