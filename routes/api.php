@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\CmiController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\HomeController;
 
@@ -82,8 +83,22 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
         
         //Create Gig
         Route::post('create_gig' , 'create_gig')->middleware('auth:sanctum');
+    
+        //Delete Gig
+        Route::post('delete_gig' , 'delete_gig')->middleware('auth:sanctum');
+
+        // add deposit
+        Route::post('deposit' , 'deposit')->middleware('auth:sanctum');
     });
 
+
+    // CMI Payment Routes 
+
+    Route::controller(CmiController::class)->group(function(){
+     Route::post('cmi/success', 'success');    
+     Route::post('cmi/failed', 'failed'); 
+     Route::post('cmi/callback', 'callback');
+    });
 
 });
 

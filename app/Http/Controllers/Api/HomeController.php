@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use CMI\CmiClient;
 use App\Models\Gig;
 use App\Models\User;
 use App\Models\Admin;
@@ -21,11 +22,13 @@ use App\Models\Subcategory;
 use App\Models\Notification;
 use App\Models\OrderInvoice;
 use Illuminate\Http\Request;
+use App\Models\DepositWebhook;
 use App\Models\GigRequirement;
 use App\Models\OrderItemUpgrade;
 use App\Http\Controllers\Controller;
 use App\Models\GigRequirementOption;
 use App\Utils\Uploader\ImageUploader;
+use App\Models\AutomaticPaymentGateway;
 use App\Notifications\Admin\PendingGig;
 
 class HomeController extends Controller
@@ -66,11 +69,19 @@ class HomeController extends Controller
             else{
                 $gig['user']['user_avatar'] = null;
             }
-                 
+            
+            // Check if gig already in favorite
+            if(auth()->id()){
+            $in_favorite = Favorite::where('user_id', auth()->id())->where('gig_id', $gig->id)->first();
+            if($in_favorite){
+                $gig['in_favorite'] = true ;
+            }
+            }
+                    
             $gig['reviews'] = $gig->reviews;
-        }
-        $response = ['gigs'=>$gigs , 'message'=>'success'];
-        return response ($response , 200);
+             }
+            $response = ['gigs'=>$gigs , 'message'=>'success'];
+            return response ($response , 200);
         
     }
 
@@ -666,7 +677,6 @@ class HomeController extends Controller
         }
 
     }
-
             // Send notification to admin
             if ($gig->status === 'pending') {
                 
@@ -680,7 +690,130 @@ class HomeController extends Controller
 
             }
 
+            $response = ['message'=> 'gig has been created successfully !' ];
+
+            return response ($response , 200);
+
     
+    }
+
+    public function delete_gig(Request $request)
+    {
+        // Get gig
+        $gig = Gig::where('id', $request->gig_id)->firstOrFail();
+
+        // Check of gig has pending orders
+        if ($gig->total_orders_in_queue()) {
+            
+            $response = ['message'=> 'gig cannot be deleted , because it has pending orders' ];
+
+            return response ($response , 200);
+
+        }
+
+        // Delete it
+        $gig->delete();
+
+        $response = ['message'=> 'gig has been deleted successfully'];
+
+        return response ($response , 200);
+    }
+
+    
+    public function deposit(Request $request){
+        
+        // Get amount
+        $amount = convertToNumber($request->amount);
+
+        // Check is amount is valid number
+        if (!is_int($amount) && !is_float($amount)) {
+            
+            // Error
+           $response = ['message'=>'Invalid amount number'];
+
+           return response ($response , 200);
+
+        }
+
+        // Set maximum deposit amount
+        $gateway = AutomaticPaymentGateway::where('slug','cmi')->first();
+        
+        $max_deposit_amount = $gateway->deposit_max_amount ;
+
+        // Set minmum deposit amount
+        $min_deposit_amount = $gateway->deposit_min_amount;
+        
+        // Check deposit amount (max/min)
+        if ($amount < $min_deposit_amount || $amount > $max_deposit_amount) {
+            
+            // Error
+            $response = ['message'=>'amount should be between 1MAD and 100000MAD'];
+
+            return response ($response , 200);
+        }
+
+         // Generate payment id
+         $payment_id      = "DD" . uid(17);
+                       
+         // Save webhook details to later response
+          $this->webhook(['payment_id' => $payment_id, 'payment_method' => 'cmi' , 'amount' => $amount]);
+        
+          $settings     = payment_gateway('cmi');
+          
+          $client = new CmiClient([
+              'storekey' => $settings->settings['store_key'],
+              'clientid' => $settings->settings['client_id'], 
+              'trantype' => "PreAuth" ,
+              'storetype' => "3d_pay_hosting" ,
+              'currency' => '504' ,
+              'lang' => app()->getLocale() ,
+              'rnd'=> microtime() ,
+              'hashAlgorithm'=>"ver3" ,
+              'encoding' => "UTF-08" , 
+              'oid' => $payment_id, // COMMAND ID IT MUST BE UNIQUE
+              'shopurl' => config('app.url'), // SHOP URL FOR REDIRECTION
+              'okUrl' => "{{route('api.cmi.success')}}", // REDIRECTION AFTER SUCCEFFUL PAYMENT
+              'failUrl' => "{{route('api.cmi.failed')}}", // REDIRECTION AFTER FAILED PAYMENT
+              'email' => auth()->user()->email, // YOUR EMAIL APPEAR IN CMI PLATEFORM
+              'BillToName' => auth()->user()->username, // YOUR NAME APPEAR IN CMI PLATEFORM
+              'tel' => auth()->user()->phone, // YOUR NAME APPEAR IN CMI PLATEFORM
+              'BillToCompany' => '', // YOUR COMPANY NAME APPEAR IN CMI PLATEFORM
+              'amount' => (string)$amount, // RETRIEVE AMOUNT WITH METHOD POST
+              'AutoRedirect'=>'true' ,
+              'CallbackURL' => "{{route('api.cmi.callback')}}", // CALLBACK
+          ]);
+          
+          $client->redirect_post();
+        
+    }
+
+    private function webhook($data)
+    {
+        try {
+            
+            // Set user id
+            $user_id                 = auth()->id();
+            
+            // Set amount
+            $amount                  = $data['amount'];
+
+            // Set payment id
+            $payment_id              = $data['payment_id'];
+
+            // Set payment method 
+            $payment_method          = $data['payment_method'];
+
+            // Save
+            $webhook                 = new DepositWebhook();
+            $webhook->payment_id     = $payment_id;
+            $webhook->payment_method = $payment_method;
+            $webhook->amount         = $amount;
+            $webhook->user_id        = $user_id;
+            $webhook->save();
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
 }
