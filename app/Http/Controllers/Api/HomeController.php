@@ -27,6 +27,7 @@ use App\Models\GigRequirement;
 use App\Models\OrderItemUpgrade;
 use App\Http\Controllers\Controller;
 use App\Models\GigRequirementOption;
+use Illuminate\Support\Facades\Auth;
 use App\Utils\Uploader\ImageUploader;
 use App\Models\AutomaticPaymentGateway;
 use App\Notifications\Admin\PendingGig;
@@ -52,6 +53,16 @@ class HomeController extends Controller
     public function selected_gigs (Request $request){
         $gigs = Gig::active()->inRandomOrder()->take(4)->get();
         foreach($gigs as $gig){
+            // Check if gig already in favorite
+        
+            if(auth('sanctum')->id());
+            $in_favorite = Favorite::where('user_id', auth()->id())->where('gig_id', $gig->id)->first();
+            if($in_favorite){
+                $gig['in_favorite'] = true ;
+            }else{
+                $gig['in_favorite'] = false ;
+            }
+            
             $thumb_file = FileManager::where('id',$gig->image_thumb_id)->first();
             $image_medium_file = FileManager::where('id',$gig->image_medium_id)->first();
             $image_large_file = FileManager::where('id',$gig->image_large_id)->first();
@@ -70,15 +81,7 @@ class HomeController extends Controller
                 $gig['user']['user_avatar'] = null;
             }
             
-            // Check if gig already in favorite
-            if(auth()->id()){
-            $in_favorite = Favorite::where('user_id', auth()->id())->where('gig_id', $gig->id)->first();
-            if($in_favorite){
-                $gig['in_favorite'] = true ;
-            }else{
-                $gig['in_favorite'] = false ;
-            }
-            }
+          
                     
             $gig['reviews'] = $gig->reviews;
              }
