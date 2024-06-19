@@ -607,7 +607,7 @@ class HomeController extends Controller
 
         // Upload large image
         $image_large_id       = ImageUploader::make($preview)->resize(1200)->folder('gigs/previews/large')->handle();
-
+        
         // Save gig
         $gig                  = new Gig();
         $gig->uid             = $uid;
@@ -682,6 +682,28 @@ class HomeController extends Controller
         }
 
     }
+
+            // Save gig images
+            foreach ($request->gig_images as $image) {
+                        
+                // Upload small image
+                $img_thumb_id  = ImageUploader::make($image)->resize(400)->folder('gigs/gallery/small')->handle();
+
+                // Upload medium image
+                $img_medium_id = ImageUploader::make($image)->resize(800)->folder('gigs/gallery/medium')->handle();
+
+                // Upload large image
+                $img_large_id  = ImageUploader::make($image)->resize(1200)->folder('gigs/gallery/large')->handle();
+
+                // Save images
+                GigImage::create([
+                    'gig_id'        => $gig->id,
+                    'img_thumb_id'  => $img_thumb_id,
+                    'img_medium_id' => $img_medium_id,
+                    'img_large_id'  => $img_large_id
+                ]);
+
+            }
             // Send notification to admin
             if ($gig->status === 'pending') {
                 
