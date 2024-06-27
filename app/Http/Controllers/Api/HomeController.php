@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Utils\Uploader\ImageUploader;
 use App\Models\AutomaticPaymentGateway;
 use App\Notifications\Admin\PendingGig;
+use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
