@@ -629,9 +629,9 @@ class HomeController extends Controller
         $gig->save();
         
         // Save tags
-        // foreach ($request->tags as $tag) {
-        // $gig->tag($tag);
-        // }
+        foreach (json_decode($request->input('tags')) as $tag) {
+        $gig->tag($tag);
+        }
 
         // Check if gig has upgrades
         if ($gig->has_upgrades) {
