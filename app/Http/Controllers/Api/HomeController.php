@@ -583,10 +583,10 @@ class HomeController extends Controller
         $delivery_time        = $request->delivery_time;
 
         // Get parent category
-        $category_id          = $request->category;
+        $category_id          = $request->category_id;
 
         // Get subcategory
-        $subcategory_id       = $request->subcategory;
+        $subcategory_id       = $request->subcategory_id;
 
         // Get gig status
         $status               = settings('publish')->auto_approve_gigs ? 'active' : 'pending';
