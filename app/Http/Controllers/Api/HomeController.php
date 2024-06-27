@@ -600,14 +600,7 @@ class HomeController extends Controller
         // Get gig preview image
         $preview              = $request->thumbnail;
 
-        // Upload thumbnail image
-        $image_thumb_id       = ImageUploader::make($preview)->resize(400)->folder('gigs/previews/small')->handle();
-
-        // Upload medium image
-        $image_medium_id      = ImageUploader::make($preview)->resize(800)->folder('gigs/previews/medium')->handle();
-
-        // Upload large image
-        $image_large_id       = ImageUploader::make($preview)->resize(1200)->folder('gigs/previews/large')->handle();
+    
         
         // Save gig
         $gig                  = new Gig();
@@ -620,16 +613,16 @@ class HomeController extends Controller
         $gig->delivery_time   = $delivery_time;
         $gig->category_id     = $category_id;
         $gig->subcategory_id  = $subcategory_id;
-        $gig->image_thumb_id  = $image_thumb_id;
-        $gig->image_medium_id = $image_medium_id;
-        $gig->image_large_id  = $image_large_id;
+      
         $gig->status          = $status;
         $gig->has_upgrades    = $has_upgrades;
         $gig->video_link      = $video_link;
         $gig->save();
         
         // Save tags
-        foreach ($request->input('tags') as $tag) {
+        
+        dd($request->tags);
+        foreach ($request->tags as $tag) {
         $gig->tag($tag);
         }
 
