@@ -588,6 +588,9 @@ class HomeController extends Controller
         // Get subcategory
         $subcategory_id       = $request->subcategory_id;
 
+        // get tags 
+        $tags                 = $request->tags;
+
         // Get gig status
         $status               = settings('publish')->auto_approve_gigs ? 'active' : 'pending';
 
@@ -629,7 +632,7 @@ class HomeController extends Controller
         $gig->save();
         
         // Save tags
-        foreach (json_decode($request->tags,true) as $tag) {
+        foreach ($tags as $tag) {
         $gig->tag($tag);
         }
 
