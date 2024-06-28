@@ -564,7 +564,9 @@ class HomeController extends Controller
 
     public function create_gig(Request $request){
         
-        $response = ['tags'=>$request->tags] ;
+        $request = json_decode($request , true);
+        
+        $response = ['request'=>$request] ;
         
         return response ($response , 200);
         
