@@ -629,7 +629,8 @@ class HomeController extends Controller
         $gig->save();
         
         // Save tags
-        foreach (json_decode($request->input('tags') , true) as $tag) {
+        $tags = json_decode($request->input('tags') , true) ;
+        foreach ($tags as $tag) {
         $gig->tag($tag);
         }
 
