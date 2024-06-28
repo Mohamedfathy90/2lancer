@@ -564,6 +564,11 @@ class HomeController extends Controller
 
     public function create_gig(Request $request){
         
+        $response = ['tags'=>$request->tags] ;
+        
+        return response ($tags , 200);
+        
+        
         // Generate unique id for this gig
         $uid                  = uid();
 
