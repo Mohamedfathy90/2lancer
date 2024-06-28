@@ -564,7 +564,7 @@ class HomeController extends Controller
 
     public function create_gig(Request $request){
          
-        $response = ['request'=>$request] ;
+        $response = ['request'=>$request->all()] ;
         
         return response ($response , 200);
         
