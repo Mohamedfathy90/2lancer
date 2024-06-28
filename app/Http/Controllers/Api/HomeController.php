@@ -566,7 +566,7 @@ class HomeController extends Controller
         
         $response = ['tags'=>$request->tags] ;
         
-        return response ($tags , 200);
+        return response ($response , 200);
         
         
         // Generate unique id for this gig
