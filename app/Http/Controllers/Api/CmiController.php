@@ -383,7 +383,35 @@ class CmiController extends Controller
                     $affiliate_transaction->save();
                 }
                 }
-                 //send whatsapp message
+                
+                 // cashback
+                 if(settings('cashback')->is_enabled){
+                
+                    // calculate cashback earning
+                    $cashback_earning = (convertToNumber(settings('cashback')->cashback_percentage)/100)*$cart['total'];
+    
+                    // Get user available credit
+                    $available_balance = convertToNumber(auth()->user()->balance_available);
+
+                    // Get user cashbacks
+                    $cashbacks_balance = convertToNumber(auth()->user()->balance_cashbacks);
+    
+                    //add cashback earning to user wallet
+                    auth()->user()->update([
+                    'balance_cashbacks' => $cashbacks_balance + $cashback_earning ,
+                    'balance_available' => $available_balance + $cashback_earning
+                    ]);
+
+                    // Send notification
+                    notification([
+                        'text'    => 't_new_cashback_balance',
+                        'action'  => url('/'),
+                        'user_id' => auth()->id() ,
+                        'params'  => ['amount' => $cashback_earning ]
+                    ]);
+                }
+                
+                //send whatsapp message
                 if($item->owner->phone){
                     $account_sid = getenv("TWILIO_ACCOUNT_SID");
                     $auth_token = getenv("TWILIO_AUTH_TOKEN");

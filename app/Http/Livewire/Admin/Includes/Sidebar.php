@@ -300,6 +300,7 @@ class Sidebar extends Component
                     [ 'text' => auth('admin')->user()->can('edit_hero_settings')?__('messages.t_hero_section'):null, 'href' => "$dashboard/settings/hero" ],
                     [ 'text' => auth('admin')->user()->can('edit_withdrawal_settings')?__('messages.t_withdrawal_settings_sidebar'):null, 'href' => "$dashboard/settings/withdrawal" ],
                     [ 'text' => auth('admin')->user()->can('edit_affiliate_settings')?__('messages.t_affiliate_settings_sidebar'):null, 'href' => "$dashboard/settings/affiliate" ],
+                    [ 'text' => auth('admin')->user()->can('edit_cashback_settings')?__('messages.t_cashback_settings_sidebar'):null, 'href' => "$dashboard/settings/cashback" ],
                 ],
             ],
 

@@ -40,6 +40,7 @@ use App\Models\CashfreeSettings;
 use App\Models\JazzcashSettings;
 use App\Models\PaystackSettings;
 use App\Models\RazorpaySettings;
+use App\Models\SettingsCashback;
 use App\Models\SettingsCurrency;
 use App\Models\SettingsLiveChat;
 use App\Models\SettingsSecurity;
@@ -378,6 +379,27 @@ function settings($settings, $updateCache = false)
                 // Return data
                 return Cache::rememberForever('settings_affiliate', function () {
                     return SettingsAffiliate::first();
+                });
+
+            }
+
+        break;
+
+
+        
+        case 'cashback':
+        
+            // Check if want to update cache
+            if ($updateCache) {
+                
+                // Remove it from cache
+                Cache::forget('settings_cashback');
+
+            } else {
+
+                // Return data
+                return Cache::rememberForever('settings_cashback', function () {
+                    return SettingsCashback::first();
                 });
 
             }

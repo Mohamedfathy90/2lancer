@@ -1142,6 +1142,10 @@
         "t_affiliate_orders"                                       => "Affiliate Orders",
         "t_affiliate_profits"                                      => "Affiliate Profits",
         "t_affiliate_total_income"                                 => "Affiliate Total Income",
+        "t_cashback_settings"                                      => "Paramètres de Cashback",
+        "t_enable_cashback"                                        => "Activer le Cashback",
+        "t_cashback_percentage"                                    => "Pourcentage de cashback",
+        "t_cashback_settings_sidebar"                              => "Cashback" ,
         "t_front_side"                                             => 'Côté recto',
         "t_back_side"                                              => 'Côté verso',
         "t_approve_files"                                          => 'Approuver les fichiers',
@@ -2564,4 +2568,6 @@
         "t_not_verified_account"                                   => "Le compte n'est pas vérifié" , 
         "t_verify_id"                                              => "Veuillez vérifier votre compte" ,
         "t_toast_whatsapp_number_isnot_valid"                      => "ًLe numéro Whatsapp n'est pas valide" , 
+        "t_u_deposited_your_wallet"                                => "Dépôt réussi avec :amount MAD ajouté à votre portefeuille" ,
+        "t_new_cashback_balance"                                   => "Montant du cashback :amount MAD ajouté à votre portefeuille" ,
     ];

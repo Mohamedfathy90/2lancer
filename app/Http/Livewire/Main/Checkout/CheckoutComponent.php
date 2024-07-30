@@ -2585,6 +2585,27 @@ class CheckoutComponent extends Component
                         'user_id' => $order_item->owner_id
                     ]);
 
+                    
+                    try{
+                    //send whatsapp message
+                    if($gig->owner->phone){
+                    $account_sid = getenv("TWILIO_ACCOUNT_SID");
+                    $auth_token = getenv("TWILIO_AUTH_TOKEN");
+                    $twilio_service_sid = getenv("TWILIO_SERVICE_SID");
+                    $twilioWhatsAppNumber = getenv("TWILIO_WHATSAPP_NUMBER");
+                    $template_sid = "HX83e78d38c3da3dccfe0e633b7f6a7a60";
+                    $recipientNumber = "whatsapp:+".$gig->owner->phone;
+                    $client = new \Twilio\Rest\Client($account_sid, $auth_token);
+                    $client->messages->create($recipientNumber, 
+                                    [
+                                        "contentSid" => $template_sid,
+                                        "from" => $twilio_service_sid
+                                    ]
+                    );
+                    }
+                    }catch (\Twilio\Exceptions\TwilioException $e){
+                        continue;              
+                    } 
                 }
 
             }
@@ -2647,33 +2668,37 @@ class CheckoutComponent extends Component
             
         }
 
-           //send whatsapp message
-                if($item->owner->phone){
-                    $account_sid = getenv("TWILIO_ACCOUNT_SID");
-                    $auth_token = getenv("TWILIO_AUTH_TOKEN");
-                    $twilio_service_sid = getenv("TWILIO_SERVICE_SID");
-                    $twilioWhatsAppNumber = getenv("TWILIO_WHATSAPP_NUMBER");
-                    $template_sid = "HX83e78d38c3da3dccfe0e633b7f6a7a60";
-                    $recipientNumber = "whatsapp:+".$item->owner->phone;
-                    $client = new \Twilio\Rest\Client($account_sid, $auth_token);
-                    $client->messages->create($recipientNumber, 
-                                    [
-                                        "contentSid" => $template_sid,
-                                        "from" => $twilio_service_sid
-                                    ]
-                    );
-                    }
-            
-                return redirect('account/orders')->with('message', __('messages.t_submit_ur_info_now_seller_start_order'));    
-            
-            
-             }catch (\Twilio\Exceptions\TwilioException $th){
-                    
-                return redirect('account/orders')->with('message', __('messages.t_submit_ur_info_now_seller_start_order'));
-
+            // cashback   
+            if(settings('cashback')->is_enabled){
                 
+                // calculate cashback earning
+                $cashback_earning = (convertToNumber(settings('cashback')->cashback_percentage)/100)*$this->total ;
 
-            } catch (\Throwable $th) {
+                // Get user available credit
+                $available_balance = convertToNumber(auth()->user()->balance_available);
+
+                // Get user cashbacks
+                $cashbacks_balance = convertToNumber(auth()->user()->balance_cashbacks);
+
+                //add cashback earning to user wallet
+                auth()->user()->update([
+                'balance_cashbacks' => $cashbacks_balance + $cashback_earning ,
+                'balance_available' => $available_balance + $cashback_earning
+                 ]);
+
+                // Send notification
+                notification([
+                    'text'    => 't_new_cashback_balance',
+                    'action'  => url('/'),
+                    'user_id' => auth()->id() ,
+                    'params'  => ['amount' => $cashback_earning ]
+                ]);
+
+            }
+
+            return redirect('account/orders')->with('message', __('messages.t_submit_ur_info_now_seller_start_order'));    
+            
+            }catch (\Throwable $th) {
             
             // Something went wrong
             $this->notification([
@@ -2682,7 +2707,8 @@ class CheckoutComponent extends Component
                 'icon'        => 'error'
             ]);
 
-        }
+            }
+        
     }
 
 

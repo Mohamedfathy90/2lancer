@@ -202,6 +202,16 @@
                                 </dd>
                             </div>
 
+                            {{-- Cashbacks --}}
+                            <div class="sm:col-span-1">
+                                <dt class="text-sm font-bold text-gray-400">
+                                    {{ __('messages.t_cashback_settings_sidebar') }}
+                                </dt>
+                                <dd class="mt-1 text-xs font-black text-gray-900 ">
+                                    @money($user->balance_cashbacks, settings('currency')->code, true)
+                                </dd>
+                            </div>
+
                             {{-- Pending clearance --}}
                             <div class="sm:col-span-1">
                                 <dt class="text-sm font-bold text-gray-400">

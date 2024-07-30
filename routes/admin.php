@@ -759,6 +759,9 @@ Route::middleware(['web', 'banned.ip','auth:admin'])->group(function() {
 
         // affiliate
         Route::get('affiliate', AffiliateComponent::class)->middleware('can:edit_affiliate_settings');
+
+        // cashback
+        Route::get('cashback', CashbackComponent::class)->middleware('can:edit_cashback_settings');
     
     });
 
