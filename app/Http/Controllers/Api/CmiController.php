@@ -406,7 +406,7 @@ class CmiController extends Controller
                     notification([
                         'text'    => 't_new_cashback_balance',
                         'action'  => url('/'),
-                        'user_id' => auth()->id() ,
+                        'user_id' => $buyer_id ,
                         'params'  => ['amount' => $cashback_earning ]
                     ]);
                 }
@@ -418,7 +418,7 @@ class CmiController extends Controller
                     $twilio_service_sid = getenv("TWILIO_SERVICE_SID");
                     $twilioWhatsAppNumber = getenv("TWILIO_WHATSAPP_NUMBER");
                     $template_sid = "HX83e78d38c3da3dccfe0e633b7f6a7a60";
-                    $recipientNumber = "whatsapp:+".$item->owner->phone;
+                    $recipientNumber = "whatsapp:+".$gig->owner->phone;
                     $client = new \Twilio\Rest\Client($account_sid, $auth_token);
                     $client->messages->create($recipientNumber, 
                                     [
