@@ -175,7 +175,7 @@ class AuthController extends Controller
         // Get auth settings
         $settings       = settings('auth');
        
-        $validator = LoginValidator::validate($request);
+        $validator      = LoginValidator::validate($request);
             
        if($validator->fails()){
        $errors = $validator->errors()->toArray();
