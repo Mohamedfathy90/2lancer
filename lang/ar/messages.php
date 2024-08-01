@@ -2602,5 +2602,11 @@
         "t_enter_banned_word"                                      =>"أدخل الكلمة المحظورة" , 
         "t_banned_word"                                            =>"الكلمة المحظورة" , 
         "t_toast_whatsapp_number_isnot_valid"                      =>"رقم الواتس اب غير موجود" , 
+        "t_first_discount_settings_sidebar"                        => "خصم أول خدمة" ,
+        "t_first_discount_settings"                                => "إعدادات الخصم" ,
+        "t_enable_first_discount"                                  => "تفعيل الخصم" ,
+        "t_discount_percentage"                                    => "نسبة الخصم" ,
+        "t_enable_first_discount"                                  => "تفعيل الخصم" ,
+        "t_discount"                                               => "خصم (أول خدمة)" ,
         
     ];

@@ -60,6 +60,7 @@ use App\Models\NowpaymentsSettings;
 use App\Models\ProjectSubscription;
 use Illuminate\Support\Facades\File;
 use App\Models\OfflinePaymentGateway;
+use App\Models\SettingsFirstDiscount;
 use App\Models\UserWithdrawalHistory;
 use Illuminate\Support\Facades\Cache;
 use App\Models\OfflinePaymentSettings;
@@ -400,6 +401,26 @@ function settings($settings, $updateCache = false)
                 // Return data
                 return Cache::rememberForever('settings_cashback', function () {
                     return SettingsCashback::first();
+                });
+
+            }
+
+        break;
+
+           
+        case 'first-discount':
+        
+            // Check if want to update cache
+            if ($updateCache) {
+                
+                // Remove it from cache
+                Cache::forget('settings_first_discount');
+
+            } else {
+
+                // Return data
+                return Cache::rememberForever('settings_first_discount', function () {
+                    return SettingsFirstDiscount::first();
                 });
 
             }

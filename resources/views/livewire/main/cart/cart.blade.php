@@ -172,10 +172,36 @@
                                     </div>
                                 @endif
 
+                               @php
+                                $first_order = false ;
+                                $discount = 0; 
+                                
+                                $buyer_id = auth()->id();
+                            
+                                // check for first order
+                                $user_orders = App\Models\Order::where('buyer_id' , $buyer_id)->count(); 
+                                if($user_orders === 0 ){
+                                    $first_order = true ;
+                                }
+                                
+                                if(settings('first-discount')->is_enabled && $first_order){
+                                    $discount = ($this->total() + $this->taxes()) * (settings('first-discount')->discount_percentage/100) ;
+                                }
+                               
+                               @endphp
+                               @if($discount>0)
+                               {{-- Subtotal --}}
+                                <div class="border-t border-gray-200 dark:border-zinc-600 pt-4 flex items-center justify-between">
+                                    <dt class="text-sm text-gray-600 dark:text-gray-300">{{ __('messages.t_discount') }}</dt>
+                                    <dd class="text-sm font-medium text-gray-900 dark:text-gray-200">-@money($discount, settings('currency')->code, true)</dd>
+                                </div>
+                                @endif
+                                
+                                
                                 {{-- Total --}}
                                 <div class="border-t border-gray-200 dark:border-zinc-600 pt-4 flex items-center justify-between">
                                     <dt class="text-base font-medium text-gray-900 dark:text-white">{{ __('messages.t_total') }}</dt>
-                                    <dd class="text-base font-medium text-gray-900 dark:text-white">@money($this->total() + $this->taxes(), settings('currency')->code, true)</dd>
+                                    <dd class="text-base font-medium text-gray-900 dark:text-white">@money($this->total() + $this->taxes() - $discount, settings('currency')->code, true)</dd>
                                 </div>
 
                             </dl>

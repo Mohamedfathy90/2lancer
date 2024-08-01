@@ -2570,4 +2570,9 @@
         "t_toast_whatsapp_number_isnot_valid"                      => "ًLe numéro Whatsapp n'est pas valide" , 
         "t_u_deposited_your_wallet"                                => "Dépôt réussi avec :amount MAD ajouté à votre portefeuille" ,
         "t_new_cashback_balance"                                   => "Montant du cashback :amount MAD ajouté à votre portefeuille" ,
+        "t_first_discount_settings_sidebar"                        => "Rabais sur le premier service" ,
+        "t_first_discount_settings"                                => "paramètres de remise" ,
+        "t_enable_first_discount"                                  => "activer la remise" ,
+        "t_discount_percentage"                                    => "pourcentage de remise" ,
+        "t_discount"                                               => "Rabais (Premier Service)" ,
     ];

@@ -43,6 +43,7 @@ class CheckoutComponent extends Component
     public $subtotal;
     public $total;
     public $tax;
+    public $discount;
     public $is_third_step          = false;
     public $fee_value              = 0;
     public $fee_text               = 0;
@@ -507,11 +508,32 @@ class CheckoutComponent extends Component
      */
     public function total()
     {
+                
         // Set total empty variable
         $total       = convertToNumber($this->subtotal) + convertToNumber($this->tax) + convertToNumber($this->fee_value);
 
+        // initialize first order
+        $first_order = false ;
+        $discount = 0; 
+        
+        $buyer_id = auth()->id();
+       
+        // check for first order
+        $user_orders = Order::where('buyer_id' , $buyer_id)->count(); 
+        if($user_orders === 0 ){
+            $first_order = true ;
+        }
+        
+        if(settings('first-discount')->is_enabled && $first_order){
+            $discount = $total * (settings('first-discount')->discount_percentage/100) ;
+            $total = $total - $discount ; 
+        }
+        
         // Set total amount
         $this->total = $total;
+        
+        // Set discount amount
+        $this->discount = $discount;
 
         // Return total price
         return $total;

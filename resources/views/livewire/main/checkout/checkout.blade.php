@@ -233,6 +233,21 @@
                             @endif
                         </div>
                     </div>
+
+
+                    {{-- discount --}}
+                    @if ($discount>0)
+                        <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                            <div class="grow">
+                                <p class="text-sm text-gray-500 dark:text-zinc-400 font-light">
+                                    @lang('messages.t_discount')
+                                </p>
+                            </div>
+                            <div class="flex-none text-sm ltr:text-right rtl:text-left font-semibold text-zinc-700 dark:text-zinc-200">
+                               - @money($discount, settings('currency')->code, true)
+                            </div>
+                        </div>
+                    @endif
                     
                 </div>
 

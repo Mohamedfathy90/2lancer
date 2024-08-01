@@ -762,6 +762,9 @@ Route::middleware(['web', 'banned.ip','auth:admin'])->group(function() {
 
         // cashback
         Route::get('cashback', CashbackComponent::class)->middleware('can:edit_cashback_settings');
+        
+        // First Discount
+        Route::get('first-discount', FirstDiscountComponent::class)->middleware('can:edit_first_discount_settings');
     
     });
 

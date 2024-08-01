@@ -2613,4 +2613,9 @@
         "t_enter_banned_word"                                      =>"Enter Banned Word" , 
         "t_banned_word"                                            =>"Banned Word" , 
         "t_toast_whatsapp_number_isnot_valid"                      =>"ًWhatsapp Number isnot valid" , 
+        "t_first_discount_settings_sidebar"                        =>"First Gig Discount" ,
+        "t_first_discount_settings"                                =>"Discount Settings" ,
+        "t_enable_first_discount"                                  =>"Enable Discount" ,
+        "t_discount_percentage"                                    =>"Discount Percentage" ,
+        "t_discount"                                               => "Discount (First Gig)" ,
     ];
