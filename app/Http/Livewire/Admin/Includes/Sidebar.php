@@ -302,6 +302,8 @@ class Sidebar extends Component
                     [ 'text' => auth('admin')->user()->can('edit_affiliate_settings')?__('messages.t_affiliate_settings_sidebar'):null, 'href' => "$dashboard/settings/affiliate" ],
                     [ 'text' => auth('admin')->user()->can('edit_cashback_settings')?__('messages.t_cashback_settings_sidebar'):null, 'href' => "$dashboard/settings/cashback" ],
                     [ 'text' => auth('admin')->user()->can('edit_first_discount_settings')?__('messages.t_first_discount_settings_sidebar'):null, 'href' => "$dashboard/settings/first-discount" ],
+                    [ 'text' => auth('admin')->user()->can('edit_fee_exemption_settings')?__('messages.t_fee_exemption_settings_sidebar'):null, 'href' => "$dashboard/settings/fee-exemption" ],
+
                 ],
             ],
 

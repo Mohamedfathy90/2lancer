@@ -5,25 +5,25 @@
 
             {{-- Section header --}}
             <div class="mb-14">
-                <h2 class="text-sm leading-6 font-bold text-gray-900">{{ __('messages.t_first_discount_settings') }}</h2>
+                <h2 class="text-sm leading-6 font-bold text-gray-900">{{ __('messages.t_fee_exemption_settings') }}</h2>
             </div>
             
             {{-- Section content --}}
             <div class="grid grid-cols-12 md:gap-x-8 gap-y-8 mb-6">
 
-                {{-- enable discount --}}
+                {{-- enable fee exemption --}}
                 <div class="col-span-12 lg:col-span-6">
                     <x-forms.checkbox
-                        :label="__('messages.t_enable_first_discount')"
-                        model="enable_first_discount" />
+                        :label="__('messages.t_enable_fee_exemption')"
+                        model="enable_fee_exemption" />
                 </div>
      
-                {{-- discount Percentage --}}
+                {{-- gigs number --}}
                 <div class="col-span-12">
                     <x-forms.text-input
-                        :label="__('messages.t_discount_percentage')"
-                        :placeholder="__('messages.t_enter_discount_percentage')"
-                        model="discount_percentage" />
+                        :label="__('messages.t_gigs_number')"
+                        :placeholder="__('messages.t_enter_gigs_number')"
+                        model="gigs_number" />
                 </div>
 
 

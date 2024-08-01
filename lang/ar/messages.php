@@ -2608,5 +2608,9 @@
         "t_discount_percentage"                                    => "نسبة الخصم" ,
         "t_enable_first_discount"                                  => "تفعيل الخصم" ,
         "t_discount"                                               => "خصم (أول خدمة)" ,
+        "t_fee_exemption_settings"                                 => "إعدادت الاعفاء من الرسوم" ,
+        "t_enable_fee_exemption"                                   => "تفعيل الاعفاء من الرسوم" ,
+        "t_gigs_number"                                            => "عدد الخدمات" ,
+        "t_fee_exemption_settings_sidebar"                         => "الاعفاء من الرسوم" ,
         
     ];

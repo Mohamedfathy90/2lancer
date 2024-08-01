@@ -2575,4 +2575,8 @@
         "t_enable_first_discount"                                  => "activer la remise" ,
         "t_discount_percentage"                                    => "pourcentage de remise" ,
         "t_discount"                                               => "Rabais (Premier Service)" ,
+        "t_fee_exemption_settings"                                 => "Paramètres d'exonération des frais" ,
+        "t_enable_fee_exemption"                                   => "Activer l'exonération des frais " ,
+        "t_gigs_number"                                            => "Nombre de services" ,
+        "t_fee_exemption_settings_sidebar"                         => "Exemption de frais" ,
     ];

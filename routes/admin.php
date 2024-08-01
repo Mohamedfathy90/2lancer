@@ -765,6 +765,9 @@ Route::middleware(['web', 'banned.ip','auth:admin'])->group(function() {
         
         // First Discount
         Route::get('first-discount', FirstDiscountComponent::class)->middleware('can:edit_first_discount_settings');
+        
+        // Fee Exemption
+        Route::get('fee-exemption', FeeExemptionComponent::class)->middleware('can:edit_fee_exemption_settings');
     
     });
 

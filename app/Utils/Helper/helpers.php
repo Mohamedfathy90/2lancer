@@ -58,6 +58,7 @@ use App\Models\FlutterwaveSettings;
 use App\Models\MercadopagoSettings;
 use App\Models\NowpaymentsSettings;
 use App\Models\ProjectSubscription;
+use App\Models\SettingsFeeExemption;
 use Illuminate\Support\Facades\File;
 use App\Models\OfflinePaymentGateway;
 use App\Models\SettingsFirstDiscount;
@@ -421,6 +422,25 @@ function settings($settings, $updateCache = false)
                 // Return data
                 return Cache::rememberForever('settings_first_discount', function () {
                     return SettingsFirstDiscount::first();
+                });
+
+            }
+
+        break;
+       
+        case 'fee-exemption':
+        
+            // Check if want to update cache
+            if ($updateCache) {
+                
+                // Remove it from cache
+                Cache::forget('settings_fee_exemption');
+
+            } else {
+
+                // Return data
+                return Cache::rememberForever('settings_fee_exemption', function () {
+                    return SettingsFeeExemption::first();
                 });
 
             }

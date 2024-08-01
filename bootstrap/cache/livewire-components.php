@@ -132,6 +132,7 @@
   'admin.settings.chat-component' => 'App\\Http\\Livewire\\Admin\\Settings\\ChatComponent',
   'admin.settings.commission-component' => 'App\\Http\\Livewire\\Admin\\Settings\\CommissionComponent',
   'admin.settings.currency-component' => 'App\\Http\\Livewire\\Admin\\Settings\\CurrencyComponent',
+  'admin.settings.fee-exemption-component' => 'App\\Http\\Livewire\\Admin\\Settings\\FeeExemptionComponent',
   'admin.settings.first-discount-component' => 'App\\Http\\Livewire\\Admin\\Settings\\FirstDiscountComponent',
   'admin.settings.footer-component' => 'App\\Http\\Livewire\\Admin\\Settings\\FooterComponent',
   'admin.settings.general-component' => 'App\\Http\\Livewire\\Admin\\Settings\\GeneralComponent',

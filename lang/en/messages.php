@@ -2618,4 +2618,8 @@
         "t_enable_first_discount"                                  =>"Enable Discount" ,
         "t_discount_percentage"                                    =>"Discount Percentage" ,
         "t_discount"                                               => "Discount (First Gig)" ,
+        "t_fee_exemption_settings"                                 => "Fee Exemption" ,
+        "t_enable_fee_exemption"                                   => "Enable Fee Exemption " ,
+        "t_gigs_number"                                            => "Number of gigs" ,
+        "t_fee_exemption_settings_sidebar"                         => "Fee Exemption" ,
     ];
