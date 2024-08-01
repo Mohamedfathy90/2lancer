@@ -345,6 +345,20 @@ class cmiController extends Controller
                     // Set item total price
                     $item_total = $upgrades_amount + ( convertToNumber($item['gig']['price']) * $quantity );
 
+                    if(settings('fee-exemption')->is_enabled){
+                        // Calculate completed orders
+                        $completed_orders  = OrderItem::where('owner_id', $gig->user_id)
+                        ->where('status', 'delivered')
+                        ->where('is_finished', true)
+                        ->count();
+                        
+                        if ($completed_orders == settings('fee-exemption')->gigs_number){
+                            $commission = 0;
+                        }
+                        }
+                    
+                    else{
+                    
                     // Calculate commission first
                     if ($commission_settings->commission_from === 'orders') {
                         
@@ -367,6 +381,8 @@ class cmiController extends Controller
                         $commission = 0;
 
                     }
+
+                     }
 
                     // Save order item
                     $order_item                         = new OrderItem();

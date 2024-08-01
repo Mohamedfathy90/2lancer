@@ -370,81 +370,27 @@ function settings($settings, $updateCache = false)
 
         case 'affiliate':
         
-            // Check if want to update cache
-            if ($updateCache) {
-                
-                // Remove it from cache
-                Cache::forget('settings_affiliate');
-
-            } else {
-
-                // Return data
-                return Cache::rememberForever('settings_affiliate', function () {
-                    return SettingsAffiliate::first();
-                });
-
-            }
+         return SettingsAffiliate::first();
+          
 
         break;
 
-
-        
         case 'cashback':
         
-            // Check if want to update cache
-            if ($updateCache) {
-                
-                // Remove it from cache
-                Cache::forget('settings_cashback');
-
-            } else {
-
-                // Return data
-                return Cache::rememberForever('settings_cashback', function () {
-                    return SettingsCashback::first();
-                });
-
-            }
-
+           return SettingsCashback::first();
+    
         break;
 
            
         case 'first-discount':
-        
-            // Check if want to update cache
-            if ($updateCache) {
-                
-                // Remove it from cache
-                Cache::forget('settings_first_discount');
 
-            } else {
-
-                // Return data
-                return Cache::rememberForever('settings_first_discount', function () {
-                    return SettingsFirstDiscount::first();
-                });
-
-            }
-
+              return SettingsFirstDiscount::first();
         break;
        
         case 'fee-exemption':
         
-            // Check if want to update cache
-            if ($updateCache) {
-                
-                // Remove it from cache
-                Cache::forget('settings_fee_exemption');
-
-            } else {
-
-                // Return data
-                return Cache::rememberForever('settings_fee_exemption', function () {
-                    return SettingsFeeExemption::first();
-                });
-
-            }
-
+             return SettingsFeeExemption::first();
+            
         break;
         
         

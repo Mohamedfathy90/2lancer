@@ -185,7 +185,7 @@
                                 }
                                 
                                 if(settings('first-discount')->is_enabled && $first_order){
-                                    $discount = ($this->total() + $this->taxes()) * (settings('first-discount')->discount_percentage/100) ;
+                                    $discount = ($this->total() + $this->taxes()) * convertToNumber(settings('first-discount')->discount_percentage/100) ;
                                 }
                                
                                @endphp
