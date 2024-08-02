@@ -2579,4 +2579,11 @@
         "t_enable_fee_exemption"                                   => "Activer l'exonération des frais " ,
         "t_gigs_number"                                            => "Nombre de services" ,
         "t_fee_exemption_settings_sidebar"                         => "Exemption de frais" ,
+        "t_show_slider"                                            => "Afficher le curseur",
+        "t_add_slider"                                             => "Ajouter un curseur",
+        "t_edit_slider"                                            => "Modifier le curseur",
+        "t_delete_slider"                                          => "Supprimer le curseur",
+        "t_slider_image"                                           => "Image du curseur",
+        "t_slider_url"                                             => "URL du curseur",
+
     ];

@@ -2622,4 +2622,10 @@
         "t_enable_fee_exemption"                                   => "Enable Fee Exemption " ,
         "t_gigs_number"                                            => "Number of gigs" ,
         "t_fee_exemption_settings_sidebar"                         => "Fee Exemption" ,
+        "t_show_slider"                                            => "Show slider",
+        "t_add_slider"                                             => "Add slider",
+        "t_edit_slider"                                            => "Edit slider",
+        "t_delete_slider"                                          => "Delete slider",
+        "t_slider_image"                                           => "Slider Image",
+        "t_slider_url"                                             => "Slider Url",
     ];

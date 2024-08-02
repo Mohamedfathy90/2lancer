@@ -2612,5 +2612,10 @@
         "t_enable_fee_exemption"                                   => "تفعيل الاعفاء من الرسوم" ,
         "t_gigs_number"                                            => "عدد الخدمات" ,
         "t_fee_exemption_settings_sidebar"                         => "الاعفاء من الرسوم" ,
-        
+        "t_show_slider"                                            => "عرض السلايدر",
+        "t_add_slider"                                             => "إضافة شريحة",
+        "t_edit_slider"                                            => "تعديل الشريحة",
+        "t_delete_slider"                                          => "حذف الشريحة",
+        "t_slider_image"                                           => "صورة الشريحة",
+        "t_slider_url"                                             => "رابط الشريحة",
     ];

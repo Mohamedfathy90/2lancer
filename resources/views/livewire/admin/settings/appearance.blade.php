@@ -96,6 +96,13 @@
                         model="is_best_sellers" />
                 </div>
 
+                {{-- Enable slider --}}
+                <div class="col-span-12 md:col-span-6">
+                    <x-forms.checkbox
+                        :label="__('messages.t_show_slider')"
+                        model="is_slider" />
+                </div>
+
                 {{-- Default image --}}
                 <div class="col-span-12">
                     <x-forms.file-input :label="__('messages.t_upload_default_image')" model="placeholder_img" accept="image/jpg,image/jpeg,image/png"  />

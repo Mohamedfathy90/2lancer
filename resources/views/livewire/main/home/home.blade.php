@@ -270,6 +270,24 @@
             </div>
         @endif
 
+        
+        {{-- Slider --}}
+        @if(settings('appearance')->is_slider && App\Models\Slider::count() > 0)    
+        <div class="col-span-12 mt-6 xl:mt-6 mb-16">
+                <div class="flex-wrap justify-center items-center mt-8 -mx-5 hidden" id="slider-slick" wire:ignore>
+                    @foreach (App\Models\Slider::all() as $slider)
+                    <a href="{{ $slider->link }}" class="relative !h-72 rounded-lg !p-6 !flex !flex-col overflow-hidden group mx-5">
+                        <span aria-hidden="true" class="absolute inset-0">
+                            <img src="" data-src="{{ src($slider->image)  }}" alt="" class="lazy w-full h-full object-center object-cover opacity-70 group-hover:opacity-100">
+                        </span>
+                        <span aria-hidden="true" class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-gray-800 opacity-90"></span>
+                    </a>
+                    @endforeach
+                            
+                </div>
+            </div>
+        @endif
+      
         {{-- Newsletter --}}
         @if (settings('newsletter')->is_enabled)
             <div class="col-span-12">
@@ -299,6 +317,55 @@
     {{-- Slick script --}}
     @if (settings('appearance')->is_featured_categories || settings('appearance')->is_best_sellers)
         <script defer type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    @endif
+
+    {{-- Slider script--}}
+    @if(settings('appearance')->is_slider && App\Models\Slider::count() > 0)    
+    <script>
+            document.addEventListener("DOMContentLoaded", function(){
+                // Init featured categories slick
+                $('#slider-slick').slick({
+                    dots          : false,
+                    autoplay      : true,
+                    infinite      : true,
+                    speed         : 300,
+                    slidesToShow  : 1,
+                    slidesToScroll: 1,
+                    arrows        : false,
+                    responsive    : [
+                        {
+                        breakpoint: 1024,
+                            settings: {
+                                slidesToShow  : 1,
+                                slidesToScroll: 1
+                            }
+                        },
+                        {
+                        breakpoint: 800,
+                            settings: {
+                                slidesToShow  : 1,
+                                slidesToScroll: 1
+                            }
+                        },
+                        {
+                        breakpoint: 600,
+                            settings: {
+                                slidesToShow  : 1,
+                                slidesToScroll: 1
+                            }
+                        },
+                        {
+                        breakpoint: 480,
+                            settings: {
+                                slidesToShow  : 1,
+                                slidesToScroll: 1
+                            }
+                        }
+                    ]
+                });
+                $('#slider-slick').removeClass('hidden');
+            });
+        </script>
     @endif
 
     {{-- Slick Plugin --}}

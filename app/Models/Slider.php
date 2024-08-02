@@ -28,7 +28,7 @@ class Slider extends Model
      *
      * @var array
      */
-    protected $fillable = ['image_id'];
+    protected $guarded = [];
 
     /**
      * Get image
@@ -40,3 +40,4 @@ class Slider extends Model
         return $this->belongsTo(FileManager::class, 'image_id');
     }
 }
+

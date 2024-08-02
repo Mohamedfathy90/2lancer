@@ -712,6 +712,25 @@ Route::middleware(['web', 'banned.ip','auth:admin'])->group(function() {
 
     });
     
+    
+    // Sliders 
+    Route::namespace('Sliders')->prefix('sliders')->group(function() {
+    
+        Route::get('/', SliderComponent::class);
+      
+    // Options
+      Route::namespace('Options')->group(function() {
+
+        // Create
+        Route::get('create', CreateComponent::class)->middleware('can:edit_slider_settings');
+
+        // Edit
+        Route::get('edit/{id}', EditComponent::class)->middleware('can:edit_slider_settings');
+
+    });
+    });
+    
+    
     // Settings
     Route::namespace('Settings')->prefix('settings')->group(function() {
 

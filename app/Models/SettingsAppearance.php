@@ -42,6 +42,7 @@ class SettingsAppearance extends Model
         'font_family',
         'is_featured_categories',
         'is_best_sellers',
+        'is_slider',
         'placeholder_img_id',
         'custom_code_head_main_layout',
         'custom_code_footer_main_layout',

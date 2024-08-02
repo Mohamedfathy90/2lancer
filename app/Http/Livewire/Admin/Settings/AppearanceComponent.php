@@ -20,6 +20,7 @@ class AppearanceComponent extends Component
     public $logo_desktop_height;
     public $is_featured_categories;
     public $is_best_sellers;
+    public $is_slider;
     public $placeholder_img;
     public $default_theme;
     public $is_theme_switcher;
@@ -39,7 +40,7 @@ class AppearanceComponent extends Component
     {
         // Get settings
         $settings = settings('appearance');
-
+        
         // Fill default settings
         $this->fill([
             'primary_color'                        => $settings->colors['primary'],
@@ -47,6 +48,7 @@ class AppearanceComponent extends Component
             'is_theme_switcher'                    => $settings->is_theme_switcher ? 1 : 0,
             'is_featured_categories'               => $settings->is_featured_categories ? 1 : 0,
             'is_best_sellers'                      => $settings->is_best_sellers ? 1 : 0,
+            'is_slider'                            => $settings->is_slider ? 1 : 0,
             'font_link'                            => $settings->font_link,
             'font_family'                          => $settings->font_family,
             'default_theme'                        => $settings->default_theme,
@@ -117,6 +119,7 @@ class AppearanceComponent extends Component
                 'is_theme_switcher'                    => $this->is_theme_switcher ? 1 : 0,
                 'is_featured_categories'               => $this->is_featured_categories ? 1 : 0,
                 'is_best_sellers'                      => $this->is_best_sellers ? 1 : 0,
+                'is_slider'                            => $this->is_slider ? 1 : 0,
                 'font_link'                            => $this->font_link,
                 'font_family'                          => $this->font_family,
                 'placeholder_img_id'                   => $placeholder_img_id,
