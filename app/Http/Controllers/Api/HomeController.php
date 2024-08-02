@@ -518,42 +518,42 @@ class HomeController extends Controller
             
             foreach($order_items as $item){
                 
-                $order['gig'] = Gig::where('id',$item->gig_id)->first(); 
-                $image_large_file = FileManager::where('id',$order['gig']->image_large_id)->first();
+                $item['gig'] = Gig::where('id',$item->gig_id)->first(); 
+                $image_large_file = FileManager::where('id',$item['gig']->image_large_id)->first();
                 $image_large_path = ('/public/storage/'.$image_large_file->file_folder.'/'.$image_large_file->uid.'.'.$image_large_file->file_extension);
-                $order['gig']['image'] = $image_large_path;
+                $item['gig']['image'] = $image_large_path;
                 
                 if ($item->refund && $item->refund->status === 'pending')
-                $order['status'] = 'Dispute Opened' ;
+                $item['status'] = 'Dispute Opened' ;
                 elseif ($item->order?->invoice && $item->order->invoice->status === 'pending')
-                $order['status'] = 'Pending Payment' ;
+                $item['status'] = 'Pending Payment' ;
                 elseif ($item->status === 'delivered' && $item->is_finished)
-                $order['status'] = 'Completed' ;
+                $item['status'] = 'Completed' ;
                 else{
                     switch($item->status){
                             //Pending 
                             case('pending'):
-                            $order['status'] = 'Pending' ;
+                            $item['status'] = 'Pending' ;
                             break;
                             
                             //Delivered 
                             case('delivered'):
-                            $order['status'] = 'Delivered' ;
+                            $item['status'] = 'Delivered' ;
                             break;
                             
                             //Refunded 
                             case('refunded'):
-                            $order['status'] = 'Refunded' ;
+                            $item['status'] = 'Refunded' ;
                             break;
                             
                             //Proceeded 
                             case('proceeded'):
-                            $order['status'] = 'Proceeded' ;
+                            $item['status'] = 'Proceeded' ;
                             break;
                             
                             //Cancelled 
                             case('cancelled'):
-                            $order['status'] = 'Cancelled' ;
+                            $item['status'] = 'Cancelled' ;
                             break;
                             }               
                     }
@@ -561,9 +561,7 @@ class HomeController extends Controller
             
         }
 
-        $response = ['orders'=>$orders ];
-
-        return response ($orders , 200);
+        return response ($order_items , 200);
     }
 
     public function seller_gigs(Request $request){
@@ -1260,6 +1258,11 @@ class HomeController extends Controller
         }
         
         return response ($response , 200);
+    }
+
+
+    public function submit_requirements(Request $request){
+
     }
 
 }
