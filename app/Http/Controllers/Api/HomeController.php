@@ -511,10 +511,9 @@ class HomeController extends Controller
 
     public function buyer_orders(Request $request){
         
-        $orders = Order::where('buyer_id', auth()->id())->latest()->get();
+        $orders = Order::where('buyer_id', auth()->id())->latest()->pluck('id');
         
-        foreach($orders as $order){
-            $order_items = OrderItem::where('order_id' , $order->id)->get();
+        $order_items = OrderItem::whereIn('order_id' , $orders)->get();
             
             foreach($order_items as $item){
                 
@@ -559,8 +558,6 @@ class HomeController extends Controller
                     }
             }    
             
-        }
-
         return response ($order_items , 200);
     }
 
