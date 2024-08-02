@@ -279,7 +279,9 @@ class HomeController extends Controller
             $gigs = Gig::where('subcategory_id' , $request->subcategory_id)->latest()->get();
         }
         elseif($request->has('search_text')){
-            $gigs = Gig::where('title','like','%'.$request->search_text.'%')->latest()->get();
+            $gigs = Gig::where('title','like','%'.$request->search_text.'%')
+                    ->whereIn('status' , ['active','featured','boosted','trending'])
+                    ->latest()->get();
         }
         
         foreach($gigs as $gig){
