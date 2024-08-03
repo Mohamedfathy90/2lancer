@@ -1296,7 +1296,13 @@ class HomeController extends Controller
             $submitted_ids[] =  $submitted_requirement['requirement_id'] ;
         }
         
-        dd($submitted_ids);
+        foreach($gig_requirements as $gig_requirement){
+            if($gig_requirment->is_required && !in_array($gig_requirement->id ,$submitted_id)){
+                $response = __('please submit all required requirements') ;
+                return response ($response , 200);
+            }
+        }
+   
         
        
 
