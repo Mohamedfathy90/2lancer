@@ -1265,9 +1265,10 @@ class HomeController extends Controller
         $submitted_requirements = $request->all();
         
         // Get item
-        $item    = OrderItem::where('id', $request->item_id)->where('order_id', $request->order_id)->firstOrFail();
+        $item    = OrderItem::where('id', $submitted_requirements[0]['item_id'])->where('order_id', $submitted_requirements[0]['order_id'])->firstOrFail();
     
-         // User can send requirements only when item status is pending or in progress
+        
+        // User can send requirements only when item status is pending or in progress
          if ($item->status === 'pending' || $item->status === 'proceeded') {
 
             $response = __('messages.t_u_cant_submit_requirements_for_item') ;
@@ -1286,7 +1287,7 @@ class HomeController extends Controller
         }
 
         // Get requirements from database for this item
-        $gig_requirements = $this->item->gig->requirements;
+        $gig_requirements = $item->gig->requirements;
         
         $submitted_ids = [] ;
         
