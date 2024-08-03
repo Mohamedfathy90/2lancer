@@ -1269,7 +1269,7 @@ class HomeController extends Controller
     
         
         // User can send requirements only when item status is pending or in progress
-         if (in_array($item->status , ['pending','proceeded']) ) {
+         if (!in_array($item->status , ['pending','proceeded']) ) {
 
             $response = __('messages.t_u_cant_submit_requirements_for_item') ;
 
