@@ -110,6 +110,9 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
         
         // get Gig Requirements
         Route::post('gig_requirements' , 'gig_requirements')->middleware('auth:sanctum');
+        
+        // submit Gig Requirements
+        Route::post('submit_requirements' , 'submit_requirements')->middleware('auth:sanctum');
     });
 
 

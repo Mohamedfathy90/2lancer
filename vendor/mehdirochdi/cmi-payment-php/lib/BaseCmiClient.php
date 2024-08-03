@@ -10,7 +10,7 @@ class BaseCmiClient implements CmiClientInterface
     /**
      * @var string default base URL for CMI's API
      */
-    const DEFAULT_API_BASE = 'https://payment.cmi.co.ma';
+    const DEFAULT_API_BASE = 'https://testpayment.cmi.co.ma';
     
     /**
      * @var array Languages supported by CMI

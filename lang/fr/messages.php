@@ -2585,5 +2585,6 @@
         "t_delete_slider"                                          => "Supprimer le curseur",
         "t_slider_image"                                           => "Image du curseur",
         "t_slider_url"                                             => "URL du curseur",
+        "t_buy_now"                                                => "Acheter maintenant"
 
     ];

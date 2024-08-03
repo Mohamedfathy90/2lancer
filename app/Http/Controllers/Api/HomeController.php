@@ -919,7 +919,7 @@ class HomeController extends Controller
                 if ($commission_settings->commission_type === 'percentage') {
                     
                     // Calculate commission
-                    $commission = convertToNumber($commission_settings->commission_value) * $item_total / 100;
+                    $commission = convertToNumber($commission_settings->commission_value) * $request->subtotal / 100;
 
                 } else {
 
@@ -943,8 +943,8 @@ class HomeController extends Controller
                 $order_item->owner_id               = $gig->user_id;
                 $order_item->quantity               = 1;
                 $order_item->has_upgrades           = count($upgrades) ? true : false;
-                $order_item->total_value            = $request->total;
-                $order_item->profit_value           = $request->total - $commission;
+                $order_item->total_value            = $request->subtotal;
+                $order_item->profit_value           = $request->subtotal - $commission;
                 $order_item->commission_value       = $commission;
                 $order_item->save();
 

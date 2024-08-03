@@ -39,6 +39,8 @@ class CheckoutComponent extends Component
     use SEOToolsTrait, Actions;
     
     public $cart;
+    public $buynow_item ;
+    public $is_buynow = false ;
     public $selected_method;
     public $subtotal;
     public $total;
@@ -58,6 +60,45 @@ class CheckoutComponent extends Component
      */
     public function mount()
     {
+        
+        if(isset($_GET['buynow'])){
+            $item = session('item');
+            $this->buynow_item  = $item;
+            $this->is_buynow = true;
+        
+        // Sum upgrades total price
+        if (is_array($item['upgrades']) && count($item['upgrades'])) {
+            
+            $total_upgrades_price = array_reduce($item['upgrades'], function($i, $obj)
+            {
+                // Calculate only selected upgrades
+                if ($obj['checked'] == true) {
+                    return $i += $obj['price'];
+                } else {
+                    return $i;
+                }
+
+            });
+
+        } else {
+
+            // No upgrades selected
+            $total_upgrades_price = 0;
+
+        }
+
+        // calculate subtotal
+        $this->subtotal = convertToNumber($item['gig']['price'] + $total_upgrades_price);
+        
+        // Calculate tax
+        $this->tax      = $this->taxes();
+        
+        // Calculate total
+        $this->total    = $this->total();
+        
+        }
+
+        else{
         // We have to validate the cart
         // How? For example if user is not logged in, he may be able to add his own gigs to cart and the login to checkout
         // So we need to remove his own gigs from cart after login
@@ -87,7 +128,7 @@ class CheckoutComponent extends Component
             return redirect('cart');
 
         }
-
+        }
     }
 
 
@@ -469,7 +510,7 @@ class CheckoutComponent extends Component
             if ($settings->tax_type === 'percentage') {
                 
                 // Get tax amount
-                $tax       = bcmul($this->subtotal(), $settings->tax_value) / 100;
+                $tax       = bcmul($this->subtotal, $settings->tax_value) / 100;
 
                 // Set tax
                 $this->tax = convertToNumber($tax);
@@ -637,7 +678,7 @@ class CheckoutComponent extends Component
                     // CMI
                     case 'cmi':
                         
-                         // Generate payment id
+                        // Generate payment id
                          $payment_id      = "GG" . uid(17);
                         
                          // Save webhook details to later response
@@ -2477,8 +2518,8 @@ class CheckoutComponent extends Component
             // Get buyer id
             $buyer_id              = auth()->id();
 
-             // Get Buyer
-             $buyer = User::where('id', $buyer_id)->firstOrFail();
+            // Get Buyer
+            $buyer = User::where('id', $buyer_id)->firstOrFail();
 
             // Save order
             $order                 = new Order();
@@ -2489,6 +2530,147 @@ class CheckoutComponent extends Component
             $order->taxes_value    = $this->tax;
             $order->save();
 
+    
+            if($this->is_buynow){
+                
+                $item = $this->buynow_item ;
+                
+                // Get gig
+                $gig = Gig::where('uid', $item['id'])->with('owner')->active()->first();
+
+                   // Check if gig exists
+                   if ($gig) {
+                    
+                    // Set quantity
+                    $quantity        =  1;
+
+                    // Set gig upgrades
+                    $upgrades        = isset($item['upgrades']) && is_array($item['upgrades']) && count($item['upgrades']) ? $item['upgrades'] : [];
+
+                
+                    if(settings('fee-exemption')->is_enabled){
+                    // Calculate completed orders
+                    $completed_orders  = OrderItem::where('owner_id', $gig->user_id)
+                    ->where('status', 'delivered')
+                    ->where('is_finished', true)
+                    ->count();
+                    
+                    if ($completed_orders == settings('fee-exemption')->gigs_number){
+                        $commission = 0;
+                    }
+                    }
+                    
+                    else{
+                    // Calculate commission first
+                    if ($commission_settings->commission_from === 'orders') {
+                        
+                        // Check commission type
+                        if ($commission_settings->commission_type === 'percentage') {
+                            
+                            // Calculate commission
+                            $commission = convertToNumber($commission_settings->commission_value) * $this->subtotal / 100;
+    
+                        } else {
+    
+                            // Fixed amount
+                            $commission = convertToNumber($commission_settings->commission_value);
+    
+                        }
+
+                    } else {
+                        
+                        // No commission
+                        $commission = 0;
+
+                    }
+                    }
+
+                    // Save order item
+                    $order_item                         = new OrderItem();
+                    $order_item->uid                    = uid();
+                    $order_item->order_id               = $order->id;
+                    $order_item->gig_id                 = $gig->id;
+                    $order_item->owner_id               = $gig->user_id;
+                    $order_item->quantity               = $quantity;
+                    $order_item->has_upgrades           = count($upgrades) ? true : false;
+                    $order_item->total_value            = $this->subtotal;
+                    $order_item->profit_value           = $this->subtotal - $commission;
+                    $order_item->commission_value       = $commission;
+                    $order_item->save();
+
+                    // Loop through upgrades again
+                    foreach ($upgrades as $index => $value) {
+                        
+                        // Check if upgrade is selected
+                        if ( isset($upgrade['checked']) && $upgrade['checked'] == 1 ) {
+                        
+                            // Get upgrade
+                            $upgrade = GigUpgrade::where('uid', $value['id'])->where('gig_id', $gig->id)->first();
+    
+                            // Check if upgrade exists
+                            if ($upgrade) {
+                                
+                                // Save item upgrade
+                                $order_item_upgrade             = new OrderItemUpgrade();
+                                $order_item_upgrade->item_id    = $order_item->id;
+                                $order_item_upgrade->title      = $upgrade->title;
+                                $order_item_upgrade->price      = $upgrade->price;
+                                $order_item_upgrade->extra_days = $upgrade->extra_days;
+                                $order_item_upgrade->save();
+    
+                            }
+
+                        }
+                        
+                    }
+
+                    // Update seller pending balance
+                    $gig->owner()->update([
+                        'balance_pending' => convertToNumber($gig->owner->balance_pending) + convertToNumber($order_item->profit_value)
+                    ]);
+
+                    // Increment orders in queue
+                    $gig->increment('orders_in_queue');
+
+                    // Order item placed successfully
+                    // Let's notify the seller about new order
+                    $gig->owner->notify( (new PendingOrder($order_item))->locale(config('app.locale')) );
+
+
+                    // Check user's level
+                    check_user_level($buyer_id);
+
+                    // Send notification
+                    notification([
+                        'text'    => 't_u_received_new_order_seller',
+                        'action'  => url('seller/orders/details', $order_item->uid),
+                        'user_id' => $order_item->owner_id
+                    ]);
+   
+                    try{
+                    //send whatsapp message
+                    if($gig->owner->phone){
+                    $account_sid = getenv("TWILIO_ACCOUNT_SID");
+                    $auth_token = getenv("TWILIO_AUTH_TOKEN");
+                    $twilio_service_sid = getenv("TWILIO_SERVICE_SID");
+                    $twilioWhatsAppNumber = getenv("TWILIO_WHATSAPP_NUMBER");
+                    $template_sid = "HX83e78d38c3da3dccfe0e633b7f6a7a60";
+                    $recipientNumber = "whatsapp:+".$gig->owner->phone;
+                    $client = new \Twilio\Rest\Client($account_sid, $auth_token);
+                    $client->messages->create($recipientNumber, 
+                                    [
+                                        "contentSid" => $template_sid,
+                                        "from" => $twilio_service_sid
+                                    ]
+                    );
+                    }
+                    }catch (\Twilio\Exceptions\TwilioException $e){
+                                
+                    } 
+                }
+            }
+            
+            else{ 
             // Loop through items in cart
             foreach ($this->cart as $key => $item) {
                     
@@ -2647,6 +2829,9 @@ class CheckoutComponent extends Component
 
             }
 
+            }
+            
+            
             // Save invoice
             $invoice                 = new OrderInvoice();
             $invoice->order_id       = $order->id;
@@ -2672,7 +2857,7 @@ class CheckoutComponent extends Component
             // Now everything succeeded
             // Let's empty the cart
             session()->forget('cart');
-
+           
             // Let's notify the buyer about new order
             $buyer->notify( (new OrderPlaced($order))->locale(config('app.locale')) );
             
@@ -2828,19 +3013,21 @@ class CheckoutComponent extends Component
             $buyer_id                = auth()->id();
             
             // Set cart
-            $cart                    = $this->cart;
-
+            $cart = ($this->is_buynow) ? $this->buynow_item : $this->cart ;
+            
             // Set payment id
             $payment_id              = $data['payment_id'];
 
             // Set payment method 
             $payment_method          = $data['payment_method'];
 
+            
             // Save
             $webhook                 = new CheckoutWebhook();
             $webhook->data           = ['buyer_id' => $buyer_id, 'cart' => $cart];
             $webhook->payment_id     = $payment_id;
             $webhook->payment_method = $payment_method;
+            $webhook->type           = ($this->is_buynow) ? 'buynow' : 'cart';
             $webhook->save();
 
         } catch (\Throwable $th) {

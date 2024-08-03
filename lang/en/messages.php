@@ -2628,4 +2628,5 @@
         "t_delete_slider"                                          => "Delete slider",
         "t_slider_image"                                           => "Slider Image",
         "t_slider_url"                                             => "Slider Url",
+        "t_buy_now"                                                => "Buy Now"
     ];

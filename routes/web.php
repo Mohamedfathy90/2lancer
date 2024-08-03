@@ -759,15 +759,15 @@ Route::namespace('App\Http\Controllers\Callback')->prefix('callback')->group(fun
             'encoding' => "UTF-08" , 
             'oid' => $payment_id, // COMMAND ID IT MUST BE UNIQUE
             'shopurl' => "https://2lancer.ma", // SHOP URL FOR REDIRECTION
-            'okUrl' => "https://2lancer.ma/callback/cmi/success", // REDIRECTION AFTER SUCCEFFUL PAYMENT
-            'failUrl' => "https://2lancer.ma/callback/cmi/failed", // REDIRECTION AFTER FAILED PAYMENT
+            'okUrl' => "http://localhost/2lancer/callback/cmi/success", // REDIRECTION AFTER SUCCEFFUL PAYMENT
+            'failUrl' => "http://localhost/2lancer/callback/cmi/failed", // REDIRECTION AFTER FAILED PAYMENT
             'email' => auth()->user()->email, // YOUR EMAIL APPEAR IN CMI PLATEFORM
             'BillToName' => auth()->user()->username, // YOUR NAME APPEAR IN CMI PLATEFORM
             'tel' => auth()->user()->phone, // YOUR NAME APPEAR IN CMI PLATEFORM
             'BillToCompany' => '', // YOUR COMPANY NAME APPEAR IN CMI PLATEFORM
             'amount' => (string)$amount, // RETRIEVE AMOUNT WITH METHOD POST
             'AutoRedirect'=>'true' ,
-            'CallbackURL' => 'https://2lancer.ma/callback/cmi/callback', // CALLBACK
+            'CallbackURL' => 'http://localhost/2lancer/callback/cmi/callback', // CALLBACK
         ]);
         
         $client->redirect_post();

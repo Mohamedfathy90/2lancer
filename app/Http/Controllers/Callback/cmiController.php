@@ -14,7 +14,9 @@ use App\Models\CheckoutWebhook;
 use App\Models\OrderItemUpgrade;
 use App\Models\DepositTransaction;
 use App\Http\Controllers\Controller;
+use App\Models\AffiliateTransaction;
 use Illuminate\Support\Facades\Http;
+use App\Models\AffiliateRegisteration;
 use App\Models\AutomaticPaymentGateway;
 use App\Notifications\User\Buyer\OrderPlaced;
 use App\Notifications\User\Buyer\DepositOrder;
@@ -24,6 +26,7 @@ class cmiController extends Controller
 {
     public $gateway = "cmi";
     public $status  = "paid";
+    public $is_buynow ;
     public $settings;
 
 
@@ -128,6 +131,8 @@ class cmiController extends Controller
                     ->where('status', 'pending')
                     ->firstOrFail();
 
+                    $this->is_buynow = ($data->type == 'buynow') ? true : false ;
+                                        
                     // Get cart
                     $cart = $data->data['cart'];
 
@@ -230,6 +235,7 @@ class cmiController extends Controller
      */
     private function checkout($cart, $user, $payment_id)
     {
+        
         try {
 
             // Set empty variables
@@ -238,6 +244,217 @@ class cmiController extends Controller
             $tax      = 0;
             $fee      = 0;
 
+            if($this->is_buynow){
+                
+                $item = $cart ;
+                
+                // Add gig price to subtotal
+                $subtotal += convertToNumber($item['gig']['price']);
+
+                // Check if item has upgrades
+                $upgrades  = $item['upgrades'];
+
+                // Loop through upgrades
+                if ( isset($upgrades) && is_array($upgrades) && count($upgrades) ) {
+                    
+                    // Loop through upgrades
+                    foreach ($upgrades as $j => $upgrade) {
+                        
+                        // Check if upgrade checked
+                        if ( isset($upgrade['checked']) && $upgrade['checked'] == 1 ) {
+                            
+                            // Add upgrade price to subtotal
+                            $subtotal += convertToNumber($upgrade['price']) ;
+
+                        }
+
+                    }
+
+                }
+                    // Get commission settings
+                    $commission_settings = settings('commission');
+
+                    // Check if taxes enabled
+                    if ($commission_settings->enable_taxes) {
+                        
+                        // Check if type of taxes percentage
+                        if ($commission_settings->tax_type === 'percentage') {
+                            
+                            // Set tax amount
+                            $tax       = convertToNumber(bcmul($subtotal, $commission_settings->tax_value) / 100);
+
+                        } else {
+                            
+                            // Set tax amount
+                            $tax       = convertToNumber($commission_settings->tax_value);
+
+                        }
+
+                    }
+
+                    // Calculate payment gateway fee
+                    $fee                   = convertToNumber($this->fee('gigs', $subtotal ));
+
+                    // Calculate total price
+                    $total                 = $subtotal + $tax + $fee;
+
+                    // Get user billing address
+                    $billing_info          = $user->billing;
+
+                    // Set unique id for this order
+                    $uid                   = uid();
+
+                    // Get buyer id
+                    $buyer_id              = $user->id;
+
+                    // Save order
+                    $order                 = new Order();
+                    $order->uid            = $uid;
+                    $order->buyer_id       = $buyer_id;
+                    $order->total_value    = $total;
+                    $order->subtotal_value = $subtotal;
+                    $order->taxes_value    = $tax;
+                    $order->save();
+
+                    // Get gig
+                    $gig = Gig::where('uid', $item['id'])->with('owner')->active()->first();
+
+                    // Check if gig exists
+                    if ($gig) {
+                        
+                        // Set gig upgrades
+                        $upgrades        = isset($item['upgrades']) && is_array($item['upgrades']) && count($item['upgrades']) ? $item['upgrades'] : [];
+
+                        // Set item total price
+                        $item_total = $total;
+
+                        if(settings('fee-exemption')->is_enabled){
+                            // Calculate completed orders
+                            $completed_orders  = OrderItem::where('owner_id', $gig->user_id)
+                            ->where('status', 'delivered')
+                            ->where('is_finished', true)
+                            ->count();
+                            
+                            if ($completed_orders == settings('fee-exemption')->gigs_number){
+                                $commission = 0;
+                            }
+                            }
+                        
+                        else{
+                        
+                        // Calculate commission first
+                        if ($commission_settings->commission_from === 'orders') {
+                            
+                            // Check commission type
+                            if ($commission_settings->commission_type === 'percentage') {
+                                
+                                // Calculate commission
+                                $commission = convertToNumber($commission_settings->commission_value) * $subtotal / 100;
+
+                            } else {
+
+                                // Fixed amount
+                                $commission = convertToNumber($commission_settings->commission_value);
+
+                            }
+
+                        } else {
+                            
+                            // No commission
+                            $commission = 0;
+
+                        }
+
+                        }
+
+                        // Save order item
+                        $order_item                         = new OrderItem();
+                        $order_item->uid                    = uid();
+                        $order_item->order_id               = $order->id;
+                        $order_item->gig_id                 = $gig->id;
+                        $order_item->owner_id               = $gig->user_id;
+                        $order_item->quantity               = 1;
+                        $order_item->has_upgrades           = count($upgrades) ? true : false;
+                        $order_item->total_value            = $subtotal;
+                        $order_item->profit_value           = $subtotal - $commission;
+                        $order_item->commission_value       = $commission;
+                        $order_item->save();
+
+                        // Loop through upgrades again
+                        foreach ($upgrades as $index => $value) {
+                            
+                            // Check if upgrade is selected
+                            if ( isset($upgrade['checked']) && $upgrade['checked'] == 1 ) {
+                            
+                                // Get upgrade
+                                $upgrade = GigUpgrade::where('uid', $value['id'])->where('gig_id', $gig->id)->first();
+
+                                // Check if upgrade exists
+                                if ($upgrade) {
+
+                                    // Save item upgrade
+                                    $order_item_upgrade             = new OrderItemUpgrade();
+                                    $order_item_upgrade->item_id    = $order_item->id;
+                                    $order_item_upgrade->title      = $upgrade->title;
+                                    $order_item_upgrade->price      = $upgrade->price;
+                                    $order_item_upgrade->extra_days = $upgrade->extra_days;
+                                    $order_item_upgrade->save();
+
+                                }
+
+                            }
+                            
+                        }
+
+                        // Update seller pending balance
+                        $gig->owner()->update([
+                            'balance_pending' => convertToNumber($gig->owner->balance_pending) + convertToNumber($order_item->profit_value)
+                        ]);
+
+                        // Increment orders in queue
+                        $gig->increment('orders_in_queue');
+
+                        // Order item placed successfully
+                        // Let's notify the seller about new order
+                        $gig->owner->notify( (new PendingOrder($order_item))->locale(config('app.locale')) );
+
+                        // Check user's level
+                        check_user_level($buyer_id);
+
+                        // Send notification
+                        notification([
+                            'text'    => 't_u_received_new_order_seller',
+                            'action'  => url('seller/orders/details', $order_item->uid),
+                            'user_id' => $order_item->owner_id
+                        ]);
+
+                        try{
+                            //send whatsapp message
+                            if($gig->owner->phone){
+                            $account_sid = getenv("TWILIO_ACCOUNT_SID");
+                            $auth_token = getenv("TWILIO_AUTH_TOKEN");
+                            $twilio_service_sid = getenv("TWILIO_SERVICE_SID");
+                            $twilioWhatsAppNumber = getenv("TWILIO_WHATSAPP_NUMBER");
+                            $template_sid = "HX83e78d38c3da3dccfe0e633b7f6a7a60";
+                            $recipientNumber = "whatsapp:+".$gig->owner->phone;
+                            $client = new \Twilio\Rest\Client($account_sid, $auth_token);
+                            $client->messages->create($recipientNumber, 
+                                            [
+                                                "contentSid" => $template_sid,
+                                                "from" => $twilio_service_sid
+                                            ]
+                            );
+                            }
+                            }catch (\Twilio\Exceptions\TwilioException $e){
+                                 
+                            } 
+
+                    }
+
+            }
+            
+            else{
+            
             // Loop through items in cart
             foreach ($cart as $key => $item) {
                     
@@ -470,6 +687,8 @@ class cmiController extends Controller
 
             }
 
+            }
+            
             // Save invoice
             $invoice                 = new OrderInvoice();
             $invoice->order_id       = $order->id;

@@ -295,8 +295,16 @@
                 @endif
 
                 {{-- Actions --}}
-                <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+                <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-1">
 
+                    {{-- Buy now --}}
+                    <div class="mt-6">
+                        <x-forms.button action="buyNow" text="{{ __('messages.t_buy_now') }}" :block="true"  class="w-full bg-primary-100 border border-transparent rounded-md py-4 px-8 flex items-center justify-center text-[13px] font-medium text-primary-600 hover:bg-primary-200 focus:outline-none"/>
+                    </div>                
+                
+                    {{-- Contact seller --}}
+                    <a href="{{ url('messages/new', $gig->owner->username) }}" target="_blank" class="w-full bg-primary-100 border border-transparent rounded-md py-4 px-8 flex items-center justify-center text-[13px] font-medium text-primary-600 hover:bg-primary-200 focus:outline-none">{{ __('messages.t_contact_seller') }}</a>
+                
                     {{-- Add to cart --}}
                     <button 
                         wire:click="addToCart"
@@ -320,8 +328,6 @@
                         </div>
                     </button>
 
-                    {{-- Contact seller --}}
-                    <a href="{{ url('messages/new', $gig->owner->username) }}" target="_blank" class="w-full bg-primary-100 border border-transparent rounded-md py-4 px-8 flex items-center justify-center text-[13px] font-medium text-primary-600 hover:bg-primary-200 focus:outline-none">{{ __('messages.t_contact_seller') }}</a>
 
                 </div>
 

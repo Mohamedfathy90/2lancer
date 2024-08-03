@@ -259,7 +259,7 @@ class CmiController extends Controller
                             if ($commission_settings->commission_type === 'percentage') {
                                 
                                 // Calculate commission
-                                $commission = convertToNumber($commission_settings->commission_value) * $item_total / 100;
+                                $commission = convertToNumber($commission_settings->commission_value) * $cart['subtotal'] / 100;
         
                             } else {
         
@@ -283,8 +283,8 @@ class CmiController extends Controller
                         $order_item->owner_id               = $gig->user_id;
                         $order_item->quantity               = 1;
                         $order_item->has_upgrades           = count($upgrades) ? true : false;
-                        $order_item->total_value            = $cart['total'];
-                        $order_item->profit_value           = $cart['total'] - $commission;
+                        $order_item->total_value            = $$cart['subtotal'];
+                        $order_item->profit_value           = $$cart['subtotal'] - $commission;
                         $order_item->commission_value       = $commission;
                         $order_item->save();
 

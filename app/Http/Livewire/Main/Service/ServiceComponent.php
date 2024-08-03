@@ -585,5 +585,120 @@ class ServiceComponent extends Component
         // Get related gigs
         $this->related_gigs = $this->relatedGigs();
     }
+
+     /**
+     * Buy Gig
+     *
+     * @return void
+     */
+    public function buyNow()
+    {
+        try {
+            
+            // Get seller availability
+            $availability = UserAvailability::where('user_id', $this->gig->user_id)->first();
+
+            // Check if seller available to receive orders
+            if ($availability) {
+                
+                // Not in range
+                $this->notification([
+                    'title'       => __('messages.t_error'),
+                    "description" => __('messages.t_seller_wont_be_able_to_receive_orders_date_no_html', ['date' => format_date($availability->expected_available_date, config('carbon-formats.F_j,_Y'))]),
+                    'icon'        => 'error'
+                ]);
+
+                return;
+
+            }
+
+            // You can't add your own gigs
+            if (auth()->check() && auth()->id() === $this->gig->user_id) {
+                
+                // Not in range
+                $this->notification([
+                    'title'       => __('messages.t_error'),
+                    'description' => __('messages.t_u_cant_add_ur_own_gigs_to_shopping_cart'),
+                    'icon'        => 'error'
+                ]);
+
+                return;
+
+            }
+            
+            // Quantity must be between 1 and 10
+            if (!in_array($this->quantity, range(1, 10))) {
+                
+                // Not in range
+                $this->notification([
+                    'title'       => __('messages.t_error'),
+                    'description' => __('messages.t_selected_quantity_is_not_correct'),
+                    'icon'        => 'error'
+                ]);
+
+                return;
+
+            }
+
+            //forget session 
+            session()->forget('item');
+            
+            // Item not exist in cart, set it
+            $item                     = [];
+
+            // Set gig uid
+            $item['id']               = $this->gig->uid;
+
+            // Set quantity
+            $item['quantity']         = (int) $this->quantity;
+
+            // Set gig
+            $item['gig']['title']     = $this->gig->title;
+            $item['gig']['slug']      = $this->gig->slug;
+            $item['gig']['price']     = $this->gig->price;
+            $item['gig']['delivery']  = $this->gig->delivery_time;
+            $item['gig']['thumbnail'] = src($this->gig->thumbnail);
+            $item['upgrades']         = [];
+
+            // Check if has upgrades
+            if (is_array($this->upgrades) && count($this->upgrades)) {
+                
+                // Loop through upgrades
+                foreach ($this->upgrades as $key => $upgrade_id) {
+                    
+                    // Get upgrade
+                    $upgrade = GigUpgrade::where('uid', $upgrade_id)->where('gig_id', $this->gig->id)->first();
+
+                    // Check if upgrade exists
+                    if ($upgrade) {
+                        
+                        // Add upgrade to cart
+                        $item['upgrades'][$key]['id']       = $upgrade->uid;
+                        $item['upgrades'][$key]['title']    = $upgrade->title;
+                        $item['upgrades'][$key]['price']    = $upgrade->price;
+                        $item['upgrades'][$key]['delivery'] = $upgrade->extra_days;
+                        $item['upgrades'][$key]['checked']  = 1;
+                    }
+
+                }
+
+            }
+
+            // Update cart
+            session()->put('item', $item);
+
+
+        } catch (\Throwable $th) {
+            $this->notification([
+                'title'       => __('messages.t_error'),
+                'description' => $th->getMessage(),
+                'icon'        => 'error'
+            ]);
+        }
+
+        // Now go to checkout
+        return redirect('checkout?buynow=1');
+    }
+
     
 }
