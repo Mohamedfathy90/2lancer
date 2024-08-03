@@ -1244,7 +1244,7 @@ class HomeController extends Controller
         $gig_id = Gig::where('id',$item->gig_id)->firstOrFail()->id ;
         $requirements = GigRequirement::where('gig_id' , $gig_id)->get();
         foreach($requirements as $i=>$requirement){
-            $response[$i]['id'] = $requirement->id ;
+            $response[$i]['requirement_id'] = $requirement->id ;
             $response[$i]['question'] = $requirement->question ;
             $response[$i]['type'] = $requirement->type ;
             $response[$i]['is_required'] = $requirement->is_required == 1 ? true : false  ;
@@ -1261,6 +1261,8 @@ class HomeController extends Controller
 
 
     public function submit_requirements(Request $request){
+        
+        $submitted_requirements = $request->all();
         
         // Get item
         $item    = OrderItem::where('id', $request->item_id)->where('order_id', $request->order_id)->firstOrFail();
@@ -1284,9 +1286,18 @@ class HomeController extends Controller
         }
 
         // Get requirements from database for this item
-            $requirements = $this->item->gig->requirements;
+        $gig_requirements = $this->item->gig->requirements;
         
+        $submitted_ids = [] ;
         
+        foreach($submitted_requirements as $submitted_requirement){
+                
+            $submitted_ids[] =  $submitted_requirement[$requirement_id] ;
+        }
+        
+        dd($submitted_ids);
+        
+       
 
 }
 
