@@ -1297,7 +1297,7 @@ class HomeController extends Controller
         }
         
         foreach($gig_requirements as $gig_requirement){
-            if($gig_requirement->is_required && !in_array($gig_requirement->id ,$submitted_id)){
+            if($gig_requirement->is_required && !in_array($gig_requirement->id ,$submitted_ids)){
                 $response = __('please submit all required requirements') ;
                 return response ($response , 200);
             }
