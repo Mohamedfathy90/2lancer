@@ -1293,7 +1293,7 @@ class HomeController extends Controller
         
         foreach($submitted_requirements as $submitted_requirement){
                 
-            $submitted_ids[] =  $submitted_requirement[$requirement_id] ;
+            $submitted_ids[] =  $submitted_requirement['requirement_id'] ;
         }
         
         dd($submitted_ids);
