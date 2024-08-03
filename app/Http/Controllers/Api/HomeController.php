@@ -1251,8 +1251,6 @@ class HomeController extends Controller
     public function submit_requirements(Request $request){
         
         $submitted_requirements = $request->all();
-
-        $value = false ;
         
         // Get item
         $item    = OrderItem::where('id', $submitted_requirements[0]['item_id'])->where('order_id', $submitted_requirements[0]['order_id'])->firstOrFail();
@@ -1288,7 +1286,8 @@ class HomeController extends Controller
         
         foreach($gig_requirements as $gig_requirement){
             
-             
+            $value = false ;
+
             if($gig_requirement->is_required && !in_array($gig_requirement->id ,$submitted_ids)){
                 $response = __('please submit all required requirements') ;
                 return response ($response , 200);
@@ -1325,8 +1324,6 @@ class HomeController extends Controller
                 ]);
 
                 } elseif ($gig_requirement->type === 'file') {
-                
-                dd($value);
                 
                 // Generate file id
                 $id        = uid(45);
