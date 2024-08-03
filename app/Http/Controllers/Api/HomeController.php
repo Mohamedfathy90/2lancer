@@ -32,6 +32,7 @@ use App\Models\DepositTransaction;
 use App\Http\Controllers\Controller;
 use App\Models\AffiliateTransaction;
 use App\Models\GigRequirementOption;
+use App\Models\OrderItemRequirement;
 use Illuminate\Support\Facades\Auth;
 use App\Utils\Uploader\ImageUploader;
 use App\Models\AffiliateRegisteration;
@@ -585,18 +586,9 @@ class HomeController extends Controller
         
          if($validator->fails()){
             $error = $validator->errors()->first();
-            $response = ['message'=>'Imgae exceeds Max. Size' , 'error'=>$error];
+            $response = ['error'=>$error];
             return response($response , 401);
             }
-        
-        if($request->has('video_url')){
-            // Validate Avatar 
-            $validator = GigValidator::linkValidate($request);
-            if(!$validator){
-                $response = ['message'=>'You Tube Video link isnot valid' , 'error'=>$error];
-                return response($response , 401);   
-            }
-        }
         
     
         // Generate unique id for this gig
@@ -629,9 +621,6 @@ class HomeController extends Controller
         // Check if gig has upgrades
         $has_upgrades         = $request->upgrades  ? true : false;
 
-        // Get video link
-        $video_link           = $request->video_link ? clean($request->video_link) : null;
-
         // Get gig preview image
         $preview              = $request->thumbnail;
 
@@ -660,7 +649,6 @@ class HomeController extends Controller
         $gig->image_large_id  = $image_large_id;
         $gig->status          = $status;
         $gig->has_upgrades    = $has_upgrades;
-        $gig->video_link      = $video_link;
         $gig->save();
         
         // Save tags
@@ -1263,6 +1251,8 @@ class HomeController extends Controller
     public function submit_requirements(Request $request){
         
         $submitted_requirements = $request->all();
+
+        $value = false ;
         
         // Get item
         $item    = OrderItem::where('id', $submitted_requirements[0]['item_id'])->where('order_id', $submitted_requirements[0]['order_id'])->firstOrFail();
@@ -1297,14 +1287,98 @@ class HomeController extends Controller
         }
         
         foreach($gig_requirements as $gig_requirement){
+            
+             
             if($gig_requirement->is_required && !in_array($gig_requirement->id ,$submitted_ids)){
                 $response = __('please submit all required requirements') ;
                 return response ($response , 200);
             }
+
+            foreach($submitted_requirements as $submitted_requirement){
+                if ($submitted_requirement['requirement_id'] === $gig_requirement->id){
+                    $value = $submitted_requirement->value ;
+                    break;
+                }
+            }
+            
+            
+            if($value){
+            // Check type of this requirement
+               if ($gig_requirement->type === 'text') {
+                        
+                // Save requirement
+                OrderItemRequirement::create([
+                    'item_id'    => $item->id,
+                    'question'   => $gig_requirement->question,
+                    'form_type'  => $gig_requirement->type,
+                    'form_value' => $value
+                ]);
+
+                } elseif ($gig_requirement->type === 'choice') {
+                
+                // Save requirement
+                OrderItemRequirement::create([
+                    'item_id'    => $item->id,
+                    'question'   => $gig_requirement->question,
+                    'form_type'  => $gig_requirement->type,
+                    'form_value' => $value
+                ]);
+
+                } elseif ($gig_requirement->type === 'file') {
+                
+                // Generate file id
+                $id        = uid(45);
+
+                // Get file extension
+                $extension = $value->extension();
+
+                // Get file mime type
+                $mime      = $value->getMimeType();
+
+                // Get file size
+                $size      = $value->getSize();
+
+                // Move this file to local storage
+                $value->storeAs('orders/requirements', "$id.$extension", $disk = 'custom');
+
+                // Set file data
+                $file = [
+                    'id'        => $id,
+                    'extension' => $extension,
+                    'mime'      => $mime,
+                    'size'      => $size
+                ];
+
+                // Save requirement in database
+                OrderItemRequirement::create([
+                    'item_id'    => $item->id,
+                    'question'   => $gig_requirement->question,
+                    'form_type'  => $gig_requirement->type,
+                    'form_value' => $file
+                ]);
+
+            }
         }
    
-        
+        }
+
+        // Set empty days variable
+        $days  = 0;
+
+        // Culculate extra days for upgrades
+        $days += $item->upgrades()->exists() ? $item->upgrades->sum('extra_days') : 0;
+
+        // Add gig delivery time
+        $days += $item->gig->delivery_time;
+
+        // Let' update item information
+        $item->is_requirements_sent   = true;
+        $item->expected_delivery_date = now()->addDays($days);
+        $item->save();
        
+        $response = __('messages.t_required_info_submitted_success');
+
+        return response ($response , 200) ;
 
 }
 
