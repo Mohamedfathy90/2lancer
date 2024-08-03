@@ -278,7 +278,7 @@
                     @foreach (App\Models\Slider::all() as $slider)
                     <a href="{{ $slider->link }}" class="relative !h-72 rounded-lg !p-6 !flex !flex-col overflow-hidden group mx-5">
                         <span aria-hidden="true" class="absolute inset-0">
-                            <img src="" data-src="{{ src($slider->image)  }}" alt="" class="lazy w-full h-full object-center object-cover opacity-70 group-hover:opacity-100">
+                            <img src="" data-src="{{ src($slider->image)  }}" alt="" class="lazy w-full h-full object-center object-cover">
                         </span>
                         <span aria-hidden="true" class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-gray-800 opacity-90"></span>
                     </a>
