@@ -1240,7 +1240,7 @@ class HomeController extends Controller
     }
     
     public function gig_requirements(Request $request){
-        $item = OrderItem::where('order_id',$request->order_id)->firstOrFail();
+        $item = OrderItem::where('id',$item_id)->firstOrFail();
         $gig_id = Gig::where('id',$item->gig_id)->firstOrFail()->id ;
         $requirements = GigRequirement::where('gig_id' , $gig_id)->get();
         foreach($requirements as $i=>$requirement){
