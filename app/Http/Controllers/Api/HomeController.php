@@ -1326,6 +1326,8 @@ class HomeController extends Controller
 
                 } elseif ($gig_requirement->type === 'file') {
                 
+                dd($value);
+                
                 // Generate file id
                 $id        = uid(45);
 
