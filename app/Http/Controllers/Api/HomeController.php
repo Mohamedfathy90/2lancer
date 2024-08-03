@@ -1246,6 +1246,7 @@ class HomeController extends Controller
         foreach($requirements as $i=>$requirement){
             $response[$i]['question'] = $requirement->question ;
             $response[$i]['type'] = $requirement->type ;
+            $response[$i]['is_required'] = $requirement->is_required == 1 ? true : false  ;
             if($requirement->type === 'choice'){
                 $choices =  GigRequirementOption::where('requirement_id' , $requirement->id)->get();
                 foreach($choices as $j=>$choice){
@@ -1259,7 +1260,33 @@ class HomeController extends Controller
 
 
     public function submit_requirements(Request $request){
+        
+        // Get item
+        $item    = OrderItem::where('id', $request->item_id)->where('order_id', $request->order_id)->firstOrFail();
+    
+         // User can send requirements only when item status is pending or in progress
+         if ($item->status === 'pending' || $item->status === 'proceeded') {
 
-    }
+            $response = __('messages.t_u_cant_submit_requirements_for_item') ;
+
+            return response ($response , 200);
+
+        }
+
+         // Check if user already submitted the required information
+         if ($item->is_requirements_sent && $item->requirements()->count()) {
+                
+            $response = __('messages.t_user_already_submitted_requirements') ;
+            
+            return response ($response , 200);
+
+        }
+
+        // Get requirements from database for this item
+            $requirements = $this->item->gig->requirements;
+        
+        
+
+}
 
 }
