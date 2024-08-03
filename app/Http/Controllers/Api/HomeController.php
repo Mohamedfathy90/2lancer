@@ -1296,7 +1296,7 @@ class HomeController extends Controller
 
             foreach($submitted_requirements as $submitted_requirement){
                 if ($submitted_requirement['requirement_id'] === $gig_requirement->id){
-                    $value = $submitted_requirement->value ;
+                    $value = $submitted_requirement['value'] ;
                     break;
                 }
             }
