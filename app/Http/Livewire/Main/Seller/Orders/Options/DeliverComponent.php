@@ -220,6 +220,12 @@ class DeliverComponent extends Component
             // Refresh
             redirect(Url::current());
 
+        }catch (\Twilio\Exceptions\TwilioException $th){
+            
+            // Refresh
+            redirect(Url::current());
+        
+
 
         } catch (\Illuminate\Validation\ValidationException $e) {
 
@@ -243,10 +249,6 @@ class DeliverComponent extends Component
 
             throw $th;
 
-        }catch (\Twilio\Exceptions\TwilioException $th){
-            
-            // Refresh
-            redirect(Url::current());
         }
     }
 

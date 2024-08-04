@@ -1381,4 +1381,17 @@ class HomeController extends Controller
 
 }
 
+    public function view_requirements(Request $request){
+         
+        // Get user id
+         $user_id    = auth()->id();
+
+         // Get order item
+         $item       = OrderItem::where('owner_id', $user_id)->where('id', $request->item_id)->firstOrFail();
+
+         $requirements = $item->requirements ;
+
+         return response ($requirments , 200);
+    }
+
 }
