@@ -514,7 +514,7 @@ class HomeController extends Controller
         
         $orders = Order::where('buyer_id', auth()->id())->latest()->pluck('id');
         
-        $order_items = OrderItem::whereIn('order_id' , $orders)->get();
+        $order_items = OrderItem::whereIn('order_id' , $orders)->orderBy('placed_at', 'desc')->get();
             
             foreach($order_items as $item){
                 
@@ -1391,7 +1391,110 @@ class HomeController extends Controller
 
          $requirements = $item->requirements ;
 
-         return response ($requirments , 200);
+         return response ($requirements , 200);
+    }
+
+    public function buyer_cancel_order (Request $request){
+        
+        // Get item
+        $item = OrderItem::where('id', $request->item_id)
+                        ->whereHas('order', function($query) {
+                            return $query->where('buyer_id', auth()->id());
+                        })
+                        ->where('status', 'pending')
+                        ->firstOrFail();
+    
+        // Remove item price from seller balance
+        $item->owner()->update([
+            'balance_pending' => convertToNumber($item->owner->balance_pending) - convertToNumber($item->profit_value)
+        ]);
+
+        // Add item price to buyer balance
+        $item->order->buyer()->update([
+            'balance_available' => convertToNumber($item->order->buyer->balance_available) + convertToNumber($item->total_value)
+        ]);
+    
+        // Update item
+        $item->status      = 'canceled';
+        $item->canceled_by = 'buyer';
+        $item->canceled_at = now();
+        $item->is_finished = true;
+        $item->save();
+
+        // Decrement orders in queue
+        if ($item->gig->total_orders_in_queue() > 0) {
+        $item->gig()->decrement('orders_in_queue');
+        }
+
+         // Check if item has any opened refund
+        if ($item->refund && $item->refund?->status === 'pending') {
+        
+            // Let's close this refund
+            $item->refund->status = 'closed';
+            $item->refund->save();
+
+        }
+      
+        // Send notification to seller
+        $item->owner->notify( (new App\Notifications\User\Seller\OrderItemCanceled($item))->locale(config('app.locale')) );
+
+        // Send notification
+        notification([
+            'text'    => 't_buyer_has_canceled_order',
+            'action'  => url('seller/orders/details', $item->uid),
+            'user_id' => $item->owner_id,
+            'params'  => ['buyer' => auth()->user()->username]
+        ]);
+
+        $response = __('messages.t_order_has_been_successfully_canceled') ;
+
+        return response ($response , 200);
+    
+    }
+
+
+    public function seller_cancel_order (Request $request){
+
+        // Get item
+        $item = OrderItem::where('id', $request->item_id)->where('owner_id', auth()->id())->where('status', 'pending')->firstOrFail();
+
+        // Remove item price from seller balance
+        $item->owner()->update([
+        'balance_pending' => convertToNumber($item->owner->balance_pending) - convertToNumber($item->profit_value)
+        ]);
+
+        // Add item price to buyer balance
+        $item->order->buyer()->update([
+            'balance_available' => convertToNumber($item->order->buyer->balance_available) + convertToNumber($item->total_value)
+        ]);
+
+        // Update item
+        $item->status      = 'canceled';
+        $item->canceled_by = 'seller';
+        $item->canceled_at = now();
+        $item->is_finished = true;
+        $item->save();
+
+        // Decrement orders in queue
+        if ($item->gig->total_orders_in_queue() > 0) {
+        $item->gig()->decrement('orders_in_queue');
+        }
+
+        // Send notification to buyer
+        $item->order->buyer->notify( (new App\Notifications\User\Buyer\OrderItemCanceled($item))->locale(config('app.locale')) );
+    
+        // Send notification
+        notification([
+            'text'    => 't_seller_has_canceled_ur_order',
+            'action'  => url('account/orders'),
+            'user_id' => $item->order->buyer_id,
+            'params'  => ['seller' => auth()->user()->username]
+        ]);
+
+        $response = __('messages.t_order_has_been_successfully_canceled') ;
+
+        return response ($response , 200);
+    
     }
 
 }

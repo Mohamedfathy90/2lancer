@@ -116,6 +116,12 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
 
         // view item submitted requirements
         Route::post('view_requirements' , 'view_requirements')->middleware('auth:sanctum');
+
+        // Cancel Order By Buyer
+        Route::post('buyer_cancel_order' , 'buyer_cancel_order')->middleware('auth:sanctum');
+
+        // Cancel Order By Seller
+        Route::post('seller_cancel_order' , 'seller_cancel_order')->middleware('auth:sanctum');
     });
 
 
