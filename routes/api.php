@@ -125,6 +125,11 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
         
         // Start Order By Seller
         Route::post('start_order' , 'start_order')->middleware('auth:sanctum');
+
+        // view submitted Requirements
+        Route::post('view_submitted_requirements' , 'view_submitted_requirements')->middleware('auth:sanctum');
+
+
     });
 
 

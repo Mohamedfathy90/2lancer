@@ -1279,20 +1279,9 @@ class HomeController extends Controller
              
             $gig_requirement = GigRequirement::find($submitted_requirement['requirement_id']);
             
-            
             // Check type of this requirement
-               if ($gig_requirement->type === 'text') {
+               if ($gig_requirement->type === 'text' || $gig_requirement->type === 'choice') {
                         
-                // Save requirement
-                OrderItemRequirement::create([
-                    'item_id'    => $item->id,
-                    'question'   => $gig_requirement->question,
-                    'form_type'  => $gig_requirement->type,
-                    'form_value' => $submitted_requirement['value']
-                ]);
-
-                } elseif ($gig_requirement->type === 'choice') {
-                
                 // Save requirement
                 OrderItemRequirement::create([
                     'item_id'    => $item->id,
@@ -1516,6 +1505,28 @@ class HomeController extends Controller
             $response = "t_order_has_been_successfully_marked_progress" ;
 
             return response ($response , 200);
+    }
+
+    public function view_submitted_requirements(Request $request){
+          
+        // Get submitted requirements 
+        $submitted_requirements = OrderItemRequirement::where('item_id', $request->item_id )->get();
+
+        $response = [] ;
+        
+        foreach($submitted_requirements as $req){
+            
+                        if($req->form_type === 'text' || $req->form_type === 'choice'){
+                            $response[] = $req->form_value ;            
+                        }
+                        else{
+                            $path = url('public/storage/orders/requirements/' .  $req->form_value['id'] . '.' . $req->form_value['extension']);
+                            $response[] = $path ;
+                        
+                        }
+                }
+        
+        return response ($response , 200) ;
     }
 
 }
