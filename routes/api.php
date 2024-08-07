@@ -128,7 +128,33 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
 
         // view submitted Requirements
         Route::post('view_submitted_requirements' , 'view_submitted_requirements')->middleware('auth:sanctum');
+        
+        // Buyer Refunds List
+        Route::post('buyer_refunds' , 'buyer_refunds')->middleware('auth:sanctum');
+        
+        // Seller Refunds List
+        Route::post('seller_refunds' , 'seller_refunds')->middleware('auth:sanctum');
+        
+        // Request refund by buyer
+        Route::post('request_refund' , 'request_refund')->middleware('auth:sanctum');
+        
+        // Close refund request by buyer
+        Route::post('close_refund' , 'close_refund')->middleware('auth:sanctum');
+        
+        // raise refund request to admin
+        Route::post('raise_refund' , 'raise_refund')->middleware('auth:sanctum');
 
+        // accept refund from seller
+        Route::post('accept_refund' , 'accept_refund')->middleware('auth:sanctum');
+
+        // decline refund from seller
+        Route::post('decline_refund' , 'decline_refund')->middleware('auth:sanctum');
+
+        // Submit work
+        Route::post('submit_work' , 'submit_work')->middleware('auth:sanctum');
+
+        // Resubmit work
+        Route::post('resubmit_work' , 'resubmit_work')->middleware('auth:sanctum');
 
     });
 

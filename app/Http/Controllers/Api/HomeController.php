@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use CMI\CmiClient;
 use App\Models\Gig;
 use App\Models\User;
@@ -23,6 +24,7 @@ use Illuminate\Support\Str;
 use App\Models\Notification;
 use App\Models\OrderInvoice;
 use Illuminate\Http\Request;
+use App\Models\OrderItemWork;
 use App\Models\DepositWebhook;
 use App\Models\GigRequirement;
 use App\Models\CheckoutWebhook;
@@ -39,8 +41,15 @@ use App\Models\AffiliateRegisteration;
 use App\Models\AutomaticPaymentGateway;
 use App\Notifications\Admin\PendingGig;
 use App\Http\Validators\API\GigValidator;
+use App\Notifications\Admin\RefundDispute;
+use App\Http\Validators\API\DeliverValidator;
 use App\Notifications\User\Buyer\OrderPlaced;
 use App\Notifications\User\Seller\PendingOrder;
+use App\Notifications\User\Seller\RefundClosed;
+use App\Notifications\User\Buyer\OrderDelivered;
+use App\Notifications\User\Buyer\RefundAccepted;
+use App\Notifications\User\Buyer\RefundDeclined;
+use App\Notifications\User\Seller\RefundRequest;
 use App\Notifications\User\Buyer\OrderItemInProgress;
 
 class HomeController extends Controller
@@ -1527,6 +1536,284 @@ class HomeController extends Controller
                 }
         
         return response ($response , 200) ;
+    }
+
+    
+    public function buyer_refunds(Request $request){
+        $refunds = Refund::where('buyer_id', auth()->id())->latest()->get();
+        return response ($refunds , 200);
+    }
+    
+    public function seller_refunds(Request $request){
+        $refunds = Refund::where('seller_id', auth()->id())->latest()->get();
+        return response ($refunds , 200);
+    }
+    
+    public function request_refund(Request $request){
+           // Get item
+           $item = OrderItem::where('id', $request->item_id)
+           ->where('owner_id', '!=', auth()->id())
+           ->where('is_finished', false)
+           ->whereNotNull('expected_delivery_date')
+           ->whereHas('order', function($query) {
+              return $query->where('buyer_id', auth()->id());
+           })
+           ->firstOrFail();
+
+            // Check item status
+            if (!in_array($item->status, ['pending', 'proceeded', 'delivered'])) {
+                
+                // Error
+                return response ( __('messages.t_u_cant_request_refund_for_this_item_now') , 200);
+
+            }
+
+            // Parse expected delivery date
+            $parsed_date = Carbon::parse($item->expected_delivery_date);
+
+            // Check if expected delivery date in in future and item not delivered
+            if (!$parsed_date->isPast() && $item->status !== 'delivered') {
+                
+                // Error
+                return response( __('messages.t_u_can_request_refund_when_expected_date_finish') , 200);
+
+            }
+
+            // Create new refund
+            $refund            = new Refund();
+            $refund->uid       = uid();
+            $refund->item_id   = $item->id;
+            $refund->seller_id = $item->owner_id;
+            $refund->buyer_id  = auth()->id();
+            $refund->reason    = clean($request->reason);
+            $refund->save();
+
+            // Send notification to seller
+            $item->owner->notify( (new RefundRequest($refund))->locale(config('app.locale')) );
+
+            // Send notification
+              notification([
+                  'text'    => 't_buyer_opened_new_refund_dispute',
+                  'action'  => url('seller/refunds/details', $refund->uid),
+                  'user_id' => $refund->seller_id,
+                  'params'  => ['buyer' => auth()->user()->username]
+            ]);
+    }
+
+    // close refund by buyer
+    public function close_refund (Request $request){
+        
+        // Get refund
+        $refund       = Refund::where('id', $request->refund_id)->where('buyer_id', auth()->id())->firstOrFail();
+
+        // Check if refund still in pending
+        if ($refund->status !== 'pending') {
+            return response('cannot close this refund request' , 200);
+        }
+
+        // Close this refund
+        $refund->status = 'closed';
+        $refund->save();
+
+        // Send notification to seller
+        $refund->item->owner->notify( (new RefundClosed($refund))->locale(config('app.locale')) );
+
+        // Send notification
+        notification([
+            'text'    => 't_a_refund_has_closed',
+            'action'  => url('seller/refunds/details', $refund->uid),
+            'user_id' => $refund->seller_id,
+            'params'  => ['buyer' => auth()->user()->username]
+        ]);
+    }
+
+    public function raise_refund(Request $request){
+        
+        // Get refund
+        $refund       = Refund::where('id', $request->refund_id)->where('buyer_id', auth()->id())->firstOrFail();
+        
+        // Refund must be declined by seller to raise a dispute
+        if ($refund->status !== 'rejected_by_seller' && !$refund->request_admin_intervention) {
+            return response('cannot raise refund request to admin' , 200);
+        }
+
+        // Update refund
+        $refund->request_admin_intervention = true;
+        $refund->save();
+
+        // Send notification to admin
+        Admin::first()->notify( (new RefundDispute($refund))->locale(config('app.locale')) );
+    }
+
+    public function accept_refund(Request $request){
+        
+        $refund      = Refund::where('id', $request->refund_id)->where('seller_id', auth()->id())->firstOrFail();
+
+         // Check if refund still in pending
+         if ($refund->status !== 'pending') {
+            return response('cannot accept this refund request' , 200);
+        }
+
+        // Get refund item
+        $item = $refund->item;
+        
+        // Update item status
+        OrderItem::where('id', $item->id)->update([
+            'status'      => 'refunded',
+            'is_finished' => true,
+            'refunded_at' => now()
+        ]);
+
+        // Update refund
+        $refund->update([
+            'status' => 'accepted_by_seller'
+        ]);
+
+        // Update this gig
+        if ($item->gig->total_orders_in_queue() > 0) {
+            $item->gig()->decrement('orders_in_queue');
+        }
+
+        // Give buyer his money
+        User::where('id', $refund->buyer_id)->update([
+            'balance_available' => convertToNumber($refund->buyer->balance_available) + convertToNumber($item->total_value)
+        ]);
+
+        // Update seller balance
+        User::where('id', $refund->seller_id)->update([
+            'balance_pending' => convertToNumber($refund->seller->balance_pending) - convertToNumber($item->profit_value)
+        ]);
+
+        // Send notification to buyer
+        $refund->buyer->notify( (new RefundAccepted($this->refund))->locale(config('app.locale')) );
+
+        // Send notification
+        notification([
+            'text'    => 't_seller_has_accepted_ur_refund',
+            'action'  => url('account/refunds/details', $refund->uid),
+            'user_id' => $refund->buyer_id,
+            'params'  => ['seller' => auth()->user()->username]
+        ]);
+
+    }
+
+    public function decline_refund(Request $request){
+       
+        $refund      = Refund::where('id', $request->refund_id)->where('seller_id', auth()->id())->firstOrFail();
+        
+        // Check if refund still in pending
+          if ($refund->status !== 'pending') {
+            return response('cannot decline this refund request' , 200);
+        }
+
+        // Update refund
+        $refund->update([
+            'status' => 'rejected_by_seller'
+        ]);
+
+        // Send notification to buyer
+        $refund->buyer->notify( (new RefundDeclined($refund))->locale(config('app.locale')) );
+
+        // Send notification
+        notification([
+            'text'    => 't_seller_has_declined_ur_refund',
+            'action'  => url('account/refunds/details', $refund->uid),
+            'user_id' => $refund->buyer_id,
+            'params'  => ['seller' => auth()->user()->username]
+        ]);
+    }
+
+    public function submit_work(Request $request){
+         
+        $user_id = auth()->id();
+        
+        // Get order item
+        $order       = OrderItem::where('owner_id', $user_id)->where('id', $request->item_id)->firstOrFail();
+
+        // Order item must be in ['delivered', 'proceeded'] status and not finished yet
+         if (!in_array($order->status, ['proceeded', 'delivered'])) {
+
+             return response( __('messages.t_u_cant_send_delivered_work_anymore_status_wrong') , 200);
+         
+         }
+
+          // Check if seller already uploaded work before
+          if ($order->delivered_work) {
+                
+            return response( __('messages.t_looks_like_u_already_uploaded_completed_work'), 200);
+            
+         }
+
+         // Set max work size
+         $max_size = settings('media')->delivered_work_max_size * 1024;
+         
+         $validator = DeliverValidator::validate($request);
+         
+         if($validator->fails()){
+            $error = $validator->errors()->first();
+            $response = ['error'=>$error];
+            return response($response , 401);
+        }
+
+         // Check if request has files
+         if ($request->work) {
+                
+            // Generate a unique name for this file
+            $id        = uid(45);
+
+            // Get file extension
+            $extension = $request->work->extension();
+
+            // Get file mime type
+            $mime      = $request->work->getMimeType();
+
+            // Get file size
+            $size      = $request->work->getSize();
+
+            // Move this file to local storage
+            $request->work->storeAs('orders/delivered_work', "$id.$extension", $disk = 'custom');
+
+            // Set file data
+            $file = [
+                'id'        => $id,
+                'extension' => $extension,
+                'mime'      => $mime,
+                'size'      => $size
+            ];
+
+            } else {
+
+                // No files selected
+                $file = null;
+            }
+
+            // Save work
+            $work                      = new OrderItemWork();
+            $work->uid                 = uid();
+            $work->order_item_id       = $order->id;
+            $work->attached_work       = $file;
+            $work->quick_response      = $request->quick_response ? clean($request->quick_response) : null;
+            $work->save();
+
+            // Update order item
+            $order->status       = 'delivered';
+            $order->delivered_at = now();
+            $order->save();
+
+             // Send notification to buyer
+             $order->order->buyer->notify( (new OrderDelivered($order))->locale(config('app.locale')) );
+
+             // Send notification
+             notification([
+                 'text'    => 't_seller_has_delivered_ur_order',
+                 'action'  => url('account/orders/files?orderId=' . $order->order->uid . '&itemId=' . $order->uid),
+                 'user_id' => $order->order->buyer_id,
+                 'params'  => ['seller' => auth()->user()->username]
+             ]);
+
+             $response = "Delivered Work has been uploaded successfully !!" ;
+
+             return response ($response , 200) ;
     }
 
 }
