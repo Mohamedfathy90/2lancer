@@ -41,6 +41,7 @@ use App\Notifications\Admin\PendingGig;
 use App\Http\Validators\API\GigValidator;
 use App\Notifications\User\Buyer\OrderPlaced;
 use App\Notifications\User\Seller\PendingOrder;
+use App\Notifications\User\Buyer\OrderItemInProgress;
 
 class HomeController extends Controller
 {
@@ -1070,7 +1071,7 @@ class HomeController extends Controller
                     $twilio_service_sid = getenv("TWILIO_SERVICE_SID");
                     $twilioWhatsAppNumber = getenv("TWILIO_WHATSAPP_NUMBER");
                     $template_sid = "HX83e78d38c3da3dccfe0e633b7f6a7a60";
-                    $recipientNumber = "whatsapp:+".$item->owner->phone;
+                    $recipientNumber = "whatsapp:+".$gig->owner->phone;
                     $client = new \Twilio\Rest\Client($account_sid, $auth_token);
                     $client->messages->create($recipientNumber, 
                                     [
@@ -1248,14 +1249,11 @@ class HomeController extends Controller
     }
 
 
-    public function submit_requirements(Request $request){
-        
-        $submitted_requirements = $request->all();
+       public function submit_requirements(Request $request){
         
         // Get item
-        $item    = OrderItem::where('id', $submitted_requirements[0]['item_id'])->where('order_id', $submitted_requirements[0]['order_id'])->firstOrFail();
-    
-        
+        $item    = OrderItem::where('id', $request->item_id)->where('order_id', $request->order_id)->firstOrFail();
+     
         // User can send requirements only when item status is pending or in progress
          if (!in_array($item->status , ['pending','proceeded']) ) {
 
@@ -1274,34 +1272,14 @@ class HomeController extends Controller
 
         }
 
-        // Get requirements from database for this item
-        $gig_requirements = $item->gig->requirements;
-        
-        $submitted_ids = [] ;
+        // retrieve submitted answers
+        $submitted_requirements = $request->answers;
         
         foreach($submitted_requirements as $submitted_requirement){
-                
-            $submitted_ids[] =  $submitted_requirement['requirement_id'] ;
-        }
-        
-        foreach($gig_requirements as $gig_requirement){
-            
-            $value = false ;
-
-            if($gig_requirement->is_required && !in_array($gig_requirement->id ,$submitted_ids)){
-                $response = __('please submit all required requirements') ;
-                return response ($response , 200);
-            }
-
-            foreach($submitted_requirements as $submitted_requirement){
-                if ($submitted_requirement['requirement_id'] === $gig_requirement->id){
-                    $value = $submitted_requirement['value'] ;
-                    break;
-                }
-            }
+             
+            $gig_requirement = GigRequirement::find($submitted_requirement['requirement_id']);
             
             
-            if($value){
             // Check type of this requirement
                if ($gig_requirement->type === 'text') {
                         
@@ -1310,7 +1288,7 @@ class HomeController extends Controller
                     'item_id'    => $item->id,
                     'question'   => $gig_requirement->question,
                     'form_type'  => $gig_requirement->type,
-                    'form_value' => $value
+                    'form_value' => $submitted_requirement['value']
                 ]);
 
                 } elseif ($gig_requirement->type === 'choice') {
@@ -1320,7 +1298,7 @@ class HomeController extends Controller
                     'item_id'    => $item->id,
                     'question'   => $gig_requirement->question,
                     'form_type'  => $gig_requirement->type,
-                    'form_value' => $value
+                    'form_value' => $submitted_requirement['value']
                 ]);
 
                 } elseif ($gig_requirement->type === 'file') {
@@ -1328,6 +1306,9 @@ class HomeController extends Controller
                 // Generate file id
                 $id        = uid(45);
 
+                
+                $value = $submitted_requirement['value'];
+                
                 // Get file extension
                 $extension = $value->extension();
 
@@ -1354,11 +1335,8 @@ class HomeController extends Controller
                     'question'   => $gig_requirement->question,
                     'form_type'  => $gig_requirement->type,
                     'form_value' => $file
-                ]);
-
+                ]);            
             }
-        }
-   
         }
 
         // Set empty days variable
@@ -1381,7 +1359,7 @@ class HomeController extends Controller
 
 }
 
-    public function view_requirements(Request $request){
+  public function view_requirements(Request $request){
          
         // Get user id
          $user_id    = auth()->id();
@@ -1393,7 +1371,7 @@ class HomeController extends Controller
 
          return response ($requirements , 200);
     }
-
+    
     public function buyer_cancel_order (Request $request){
         
         // Get item
@@ -1495,6 +1473,49 @@ class HomeController extends Controller
 
         return response ($response , 200);
     
+    }
+    
+    public function start_order (Request $request){
+        
+        // Get item
+        $item               = OrderItem::where('id', $request->item_id)
+                                        ->where('owner_id', auth()->id())
+                                        ->where('status', 'pending')
+                                        ->firstOrFail();
+
+        // Update item
+        if (!$item->expected_delivery_date) {
+            
+            // Set empty days variable
+            $days  = 0;
+
+            // Culculate extra days for upgrades
+            $days += $item->upgrades()->exists() ? $item->upgrades->sum('extra_days') : 0;
+
+            // Add gig delivery time
+            $days += $item->gig->delivery_time;
+
+            $item->expected_delivery_date = now()->addDays($days);
+        }
+        
+            $item->status       = 'proceeded';
+            $item->proceeded_at = now();
+            $item->save();
+
+            // Send notification to buyer
+            $item->order->buyer->notify( (new OrderItemInProgress($item))->locale(config('app.locale')) );
+
+            // Send notification
+            notification([
+                'text'    => 't_seller_has_started_ur_order',
+                'action'  => url('account/orders'),
+                'user_id' => $item->order->buyer_id,
+                'params'  => ['seller' => auth()->user()->username]
+            ]);
+
+            $response = "t_order_has_been_successfully_marked_progress" ;
+
+            return response ($response , 200);
     }
 
 }

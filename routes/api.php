@@ -113,15 +113,18 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
         
         // submit Gig Requirements
         Route::post('submit_requirements' , 'submit_requirements')->middleware('auth:sanctum');
-
+        
         // view item submitted requirements
         Route::post('view_requirements' , 'view_requirements')->middleware('auth:sanctum');
-
+        
         // Cancel Order By Buyer
         Route::post('buyer_cancel_order' , 'buyer_cancel_order')->middleware('auth:sanctum');
 
         // Cancel Order By Seller
         Route::post('seller_cancel_order' , 'seller_cancel_order')->middleware('auth:sanctum');
+        
+        // Start Order By Seller
+        Route::post('start_order' , 'start_order')->middleware('auth:sanctum');
     });
 
 
