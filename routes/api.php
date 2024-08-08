@@ -156,6 +156,12 @@ Route::namespace('App\Http\Controllers\Api')->group(function() {
         // Resubmit work
         Route::post('resubmit_work' , 'resubmit_work')->middleware('auth:sanctum');
 
+        // Finish Order
+        Route::post('finish_order' , 'finish_order')->middleware('auth:sanctum');
+
+        // Add review
+        Route::post('add_review' , 'add_review')->middleware('auth:sanctum');
+
     });
 
 

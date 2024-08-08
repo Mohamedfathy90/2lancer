@@ -36,6 +36,7 @@ use App\Models\AffiliateTransaction;
 use App\Models\GigRequirementOption;
 use App\Models\OrderItemRequirement;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use App\Utils\Uploader\ImageUploader;
 use App\Models\AffiliateRegisteration;
 use App\Models\AutomaticPaymentGateway;
@@ -51,6 +52,8 @@ use App\Notifications\User\Buyer\RefundAccepted;
 use App\Notifications\User\Buyer\RefundDeclined;
 use App\Notifications\User\Seller\RefundRequest;
 use App\Notifications\User\Buyer\OrderItemInProgress;
+use App\Notifications\User\Seller\OrderItemCompleted as SellerOrderItemCompleted;
+use App\Notifications\User\Buyer\OrderItemCompleted as BuyerOrderItemCompleted;
 
 class HomeController extends Controller
 {
@@ -1815,5 +1818,127 @@ class HomeController extends Controller
 
              return response ($response , 200) ;
     }
+
+    public function resubmit_work(Request $request){
+        
+        $user_id = auth()->id();
+        
+        // Get order item
+        $order       = OrderItem::where('owner_id', $user_id)->where('id', $request->item_id)->firstOrFail();
+
+         // Check if order item has delivered work
+         if ($order->delivered_work) {
+            
+            // Get delivered work
+            $work = $order->delivered_work;
+
+            // Check if work has files
+            if ($work->attached_work) {
+                
+                // Get file
+                $file = public_path('storage/orders/delivered_work/' . $work->attached_work['id'] . '.' . $work->attached_work['extension']);
+
+                // Check if file exists
+                if (File::exists($file)) {
+                    
+                    // Delete file
+                    File::delete($file);
+                }
+            }
+
+            // Delete this files and reset 
+            $work->delete();
+
+            // Refresh model
+            $order->refresh();
+
+        }
+
+    }
+
+    
+    // finish order by buyer
+    public function finish_order (Request $request){
+        
+        // Get item
+        $item = OrderItem::whereHas('order', function($query) {
+            return $query->where('buyer_id', auth()->id());
+        })->where('id', $request->item_id)
+        ->where('status', 'delivered')
+        ->where('is_finished', false)
+        ->firstOrFail();
+
+        // Mark item as completed
+        $item->is_finished  = true;
+        $item->save();
+
+        // Give seller his money
+        $item->owner()->update([
+        'balance_pending'   => convertToNumber($item->owner->balance_pending) - convertToNumber($item->profit_value),
+        'balance_available' => convertToNumber($item->owner->balance_available) + convertToNumber($item->profit_value),
+        ]);
+
+        // Remove item from queue list and success sales
+        if ($item->gig->total_orders_in_queue() > 0) {
+        $item->gig()->decrement('orders_in_queue');
+        }
+        $item->gig()->increment('counter_sales');
+
+        // Send notification to seller
+        $item->owner->notify( (new SellerOrderItemCompleted($item))->locale(config('app.locale')) );
+
+        // Close any refund
+        Refund::where('item_id', $item->id)
+        ->where('buyer_id', auth()->id())
+        ->where('status', 'pending')
+        ->update([
+            'status' => 'closed'
+        ]);
+
+        // Send notification
+        notification([
+        'text'    => 't_order_id_completed',
+        'action'  => url('seller/orders/details', $item->uid),
+        'user_id' => $item->owner_id,
+        'params'  => ['id' => $item->uid]
+        ]);
+
+        // Send notification to buyer
+        $item->order->buyer->notify( (new BuyerOrderItemCompleted($item))->locale(config('app.locale')) );
+
+        // Check user's level
+        check_user_level($item->owner_id);
+
+        $response = "Order has been completed successfully !!" ;
+
+        return response ($response , 200) ;
+    }
+
+    
+    // Add review for seller after work finish
+    public function add_review (Request $request){
+        
+        // Get item
+        $item = OrderItem::where('id', $request->item_id)
+                        ->whereHas('order', function($query) {
+                            return $query->where('buyer_id', auth()->id());
+                        })
+                        ->where('status', 'delivered')
+                        ->where('is_finished', true)
+                        ->first();
+
+        // Create new review
+        $review                = new Review();
+        $review->uid           = uid();
+        $review->user_id       = auth()->id();
+        $review->seller_id     = $item->owner_id;
+        $review->gig_id        = $item->gig_id;
+        $review->order_item_id = $item->id;
+        $review->rating        = $request->rating;
+        $review->message       = clean($request->message);
+        $review->save();
+    }
+
+    
 
 }
